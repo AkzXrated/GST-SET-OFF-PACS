@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Accounting Navigator & Interactive Simulator | FY 2026-27</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --bg-surface: #121824;
+            --bg-card: #1a2236;
+            --bg-card-hover: #222d46;
+            --border-dim: #2b3954;
+            --border-focus: #44567e;
+            
+            --brand-primary: #6366f1; /* Violet-Indigo */
+            --brand-secondary: #a855f7; /* Purple */
+            --brand-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            
+            --semantic-success: #10b981; /* Emerald */
+            --semantic-warning: #f59e0b; /* Amber */
+            --semantic-danger: #f43f5e; /* Rose */
+            --semantic-info: #0ea5e9; /* Sky Blue */
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+            
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-dim) var(--bg-base);
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-dim);
+            border-radius: var(--radius-sm);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-focus);
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            color: var(--brand-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            color: var(--brand-secondary);
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- Header Section --- */
+        header {
+            position: relative;
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--border-dim);
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.12), transparent 40%),
+                        radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.05), transparent 30%);
+            margin-bottom: 40px;
+        }
+
+        .header-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title-box {
+            max-width: 750px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            background: linear-gradient(120deg, #f8fafc 40%, #cbd5e1 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 650px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 16px;
+        }
+
+        .meta-pill {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-pill strong {
+            color: var(--text-primary);
+        }
+
+        .meta-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--semantic-success);
+            box-shadow: 0 0 8px var(--semantic-success);
+        }
+
+        /* --- Section Container --- */
+        section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid var(--brand-primary);
+            padding-left: 16px;
+        }
+
+        /* --- Grid Utilities --- */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 28px;
+        }
+
+        /* --- Custom Cards --- */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--border-focus);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .card.card-primary::before { background: var(--brand-gradient); }
+        .card.card-success::before { background: var(--semantic-success); }
+        .card.card-warning::before { background: var(--semantic-warning); }
+        .card.card-danger::before { background: var(--semantic-danger); }
+
+        .card-header-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--brand-primary);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .card-success .card-header-icon {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--semantic-success);
+        }
+
+        .card-warning .card-header-icon {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--semantic-warning);
+        }
+
+        .card-danger .card-header-icon {
+            background-color: rgba(244, 63, 94, 0.1);
+            color: var(--semantic-danger);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        /* --- Custom Bullet List --- */
+        .custom-list {
+            list-style: none;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .custom-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--brand-primary);
+            font-weight: bold;
+        }
+
+        .custom-list.success-list li::before {
+            content: "✓";
+            color: var(--semantic-success);
+        }
+
+        .custom-list.danger-list li::before {
+            content: "✗";
+            color: var(--semantic-danger);
+        }
+
+        .custom-list.warning-list li::before {
+            content: "⚠";
+            color: var(--semantic-warning);
+        }
+
+        /* --- Audit Post Mortem Tabs / Toggle Accordions --- */
+        .audit-summary {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .audit-tabs {
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-dim);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-card);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            background-color: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Entity Matrix Section --- */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-gray { background-color: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-dim); }
+        .badge-indigo { background-color: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+        .badge-purple { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .badge-emerald { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        .gstin-code {
+            font-family: var(--font-mono);
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            border: 1px solid var(--border-dim);
+        }
+
+        /* --- Interactive Simulator --- */
+        .simulator-layout {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .simulator-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .control-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-select, .form-input {
+            width: 100%;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-dim);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-select:focus, .form-input:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .input-with-symbol {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-with-symbol .symbol {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .input-with-symbol .form-input {
+            padding-left: 32px;
+        }
+
+        /* Output Board */
+        .output-board {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .output-header {
+            border-bottom: 1px solid var(--border-dim);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .output-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .rule-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px dashed rgba(99, 102, 241, 0.25);
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .rule-card-icon {
+            font-size: 1.5rem;
+            color: var(--brand-primary);
+        }
+
+        /* Double Entry Table */
+        .journal-voucher {
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.2);
+            margin-bottom: 24px;
+        }
+
+        .jv-title {
+            background-color: var(--bg-card);
+            padding: 10px 16px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .jv-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .jv-table th {
+            text-align: left;
+            background-color: rgba(21, 28, 44, 0.4);
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .jv-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-dim);
+            color: var(--text-primary);
+        }
+
+        .jv-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .jv-table .debit-row {
+            font-weight: 500;
+        }
+
+        .jv-table .credit-row td:first-child {
+            padding-left: 24px;
+        }
+
+        .jv-table .amount-col {
+            text-align: right;
+            font-family: var(--font-mono);
+        }
+
+        .jv-table .jv-total-row {
+            background-color: rgba(21, 28, 44, 0.6);
+            font-weight: 600;
+            border-top: 1px solid var(--border-focus);
+        }
+
+        .jv-table .jv-total-row td {
+            color: var(--text-primary);
+        }
+
+        .jv-narration {
+            padding: 12px 16px;
+            font-style: italic;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            background-color: rgba(21, 28, 44, 0.2);
+            border-top: 1px solid var(--border-dim);
+        }
+
+        /* Ledger visualizer */
+        .ledger-visualizer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .t-account {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+        }
+
+        .t-account-title {
+            text-align: center;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 2px solid var(--border-focus);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        .t-account-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            min-height: 60px;
+        }
+
+        .t-account-side {
+            padding: 4px;
+        }
+
+        .t-account-side.dr {
+            border-right: 1px dashed var(--border-dim);
+        }
+
+        .t-account-side.cr {
+            text-align: right;
+        }
+
+        .t-entry {
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            gap: 4px;
+        }
+        
+        .t-account-side.cr .t-entry {
+            flex-direction: row-reverse;
+        }
+
+        .t-entry.plus { color: var(--semantic-success); }
+        .t-entry.minus { color: var(--semantic-danger); }
+
+        /* --- Monthly Roadmap SOP Timeline --- */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--border-dim);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-item.right {
+                left: 0%;
+            }
+        }
+
+        .timeline-item.left {
+            left: 0;
+        }
+
+        .timeline-item.right {
+            left: 50%;
+        }
+
+        .timeline-circle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--bg-base);
+            border: 4px solid var(--brand-primary);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.right .timeline-circle {
+            left: -10px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-circle {
+                left: 21px !important;
+            }
+        }
+
+        .timeline-item:hover .timeline-circle {
+            border-color: var(--brand-secondary);
+            transform: scale(1.2);
+            box-shadow: 0 0 10px var(--brand-secondary);
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: var(--bg-card);
+            position: relative;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-dim);
+        }
+
+        .timeline-date {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- GST Vocabulary Grid --- */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .vocab-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            transition: border-color 0.2s ease;
+        }
+
+        .vocab-card:hover {
+            border-color: var(--border-focus);
+        }
+
+        .vocab-word {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--brand-secondary);
+            margin-bottom: 8px;
+        }
+
+        .vocab-definition {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        /* Alert/Callout Box */
+        .alert-box {
+            background-color: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .alert-box-icon {
+            font-size: 1.5rem;
+            color: var(--semantic-warning);
+            line-height: 1;
+        }
+
+        .alert-box-content h4 {
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            font-size: 1.05rem;
+        }
+
+        .alert-box-content p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-grid">
+                <div class="header-title-box">
+                    <span class="eyebrow">Financial Year 2026-27 Accounting Blueprint</span>
+                    <h1>Cooperative GST Navigator</h1>
+                    <p>
+                        A beginner-friendly visual manual & journal entry simulator designed for cooperative organizations managing multiple business units under distinct GST rules.
+                    </p>
+                </div>
+                <div class="header-meta">
+                    <div class="meta-pill">
+                        <div class="dot"></div>
+                        <span>Status: <strong>Ready for FY 2026-27</strong></span>
+                    </div>
+                    <div class="meta-pill">
+                        <span>Framework: <strong>Double-Entry</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- ALERT: Urgent RCM Action -->
+        <div class="alert-box">
+            <span class="alert-box-icon">⚠️</span>
+            <div class="alert-box-content">
+                <h4>Essential Adjustment to Rule 38 (Bank GSTIN)</h4>
+                <p>
+                    Cooperative banks operate under restriction: they can only claim <strong>50% of monthly Input Tax Credit (ITC)</strong>. The remaining 50% must be booked straight as an operating expense at month-end. Meanwhile, Neethy Medicals and Fertilizer Depot are retail traders and can claim <strong>100% of their ITC</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 1: The Post-Mortem Audit (Goods, Bads, Fixes) -->
+        <section id="post-mortem">
+            <h2 class="section-title">Audit Review (FY 2025-26 Performance)</h2>
+            <div class="audit-summary">
+                <div class="audit-tabs">
+                    <button class="tab-btn active" onclick="switchAuditTab(event, 'goods')">👍 The Goods (What went well)</button>
+                    <button class="tab-btn" onclick="switchAuditTab(event, 'bads')">⚠️ The Bads (The gaps found)</button>
+                    <button class="tab-btn" onclick="switchAuditTab(event, 'fixes')">🔧 Structural Fixes Required</button>
+                </div>
+
+                <!-- Goods Tab Panel -->
+                <div id="goods" class="tab-panel active">
+                    <p style="margin-bottom: 20px; font-size: 1.05rem;">
+                        You laid a solid foundation, which is commendable for a team operating without dedicated in-house tax advisors:
+                    </p>
+                    <ul class="custom-list success-list">
+                        <li><strong>Systematic Monthly Data:</strong> Monthly sales and purchases were logged without fail in the primary ledger system.</li>
+                        <li><strong>RCM Compliance Concept:</strong> You recognized that rent paid to an unregistered landlord triggers RCM liability, and tried to record it in your accounts.</li>
+                        <li><strong>Challan Archiving:</strong> Tax payment challan receipts generated by the CA were correctly preserved and paid on time, avoiding interest penalties.</li>
+                        <li><strong>CA Colleague:</strong> The CA's computations on the portal filings (GSTR-3B) were structurally correct, providing a reliable ground truth to check against.</li>
+                    </ul>
+                </div>
+
+                <!-- Bads Tab Panel -->
+                <div id="bads" class="tab-panel">
+                    <p style="margin-bottom: 20px; font-size: 1.05rem; color: var(--semantic-warning)">
+                        We identified major gaps in how books talk to portal returns, causing ledger balances to swell artificially:
+                    </p>
+                    <ul class="custom-list danger-list">
+                        <li><strong>The "Growing Balances" Ledger Loop:</strong> Because no monthly "set-off" entries were passed in the banking software, <code>SA GST Input</code> and <code>SL GST Output</code> balances grew indefinitely without ever resetting to zero.</li>
+                        <li><strong>Disconnected Tax Expense:</strong> Payments to the government were written off directly to a temporary head <code>GST Paid to Govt</code>, rather than being used to debit and clear the actual outstanding liability under <code>SL GST Output</code>.</li>
+                        <li><strong>Bank ITC Overstatement (Rule 38):</strong> The bank logged 100% of purchase ITC as an asset in the books, instead of writing off the ineligible 50% to expenses. This inflated the books asset ledger by <strong>₹80,952.81</strong>.</li>
+                        <li><strong>Omitted Fertilizer Depot Inputs:</strong> Fertilizer Depot purchases were entirely omitted in the books, recording only RCM entries (Book Input: ₹20,100.37 vs GSTR-3B Input: ₹30,663.38).</li>
+                        <li><strong>Duplicate Challan PDF Storage:</strong> Neethy Medicals' folder contained duplicate files belonging to the Bank, causing tracking confusion.</li>
+                    </ul>
+                </div>
+
+                <!-- Fixes Tab Panel -->
+                <div id="fixes" class="tab-panel">
+                    <p style="margin-bottom: 20px; font-size: 1.05rem;">
+                        To fix these gaps forever, we must implement three core changes in your ledger routing:
+                    </p>
+                    <ul class="custom-list warning-list">
+                        <li><strong>Link Payments to Liability:</strong> Stop closing tax payments directly against "GST Paid to Govt". Instead, route payments through `SL GST Output` first to neutralize the liability.</li>
+                        <li><strong>Perform Monthly Set-offs:</strong> Every month, when the CA provides the GSTR-3B filing data, pass a journal entry that offsets your `SL GST Output` liability using your available `SA GST Input` credit.</li>
+                        <li><strong>Divide Bank ITC 50:50:</strong> Implement the 50% permanent write-off rule for the Bank's purchases. When recording bank expenses, route 50% of the invoice GST directly to an expense ledger (e.g. `GST Ineligible ITC Expense`).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Entity Matrix -->
+        <section id="matrix">
+            <h2 class="section-title">Cooperative Branches & GST Profiles</h2>
+            <div class="grid-3">
+                <!-- Card 1: Bank -->
+                <div class="card card-warning">
+                    <div class="card-header-icon">🏦</div>
+                    <span class="badge badge-purple" style="margin-bottom: 8px;">Rule 38 Bank</span>
+                    <h3>Bank (Head Office)</h3>
+                    <p>Provides banking and credit services. Interest income is exempt, triggering specialized partial ITC rules.</p>
+                    <ul class="custom-list" style="margin-top: 16px;">
+                        <li>GSTIN: <span class="gstin-code">32AABAV5891L1Z1</span></li>
+                        <li>ITC Eligibility: <strong>50% Flat Rate</strong></li>
+                        <li>Rule reference: <strong>CGST Rule 38 / Sec 17(4)</strong></li>
+                        <li>RCM Treatment: <strong>50% claimable / 50% costed</strong></li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Neethy Medicals -->
+                <div class="card card-success">
+                    <div class="card-header-icon">💊</div>
+                    <span class="badge badge-emerald" style="margin-bottom: 8px;">100% ITC Eligible</span>
+                    <h3>Neethy Medicals</h3>
+                    <p>Retail pharmacy outlet selling medicines. Outward supplies are fully taxable, allowing full credit collection.</p>
+                    <ul class="custom-list" style="margin-top: 16px;">
+                        <li>GSTIN: <span class="gstin-code">32AABAV5891L2Z0</span></li>
+                        <li>ITC Eligibility: <strong>100% Full Claim</strong></li>
+                        <li>Rule reference: <strong>Section 16(1) CGST</strong></li>
+                        <li>RCM Treatment: <strong>100% claimable as Input</strong></li>
+                    </ul>
+                </div>
+
+                <!-- Card 3: Fertilizer Depot -->
+                <div class="card card-success">
+                    <div class="card-header-icon">🌱</div>
+                    <span class="badge badge-emerald" style="margin-bottom: 8px;">100% ITC Eligible</span>
+                    <h3>Fertilizer Depot</h3>
+                    <p>Agricultural inputs and retail outlet. Fully taxable trading allows full purchase tax credit offset.</p>
+                    <ul class="custom-list" style="margin-top: 16px;">
+                        <li>GSTIN: <span class="gstin-code">32AABAV5891L3ZZ</span></li>
+                        <li>ITC Eligibility: <strong>100% Full Claim</strong></li>
+                        <li>Rule reference: <strong>Section 16(1) CGST</strong></li>
+                        <li>RCM Treatment: <strong>100% claimable as Input</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Interactive Simulator -->
+        <section id="simulator">
+            <h2 class="section-title">Interactive Journal Entry Simulator</h2>
+            
+            <div class="simulator-layout">
+                <!-- Control Panel -->
+                <div class="control-panel">
+                    <h3 style="margin-bottom: 16px; font-size: 1.2rem;">Simulation Parameters</h3>
+                    
+                    <!-- 1. Select Entity -->
+                    <div class="control-group">
+                        <label for="sim-entity">1. Business Unit (GSTIN Profile)</label>
+                        <select id="sim-entity" class="form-select" onchange="runSimulation()">
+                            <option value="bank">Bank (HO) — 50% ITC Rule</option>
+                            <option value="neethi" selected>Neethy Medicals — 100% ITC Rule</option>
+                            <option value="manure">Fertilizer Depot — 100% ITC Rule</option>
+                        </select>
+                    </div>
+
+                    <!-- 2. Select Transaction Type -->
+                    <div class="control-group">
+                        <label for="sim-tx">2. Transaction Type</label>
+                        <select id="sim-tx" class="form-select" onchange="toggleInputs(); runSimulation();">
+                            <option value="purchase">Regular Supplier Bill (Purchase)</option>
+                            <option value="rent-rcm">Rent with RCM (Unregistered Landlord)</option>
+                            <option value="monthly-setoff">Monthly GSTR-3B Set-Off (CA figures)</option>
+                        </select>
+                    </div>
+
+                    <!-- 3. Dynamic Inputs -->
+                    <!-- Input 1: Taxable Amount (For Purchases / Rent) -->
+                    <div class="control-group" id="group-taxable">
+                        <label for="sim-amount" id="label-amount">Taxable Value (Rent or Invoice base)</label>
+                        <div class="input-with-symbol">
+                            <span class="symbol">₹</span>
+                            <input type="number" id="sim-amount" class="form-input" value="10000" oninput="runSimulation()" min="1">
+                        </div>
+                    </div>
+
+                    <!-- Input 2: GST Rate (For Purchase/Rent) -->
+                    <div class="control-group" id="group-rate">
+                        <label for="sim-rate">GST Rate (%)</label>
+                        <select id="sim-rate" class="form-select" onchange="runSimulation()">
+                            <option value="5">5% (CGST 2.5% + SGST 2.5%)</option>
+                            <option value="12">12% (CGST 6% + SGST 6%)</option>
+                            <option value="18" selected>18% (CGST 9% + SGST 9%)</option>
+                            <option value="28">28% (CGST 14% + SGST 14%)</option>
+                        </select>
+                    </div>
+
+                    <!-- Inputs for Monthly GSTR-3B Setoff -->
+                    <div id="group-setoff" style="display: none;">
+                        <div class="control-group">
+                            <label for="setoff-out-cgst">Total Output CGST (from GSTR-3B Table 3.1)</label>
+                            <div class="input-with-symbol">
+                                <span class="symbol">₹</span>
+                                <input type="number" id="setoff-out-cgst" class="form-input" value="8000" oninput="runSimulation()">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="setoff-out-sgst">Total Output SGST (from GSTR-3B Table 3.1)</label>
+                            <div class="input-with-symbol">
+                                <span class="symbol">₹</span>
+                                <input type="number" id="setoff-out-sgst" class="form-input" value="8000" oninput="runSimulation()">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="setoff-in-cgst">Eligible Input CGST (from GSTR-3B Table 4A)</label>
+                            <div class="input-with-symbol">
+                                <span class="symbol">₹</span>
+                                <input type="number" id="setoff-in-cgst" class="form-input" value="6500" oninput="runSimulation()">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="setoff-in-sgst">Eligible Input SGST (from GSTR-3B Table 4A)</label>
+                            <div class="input-with-symbol">
+                                <span class="symbol">₹</span>
+                                <input type="number" id="setoff-in-sgst" class="form-input" value="6500" oninput="runSimulation()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Board -->
+                <div class="output-board">
+                    <div>
+                        <div class="output-header">
+                            <div>
+                                <span class="badge badge-gray" id="out-badge">Profile</span>
+                                <h3 id="out-title" style="margin-top: 6px;">Journal Entry Output</h3>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Double-Entry Rules</span>
+                                <div style="font-family: var(--font-mono); font-weight: 500; font-size: 0.9rem;" id="out-balance-status">DR = CR Balanced</div>
+                            </div>
+                        </div>
+
+                        <!-- Legal Explainer Callout -->
+                        <div class="rule-card">
+                            <div class="rule-card-icon">💡</div>
+                            <div id="sim-explainer">
+                                Loading explainer...
+                            </div>
+                        </div>
+
+                        <!-- Double Entry Table (Journal Voucher) -->
+                        <div class="journal-voucher">
+                            <div class="jv-title">
+                                <span>Journal Voucher (JV)</span>
+                                <span id="jv-date">JV Date: Month End / Invoice Date</span>
+                            </div>
+                            <table class="jv-table">
+                                <thead>
+                                    <tr>
+                                        <th>Account Head Description</th>
+                                        <th style="width: 80px;">Type</th>
+                                        <th class="amount-col" style="width: 140px;">Debit (₹)</th>
+                                        <th class="amount-col" style="width: 140px;">Credit (₹)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="jv-rows">
+                                    <!-- Dynamic rows generate here -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="jv-total-row">
+                                        <td>TOTAL</td>
+                                        <td></td>
+                                        <td class="amount-col" id="jv-total-dr">0.00</td>
+                                        <td class="amount-col" id="jv-total-cr">0.00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="jv-narration" id="jv-narration">
+                                Narration text goes here.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ledger Visualizer -->
+                    <div>
+                        <h4 style="font-size: 1rem; margin-bottom: 12px; font-family: var(--font-display); color: var(--text-secondary);">Visual T-Account Ledger Impact</h4>
+                        <div class="ledger-visualizer" id="ledger-box">
+                            <!-- Dynamic T-Accounts render here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Monthly Roadmap SOP Timeline -->
+        <section id="sop">
+            <h2 class="section-title">Monthly Standard Operating Procedure (SOP)</h2>
+            <p style="color: var(--text-secondary); max-width: 800px; margin-bottom: 32px;">
+                Follow this sequence strictly every month to avoid cumulative reconciliation errors at year-end. This aligns books with portal filings step-by-step.
+            </p>
+
+            <div class="timeline">
+                <!-- Step 1 -->
+                <div class="timeline-item left">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Day 1 - 5</div>
+                        <h3>Invoice Logging & Rent Booking</h3>
+                        <p>
+                            Record all regular vendor purchases in the software. For the rent, post the monthly accrual voucher debiting RCM Input tax and crediting RCM Output tax heads. For the Bank, make sure 50% of purchase GST goes directly to the purchase cost or expense account.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="timeline-item right">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Day 10 - 12</div>
+                        <h3>CA Return Drafting</h3>
+                        <p>
+                            Your CA compiles tax outputs (GSTR-1) and downloads GSTR-2B. Provide the CA with your raw books purchase data so they can claim any missed invoices on the portal, matching GSTR-2B exactly.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="timeline-item left">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Day 15 - 18</div>
+                        <h3>Challan Payment & Entry</h3>
+                        <p>
+                            CA generates the GSTR-3B challan. Pay the amount via bank account and immediately post: 
+                            <br><code>Dr. SL GST Output Tax (CGST+SGST)</code>
+                            <br><code>Cr. Bank Account</code>. 
+                            <br>Do not park payments in "GST Paid to Govt" without linking them!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="timeline-item right">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Day 19 - 20</div>
+                        <h3>Monthly Set-Off Posting</h3>
+                        <p>
+                            Obtain GSTR-3B summary from the CA. Post the monthly offsetting entry in books to absorb your <code>SL GST Output</code> against eligible <code>SA GST Input</code> credits utilized. Your output ledger for that month should now fall to <strong>zero</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Glossary -->
+        <section id="glossary">
+            <h2 class="section-title">GST Glossary Decoded for Beginners</h2>
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <div class="vocab-word">ITC (Input Tax Credit)</div>
+                    <div class="vocab-definition">The tax paid by you on purchases. Think of it as a pre-paid coupon or digital asset balance in the portal that you can use to pay off your own output tax liabilities.</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-word">Outward GST (Output Tax)</div>
+                    <div class="vocab-definition">The GST you collect from customers on sales. It is a pure liability; you are just a collector holding the money on behalf of the government until return filing.</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-word">RCM (Reverse Charge)</div>
+                    <div class="vocab-definition">A rule where the buyer pays tax directly to the government instead of the seller. Required when renting business premises from an unregistered landlord.</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-word">GSTR-3B</div>
+                    <div class="vocab-definition">The final monthly summary return filed to the government showing total outward sales, eligible ITC claimed, and the final net cash paid via bank challan.</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-word">GSTR-2B</div>
+                    <div class="vocab-definition">An auto-generated, read-only statement from the portal showing every invoice uploaded by your suppliers. If a purchase bill isn't in GSTR-2B, you cannot claim its ITC.</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-word">Rule 38 (Banking ITC)</div>
+                    <div class="vocab-definition">A tax restriction stating that banks can only claim 50% of monthly input credits because their interest income is exempt from GST. The other 50% is lost forever and must be expensed.</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Scripting Logic -->
+    <script>
+        // Tab switching
+        function switchAuditTab(evt, tabId) {
+            const panels = document.querySelectorAll('.tab-panel');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            panels.forEach(panel => panel.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Toggle inputs on simulator transaction change
+        function toggleInputs() {
+            const txType = document.getElementById('sim-tx').value;
+            const groupTaxable = document.getElementById('group-taxable');
+            const groupRate = document.getElementById('group-rate');
+            const groupSetoff = document.getElementById('group-setoff');
+
+            if (txType === 'monthly-setoff') {
+                groupTaxable.style.display = 'none';
+                groupRate.style.display = 'none';
+                groupSetoff.style.display = 'block';
+            } else {
+                groupTaxable.style.display = 'block';
+                groupRate.style.display = 'block';
+                groupSetoff.style.display = 'none';
+                
+                // Adjust label
+                const label = document.getElementById('label-amount');
+                if (txType === 'rent-rcm') {
+                    label.innerText = 'Rent Amount (Monthly)';
+                } else {
+                    label.innerText = 'Taxable Invoice Value';
+                }
+            }
+        }
+
+        // Simulator runner
+        function runSimulation() {
+            const entity = document.getElementById('sim-entity').value;
+            const tx = document.getElementById('sim-tx').value;
+            
+            // UI elements
+            const jvRows = document.getElementById('jv-rows');
+            const jvTotalDr = document.getElementById('jv-total-dr');
+            const jvTotalCr = document.getElementById('jv-total-cr');
+            const jvNarration = document.getElementById('jv-narration');
+            const explainer = document.getElementById('sim-explainer');
+            const outTitle = document.getElementById('out-title');
+            const outBadge = document.getElementById('out-badge');
+            const ledgerBox = document.getElementById('ledger-box');
+
+            // Format entity display
+            if (entity === 'bank') {
+                outBadge.innerText = 'HO BANK | GSTIN 32AABAV5891L1Z1';
+                outBadge.className = 'badge badge-purple';
+            } else if (entity === 'neethi') {
+                outBadge.innerText = 'NEETHI PHARMACY | GSTIN 32AABAV5891L2Z0';
+                outBadge.className = 'badge badge-emerald';
+            } else {
+                outBadge.innerText = 'FERTILIZER DEPOT | GSTIN 32AABAV5891L3ZZ';
+                outBadge.className = 'badge badge-emerald';
+            }
+
+            // Calculations
+            let htmlRows = '';
+            let drTotal = 0;
+            let crTotal = 0;
+            let narration = '';
+            let explainerText = '';
+            let ledgers = {};
+
+            if (tx === 'purchase') {
+                const baseVal = parseFloat(document.getElementById('sim-amount').value) || 0;
+                const rate = parseFloat(document.getElementById('sim-rate').value) || 0;
+                const totalGst = (baseVal * rate) / 100;
+                const cgst = totalGst / 2;
+                const sgst = totalGst / 2;
+                const totalBill = baseVal + totalGst;
+
+                outTitle.innerText = 'Purchase Supplier Invoice Booking';
+
+                if (entity === 'bank') {
+                    // Bank Rule: 50% Eligible ITC, 50% Expensed
+                    const eligibleCgst = cgst * 0.5;
+                    const eligibleSgst = sgst * 0.5;
+                    const ineligibleCgst = cgst * 0.5;
+                    const ineligibleSgst = sgst * 0.5;
+                    const finalCost = baseVal + ineligibleCgst + ineligibleSgst;
+
+                    explainerText = '<strong>Bank 50% Rule applied.</strong> The gross GST is ₹' + totalGst.toFixed(2) + '. You can only debit 50% (₹' + (eligibleCgst + eligibleSgst).toFixed(2) + ') to the <code>SA GST Input</code> ledger. The remaining 50% is added directly as part of the asset/purchase expense cost (₹' + finalCost.toFixed(2) + ').';
+
+                    htmlRows = `
+                        <tr class="debit-row">
+                            <td>Purchase Expense A/c (Asset/Item Cost + Ineligible Tax)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${finalCost.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (Eligible CGST 50%)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${eligibleCgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (Eligible SGST 50%)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${eligibleSgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="credit-row">
+                            <td>To Supplier Creditor / Bank A/c</td>
+                            <td>Cr</td>
+                            <td class="amount-col">0.00</td>
+                            <td class="amount-col">${totalBill.toFixed(2)}</td>
+                        </tr>
+                    `;
+                    drTotal = finalCost + eligibleCgst + eligibleSgst;
+                    crTotal = totalBill;
+                    narration = `Being purchase recorded under Bank GSTIN with 50% ITC claimed and 50% added to purchase cost under Rule 38.`;
+
+                    ledgers = {
+                        "Purchase / Cost": { dr: finalCost, cr: 0 },
+                        "SA GST Input (Eligible)": { dr: eligibleCgst + eligibleSgst, cr: 0 },
+                        "Bank / Supplier": { dr: 0, cr: totalBill }
+                    };
+
+                } else {
+                    // Neethi & Fertilizer: 100% ITC Claim
+                    explainerText = '<strong>100% ITC claimed.</strong> Retail outlets are fully entitled to offset outward supply liabilities with inward credits. The entire GST of ₹' + totalGst.toFixed(2) + ' is recorded as a debit under <code>SA GST Input</code>.';
+
+                    htmlRows = `
+                        <tr class="debit-row">
+                            <td>Purchase A/c (Taxable Base Value)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${baseVal.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (CGST)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${cgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (SGST)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${sgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="credit-row">
+                            <td>To Supplier Creditor / Bank A/c</td>
+                            <td>Cr</td>
+                            <td class="amount-col">0.00</td>
+                            <td class="amount-col">${totalBill.toFixed(2)}</td>
+                        </tr>
+                    `;
+                    drTotal = baseVal + cgst + sgst;
+                    crTotal = totalBill;
+                    narration = `Being purchase recorded with 100% Input Tax Credit.`;
+
+                    ledgers = {
+                        "Purchase / Cost": { dr: baseVal, cr: 0 },
+                        "SA GST Input": { dr: totalGst, cr: 0 },
+                        "Bank / Supplier": { dr: 0, cr: totalBill }
+                    };
+                }
+
+            } else if (tx === 'rent-rcm') {
+                const rentVal = parseFloat(document.getElementById('sim-amount').value) || 0;
+                const rate = parseFloat(document.getElementById('sim-rate').value) || 0;
+                const totalGst = (rentVal * rate) / 100;
+                const cgst = totalGst / 2;
+                const sgst = totalGst / 2;
+                
+                outTitle.innerText = 'Rent with RCM (Accrual & Liability Booking)';
+
+                if (entity === 'bank') {
+                    // Bank RCM Rent: Outward is paid in 100% cash. Inward credit is restricted to 50%.
+                    const eligibleCgst = cgst * 0.5;
+                    const eligibleSgst = sgst * 0.5;
+                    const ineligibleTax = cgst * 0.5 + sgst * 0.5;
+                    const finalRentExpense = rentVal + ineligibleTax;
+
+                    explainerText = '<strong>RCM Rent + Bank 50% Rule combined.</strong> You pay rent to an unregistered landlord. You must book a 100% liability (₹' + totalGst.toFixed(2) + ') to the government via <code>SL GST Output</code>. However, because you are a bank, you only get back 50% (₹' + (eligibleCgst + eligibleSgst).toFixed(2) + ') in <code>SA GST Input</code>. The remaining 50% is added directly to Rent Expense.';
+
+                    htmlRows = `
+                        <tr class="debit-row">
+                            <td>Rent Expense A/c (Ineligible 50% Tax added to Cost)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${ineligibleTax.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (Eligible RCM CGST 50%)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${eligibleCgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (Eligible RCM SGST 50%)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${eligibleSgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="credit-row">
+                            <td>To SL GST Output Tax (RCM CGST - 100%)</td>
+                            <td>Cr</td>
+                            <td class="amount-col">0.00</td>
+                            <td class="amount-col">${cgst.toFixed(2)}</td>
+                        </tr>
+                        <tr class="credit-row">
+                            <td>To SL GST Output Tax (RCM SGST - 100%)</td>
+                            <td>Cr</td>
+                            <td class="amount-col">0.00</td>
+                            <td class="amount-col">${sgst.toFixed(2)}</td>
+                        </tr>
+                    `;
+                    drTotal = eligibleCgst + eligibleSgst + ineligibleTax;
+                    crTotal = cgst + sgst;
+                    narration = `Being RCM tax liability and eligible input tax booked on Rent of ₹${rentVal.toFixed(2)}. Net cash of ₹${totalGst.toFixed(2)} must be paid in challan next month.`;
+
+                    ledgers = {
+                        "Rent Expense": { dr: ineligibleTax, cr: 0 },
+                        "SA GST Input (RCM)": { dr: eligibleCgst + eligibleSgst, cr: 0 },
+                        "SL GST Output (RCM)": { dr: 0, cr: totalGst }
+                    };
+
+                } else {
+                    // Neethi & Fertilizer: 100% claimable RCM
+                    explainerText = '<strong>RCM Rent with 100% ITC.</strong> Debit full CGST and SGST (₹' + totalGst.toFixed(2) + ' total) to <code>SA GST Input</code>, and credit it in full to <code>SL GST Output</code>. This creates a net zero balance sheet asset/liability, but you MUST still pay the output portion in cash via the next return filing.';
+
+                    htmlRows = `
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (RCM CGST - 100%)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${cgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="debit-row">
+                            <td>SA GST Input Tax (RCM SGST - 100%)</td>
+                            <td>Dr</td>
+                            <td class="amount-col">${sgst.toFixed(2)}</td>
+                            <td class="amount-col">0.00</td>
+                        </tr>
+                        <tr class="credit-row">
+                            <td>To SL GST Output Tax (RCM CGST - 100%)</td>
+                            <td>Cr</td>
+                            <td class="amount-col">0.00</td>
+                            <td class="amount-col">${cgst.toFixed(2)}</td>
+                        </tr>
+                        <tr class="credit-row">
+                            <td>To SL GST Output Tax (RCM SGST - 100%)</td>
+                            <td>Cr</td>
+                            <td class="amount-col">0.00</td>
+                            <td class="amount-col">${sgst.toFixed(2)}</td>
+                        </tr>
+                    `;
+                    drTotal = totalGst;
+                    crTotal = totalGst;
+                    narration = `Being RCM tax liability and input credit booked on Rent of ₹${rentVal.toFixed(2)}.`;
+
+                    ledgers = {
+                        "SA GST Input": { dr: totalGst, cr: 0 },
+                        "SL GST Output": { dr: 0, cr: totalGst }
+                    };
+                }
+
+            } else if (tx === 'monthly-setoff') {
+                const outCgst = parseFloat(document.getElementById('setoff-out-cgst').value) || 0;
+                const outSgst = parseFloat(document.getElementById('setoff-out-sgst').value) || 0;
+                const inCgst = parseFloat(document.getElementById('setoff-in-cgst').value) || 0;
+                const inSgst = parseFloat(document.getElementById('setoff-in-sgst').value) || 0;
+
+                // Adjust output against input
+                const utilCgst = Math.min(outCgst, inCgst);
+                const utilSgst = Math.min(outSgst, inSgst);
+                
+                const cashCgst = Math.max(0, outCgst - inCgst);
+                const cashSgst = Math.max(0, outSgst - inSgst);
+                const totalCash = cashCgst + cashSgst;
+
+                outTitle.innerText = 'GSTR-3B Return Filing Set-off Voucher';
+                explainerText = '<strong>The missing linking step.</strong> This entry closes the output liability heads for the month. We debit <code>SL GST Output</code> for the full amount filed. We credit <code>SA GST Input</code> for the credit used, and credit <code>GST Paid to Govt</code> (or Bank directly) for the remaining cash paid via the GSTR-3B challan. This ensures the output ledger drops to zero.';
+
+                htmlRows = `
+                    <tr class="debit-row">
+                        <td>SL GST Output Tax (CGST) - Zeroing Liability</td>
+                        <td>Dr</td>
+                        <td class="amount-col">${outCgst.toFixed(2)}</td>
+                        <td class="amount-col">0.00</td>
+                    </tr>
+                    <tr class="debit-row">
+                        <td>SL GST Output Tax (SGST) - Zeroing Liability</td>
+                        <td>Dr</td>
+                        <td class="amount-col">${outSgst.toFixed(2)}</td>
+                        <td class="amount-col">0.00</td>
+                    </tr>
+                    <tr class="credit-row">
+                        <td>To SA GST Input Tax (CGST utilized)</td>
+                        <td>Cr</td>
+                        <td class="amount-col">0.00</td>
+                        <td class="amount-col">${utilCgst.toFixed(2)}</td>
+                    </tr>
+                    <tr class="credit-row">
+                        <td>To SA GST Input Tax (SGST utilized)</td>
+                        <td>Cr</td>
+                        <td class="amount-col">0.00</td>
+                        <td class="amount-col">${utilSgst.toFixed(2)}</td>
+                    </tr>
+                `;
+
+                if (totalCash > 0) {
+                    htmlRows += `
+                        <tr class="credit-row">
+                            <td>To GST Paid to Govt (Cash Paid via Challan)</td>
+                            <td>Cr</td>
+                            <td class="amount-col">0.00</td>
+                            <td class="amount-col">${totalCash.toFixed(2)}</td>
+                        </tr>
+                    `;
+                }
+
+                drTotal = outCgst + outSgst;
+                crTotal = utilCgst + utilSgst + totalCash;
+                narration = `Being GSTR-3B set-off posted for the month. CGST ITC utilized: ₹${utilCgst.toFixed(2)}, SGST ITC utilized: ₹${utilSgst.toFixed(2)}. Cash challan paid: ₹${totalCash.toFixed(2)}.`;
+
+                ledgers = {
+                    "SL GST Output": { dr: outCgst + outSgst, cr: 0 },
+                    "SA GST Input": { dr: 0, cr: utilCgst + utilSgst },
+                    "GST Paid to Govt": { dr: 0, cr: totalCash }
+                };
+            }
+
+            // Populate JV
+            jvRows.innerHTML = htmlRows;
+            jvTotalDr.innerText = drTotal.toFixed(2);
+            jvTotalCr.innerText = crTotal.toFixed(2);
+            jvNarration.innerText = "Narration: " + narration;
+            explainer.innerHTML = explainerText;
+
+            // Balance check UI
+            const balStatus = document.getElementById('out-balance-status');
+            if (Math.abs(drTotal - crTotal) < 0.01) {
+                balStatus.innerText = 'DR = CR Balanced';
+                balStatus.style.color = 'var(--semantic-success)';
+            } else {
+                balStatus.innerText = 'UNBALANCED';
+                balStatus.style.color = 'var(--semantic-danger)';
+            }
+
+            // Draw visual T-Accounts
+            ledgerBox.innerHTML = '';
+            for (let name in ledgers) {
+                const entry = ledgers[name];
+                
+                const tAccountDiv = document.createElement('div');
+                tAccountDiv.className = 't-account';
+                
+                let drHtml = '';
+                let crHtml = '';
+                
+                if (entry.dr > 0) {
+                    drHtml = `<div class="t-entry plus"><span>+</span><span>₹${entry.dr.toFixed(0)}</span></div>`;
+                }
+                if (entry.cr > 0) {
+                    crHtml = `<div class="t-entry minus"><span>-</span><span>₹${entry.cr.toFixed(0)}</span></div>`;
+                }
+
+                tAccountDiv.innerHTML = `
+                    <div class="t-account-title">${name}</div>
+                    <div class="t-account-grid">
+                        <div class="t-account-side dr">
+                            <span style="font-size: 0.6rem; color: var(--text-muted); display:block; margin-bottom:4px;">DR (Debit)</span>
+                            ${drHtml}
+                        </div>
+                        <div class="t-account-side cr">
+                            <span style="font-size: 0.6rem; color: var(--text-muted); display:block; margin-bottom:4px;">CR (Credit)</span>
+                            ${crHtml}
+                        </div>
+                    </div>
+                `;
+                ledgerBox.appendChild(tAccountDiv);
+            }
+        }
+
+        // Initialize simulator values
+        window.onload = function() {
+            runSimulation();
+        }
+    </script>
+</body>
+</html>

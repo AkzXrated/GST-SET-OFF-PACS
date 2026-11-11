@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GST Accounting Guide — Final | Vadakkumbad Co-op Bank | DITS PacScore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060E1A;--surf:#0D1B2E;--card:#132238;--card2:#172840;
+  --bdr:rgba(255,255,255,0.07);--bdr2:rgba(255,255,255,0.12);
+  --tx:#E8F0FE;--muted:#6B89B0;--dim:#3D5A80;
+  --saf:#F59E0B;--saf2:#FCD34D;
+  --bank:#60A5FA;--neethi:#34D399;--depot:#FB923C;
+  --red:#F87171;--green:#4ADE80;--purple:#A78BFA;--sky:#38BDF8;
+  --dr-bg:rgba(248,113,113,0.1);--dr-border:#F87171;--dr-text:#FCA5A5;
+  --cr-bg:rgba(52,211,153,0.08);--cr-border:#34D399;--cr-text:#6EE7B7;
+  --cur-border:rgba(245,158,11,0.25);--fut-border:rgba(74,222,128,0.25);
+  --mono:'JetBrains Mono','Consolas','Courier New',monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+/* highlighted circled numbers <b class="cn1">①</b> <b class="cn2">②</b> */
+.cn1,.cn2{font-style:normal;font-weight:900;font-size:1.3em;line-height:1;vertical-align:-1px;padding:0 1px}
+.cn1{color:var(--green);text-shadow:0 0 10px rgba(74,222,128,.55)}
+.cn2{color:var(--saf);text-shadow:0 0 10px rgba(245,158,11,.55)}
+/* flow diagrams (beginner maps) */
+.flow{display:flex;align-items:stretch;flex-wrap:wrap;row-gap:12px}
+.fbox{background:var(--card2);border:1px solid var(--bdr2);border-radius:10px;padding:9px 11px;flex:1;min-width:118px}
+.fb-who{font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;margin-bottom:2px}
+.fb-t{font-size:12px;font-weight:700;line-height:1.35}
+.fb-d{font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.45}
+.farr{display:flex;align-items:center;padding:0 7px;color:var(--dim);font-size:15px;font-weight:800;flex-shrink:0}
+.marr{text-align:center;color:var(--dim);font-size:17px;font-weight:800;padding:6px 0}
+.who-you{color:var(--green)}.who-ca{color:var(--saf)}.who-portal{color:var(--sky)}
+.crumb{font-family:var(--mono);font-size:11.5px;background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:7px;padding:8px 11px;color:var(--saf2);margin:8px 0;line-height:1.6}
+.crumb b{color:var(--tx)}
+html{scroll-behavior:smooth;font-size:15px}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);min-height:100vh;line-height:1.65}
+.shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.sidebar{background:var(--surf);border-right:1px solid var(--bdr);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:100}
+.main{overflow:hidden}
+.sb-logo{padding:18px 16px 12px;border-bottom:1px solid var(--bdr)}
+.sb-logo h1{font-size:13px;font-weight:800;color:var(--saf);letter-spacing:.5px}
+.sb-logo p{font-size:11px;color:var(--muted);margin-top:2px}
+.nb-sec{padding:10px 12px 0;flex:1}
+.nb-sec p{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin:14px 0 5px 3px;font-weight:700}
+.nb-sec p:first-child{margin-top:4px}
+.nb{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);background:none;border:none;width:100%;text-align:left;transition:.15s;margin-bottom:1px}
+.nb:hover{background:rgba(255,255,255,.04);color:var(--tx)}
+.nb.active{background:rgba(245,158,11,.1);color:var(--saf)}
+.nb .ic{width:18px;text-align:center;font-size:13px}
+.nbadge{margin-left:auto;font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:var(--green);color:#000}
+.topbar{background:rgba(6,14,26,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:14px 26px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between}
+.topbar h2{font-size:18px;font-weight:700}
+.topbar .sub{font-size:11px;color:var(--muted);margin-top:2px}
+.page{display:none;padding:22px 26px;max-width:1150px}
+.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:18px}
+.card2{background:var(--card2);border:1px solid var(--bdr2);border-radius:11px;padding:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+.gap{margin-bottom:20px}
+.sh{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sh::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.alert{border-radius:10px;padding:12px 15px;display:flex;gap:11px;font-size:13px;margin-bottom:14px;align-items:flex-start}
+.alert .ai{font-size:17px;flex-shrink:0;margin-top:1px}
+.a-warn{background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.22);color:#FDE68A}
+.a-err{background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.22);color:#FCA5A5}
+.a-ok{background:rgba(74,222,128,.09);border:1px solid rgba(74,222,128,.22);color:#86EFAC}
+.a-info{background:rgba(56,189,248,.09);border:1px solid rgba(56,189,248,.22);color:#BAE6FD}
+.a-purple{background:rgba(167,139,250,.09);border:1px solid rgba(167,139,250,.22);color:#DDD6FE}
+.alert strong{display:block;margin-bottom:2px;font-size:13px}
+table.jt{width:100%;border-collapse:collapse}
+table.jt th{padding:8px 12px;background:rgba(0,0,0,.3);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);text-align:left}
+table.jt th.amt-h{text-align:right;min-width:85px}
+table.jt tr.dr-row{background:var(--dr-bg);border-left:3px solid var(--dr-border)}
+table.jt tr.cr-row{background:var(--cr-bg);border-left:3px solid var(--cr-border)}
+table.jt tr.total-row{background:rgba(0,0,0,.25);border-top:1px solid var(--bdr2)}
+table.jt td{padding:8px 12px;font-size:12px;vertical-align:middle}
+table.jt td.ac-name{font-weight:600}
+table.jt tr.dr-row td.ac-name{color:var(--dr-text)}
+table.jt tr.cr-row td.ac-name{color:var(--cr-text);padding-left:26px}
+table.jt td.code-td span{font-family:var(--mono);font-size:10px;color:var(--saf2);background:rgba(245,158,11,.08);padding:2px 6px;border-radius:4px;white-space:nowrap}
+table.jt td.amt{font-family:var(--mono);font-size:13px;font-weight:700;text-align:right;white-space:nowrap}
+table.jt tr.dr-row td.amt{color:var(--dr-text)}
+table.jt tr.cr-row td.amt{color:var(--cr-text)}
+table.jt tr.total-row td{font-weight:700;color:var(--tx);font-size:12px}
+table.jt tr.total-row td.amt{color:var(--green)}
+table.jt td.empty-amt{color:var(--dim);text-align:right;font-size:11px}
+table.jt td.note-td{font-size:11px;color:var(--muted)}
+.dr-badge{background:rgba(248,113,113,.22);color:#FCA5A5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700;margin-right:5px;font-family:var(--mono)}
+.cr-badge{background:rgba(52,211,153,.2);color:#6EE7B7;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700;margin-right:5px;font-family:var(--mono)}
+.sn-box{margin-top:8px;padding:8px 12px;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:7px;font-size:11.5px;color:var(--tx);position:relative;cursor:pointer;transition:all .2s ease}
+.sn-box:hover{border-color:var(--saf);background:rgba(245,158,11,0.1);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.sn-box .sn-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--green);margin-bottom:3px}
+.sn-box code{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--saf2);background:rgba(0,0,0,0.3);padding:2px 7px;border-radius:4px;display:inline-block}
+.sn-box::after{content:'📋 Copy';position:absolute;right:10px;top:8px;font-size:10px;font-weight:700;color:var(--muted);opacity:0.7;transition:opacity .2s}
+.sn-box:hover::after{opacity:1;color:var(--saf)}
+.page.active{display:block;animation:fadeIn .25s cubic-bezier(0.16, 1, 0.3, 1)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.card,.card2,.jv-card,.hcard{transition:all .2s ease}
+.card:hover,.card2:hover,.hcard:hover{border-color:rgba(255,255,255,0.18)}
+.sb-search-box{padding:10px 12px 6px;border-bottom:1px solid var(--bdr)}
+.sb-search-box input{width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--bdr2);border-radius:6px;padding:6px 10px;color:var(--tx);font-size:11.5px;outline:none;transition:all .15s}
+.sb-search-box input:focus{border-color:var(--saf);box-shadow:0 0 0 2px rgba(245,158,11,0.2)}
+.toast{position:fixed;bottom:24px;right:24px;background:#10B981;color:#000;font-weight:800;font-size:12.5px;padding:9px 18px;border-radius:30px;box-shadow:0 10px 30px rgba(16,185,129,0.4);z-index:9999;display:none;align-items:center;gap:8px;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(15px);opacity:0}to{transform:translateY(0);opacity:1}}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:9000;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.active{display:flex}
+.modal-card{background:var(--surf);border:1px solid var(--bdr2);border-radius:16px;width:100%;max-width:520px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,0.6);animation:modalIn .25s ease}
+@keyframes modalIn{from{transform:scale(0.95);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid var(--bdr);padding-bottom:12px}
+.modal-head h3{font-size:16px;font-weight:700;color:var(--saf)}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer}
+.modal-close:hover{color:var(--tx)}
+.jv-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.jv-head{padding:13px 17px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid var(--bdr)}
+.jv-head h4{font-size:14px;font-weight:700;margin-bottom:2px}
+.jv-head p{font-size:12px;color:var(--muted)}
+.jv-body{padding:14px 17px}
+.etag2{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap}
+.je-bank{background:rgba(96,165,250,.1);color:var(--bank);border:1px solid rgba(96,165,250,.2)}
+.je-neethi{background:rgba(52,211,153,.1);color:var(--neethi);border:1px solid rgba(52,211,153,.2)}
+.je-depot{background:rgba(251,146,60,.1);color:var(--depot);border:1px solid rgba(251,146,60,.2)}
+.je-all{background:rgba(245,158,11,.1);color:var(--saf);border:1px solid rgba(245,158,11,.2)}
+.dt{width:100%;border-collapse:collapse;font-size:13px}
+.dt th{background:rgba(255,255,255,.05);padding:9px 13px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.dt td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.04)}
+.dt tr:hover td{background:rgba(255,255,255,.02)}
+.ok{color:var(--green)}.err{color:var(--red)}.warn{color:var(--saf)}.inf{color:var(--bank)}
+.mono{font-family:var(--mono);font-size:12px}
+.tabs{display:flex;gap:4px;background:rgba(255,255,255,.04);padding:4px;border-radius:9px;width:fit-content;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:6px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);border:none;background:none;transition:.15s}
+.tab:hover{color:var(--tx)}
+.tab.active{background:var(--card2);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.tc{display:none}.tc.active{display:block}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px}
+.kpi{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:13px 16px}
+.kpi-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:700}
+.kpi-v{font-size:19px;font-weight:800;font-family:var(--mono);margin:4px 0;line-height:1}
+.kpi-s{font-size:11px;color:var(--muted)}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.b-red{background:rgba(248,113,113,.12);color:var(--red)}
+.b-green{background:rgba(74,222,128,.12);color:var(--green)}
+.b-yellow{background:rgba(245,158,11,.12);color:var(--saf)}
+.b-purple{background:rgba(167,139,250,.12);color:var(--purple)}
+.b-blue{background:rgba(96,165,250,.12);color:var(--bank)}
+.tl{padding-left:28px;position:relative}
+.tl::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:var(--bdr2)}
+.tl-item{position:relative;margin-bottom:16px}
+.tl-dot{position:absolute;left:-24px;top:3px;width:13px;height:13px;border-radius:50%;border:2px solid var(--bg)}
+.tl-dot.g{background:var(--green)}.tl-dot.y{background:var(--saf)}.tl-dot.r{background:var(--red)}.tl-dot.b{background:var(--bank)}
+.tl-when{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.tl-title{font-size:13px;font-weight:700}
+.tl-body{font-size:12px;color:var(--muted);margin-top:3px}
+.hcard{background:var(--card2);border:1px solid var(--bdr2);border-radius:10px;padding:12px;margin-bottom:8px}
+.hcard .hcode{font-family:var(--mono);font-size:12px;color:var(--saf2);font-weight:700}
+.hcard .hname{font-size:13px;font-weight:700;margin:3px 0 2px}
+.hcard .hdesc{font-size:11px;color:var(--muted)}
+.hcard.new{border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.05)}
+.hcard.new .hcode::after{content:' • NEW HEAD';color:var(--green);font-weight:800;font-size:10px}
+.cf-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.cf-col{border-radius:14px;overflow:hidden;border:1px solid var(--bdr2)}
+.cf-col.cur{border-color:var(--cur-border)}
+.cf-col.fut{border-color:var(--fut-border)}
+.cf-head{padding:10px 15px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px}
+.cf-head.cur{background:rgba(245,158,11,.12);color:var(--saf)}
+.cf-head.fut{background:rgba(74,222,128,.12);color:var(--green)}
+.cf-body{background:var(--card);padding:13px}
+/* Portal replica — Authentic GST Portal Tile Styling */
+.portal-tile{background:#FFFFFF;border-radius:6px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.3);max-width:380px;font-family:var(--sans);color:#1A202C;border:1px solid #CBD5E1;margin-bottom:12px}
+.portal-tile .pt-head{background:#203864;color:#FFFFFF;padding:10px 16px;font-weight:700;font-size:13.5px;letter-spacing:.2px;display:flex;align-items:center;justify-content:space-between}
+.portal-tile .pt-body{padding:14px 16px;background:#F8FAFC}
+.portal-tile .pt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-bottom:10px}
+.portal-tile .pt-item{display:flex;flex-direction:column;padding:8px 10px;border-radius:5px;background:#FFFFFF;border:1px solid #E2E8F0}
+.portal-tile .pt-label{font-size:11px;color:#475569;font-weight:600;margin-bottom:3px}
+.portal-tile .pt-val{font-size:13px;font-weight:700;font-family:var(--mono);color:#0F172A}
+.portal-tile .pt-item.hl-credit-item{background:rgba(29,78,216,0.06);border:1.5px solid #2563EB;border-left:4px solid #1D4ED8}
+.portal-tile .pt-item.hl-credit-item .pt-label{color:#1E3A8A;font-weight:700}
+.portal-tile .pt-item.hl-credit-item .pt-val{color:#1D4ED8;font-weight:800}
+.portal-tile .pt-item.hl-cash-item{background:rgba(217,119,6,0.06);border:1.5px solid #D97706;border-left:4px solid #D97706}
+.portal-tile .pt-item.hl-cash-item .pt-label{color:#9A3412;font-weight:700}
+.portal-tile .pt-item.hl-cash-item .pt-val{color:#D97706;font-weight:800}
+.portal{background:#F4F6F9;border-radius:10px;padding:16px;color:#1a2733;font-family:var(--sans)}
+/* PDF replica */
+.pdfrep{background:#FFFFFF;border-radius:10px;padding:16px;color:#111;font-size:12px}
+.pdfrep .pdf-title{font-size:13px;font-weight:700;border-bottom:2px solid #333;padding-bottom:6px;margin-bottom:8px;color:#111}
+.pdfrep table{width:100%;border-collapse:collapse;font-size:11px}
+.pdfrep th{border:1px solid #999;padding:5px 7px;background:#ECEFF3;color:#222;font-size:10px;text-align:center}
+.pdfrep th.th-itc-h,.pdfrep th.th-itc-sub{background:#1E3A8A!important;color:#FFFFFF!important;border-color:#2563EB!important;font-weight:800}
+.pdfrep th.th-cash-h{background:#9A3412!important;color:#FFFFFF!important;border-color:#D97706!important;font-weight:800}
+.pdfrep td{border:1px solid #bbb;padding:5px 7px;color:#222;text-align:right;font-family:var(--mono);font-size:11px}
+.pdfrep td.rowlabel{text-align:left;font-family:var(--sans);font-weight:600}
+.pdfrep tr.hl-a td{background:rgba(37,99,235,.08)}
+.pdfrep tr.hl-b td{background:#f5f5f5;color:#999}
+.pdfrep td.cell-itc{background:#1D4ED8!important;color:#FFFFFF!important;font-weight:800;font-size:12px;border:2px solid #2563EB!important;box-shadow:inset 0 0 6px rgba(0,0,0,0.3)}
+.pdfrep td.cell-itc b{color:#FFFFFF!important;text-shadow:0 1px 2px rgba(0,0,0,0.5)}
+.pdfrep td.cell-cash{background:#D97706!important;color:#FFFFFF!important;font-weight:800;font-size:12px;border:2px solid #F59E0B!important;box-shadow:inset 0 0 6px rgba(0,0,0,0.3)}
+.pdfrep td.cell-cash b{color:#FFFFFF!important;text-shadow:0 1px 2px rgba(0,0,0,0.5)}
+.map-arrow{display:flex;align-items:center;gap:9px;background:var(--card2);border:1px solid var(--bdr2);border-radius:9px;padding:10px 13px;margin-top:9px;font-size:12px}
+.map-arrow .num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.n1{background:#1D4ED8;color:#FFFFFF;box-shadow:0 0 10px rgba(29,78,216,0.6)}
+.n2{background:#D97706;color:#FFFFFF;box-shadow:0 0 10px rgba(217,119,6,0.6)}
+/* Checklist */
+.chk{display:flex;gap:11px;align-items:flex-start;padding:10px 13px;background:var(--card2);border:1px solid var(--bdr2);border-radius:9px;margin-bottom:7px;cursor:pointer;transition:.15s}
+.chk:hover{border-color:var(--saf)}
+.chk input{margin-top:3px;accent-color:var(--saf);width:15px;height:15px;flex-shrink:0}
+.chk .chk-t{font-size:13px;font-weight:600}
+.chk .chk-d{font-size:11px;color:var(--muted);margin-top:1px}
+.chk.done{opacity:.45}
+.chk.done .chk-t{text-decoration:line-through}
+.chk-sec{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin:16px 0 8px;color:var(--saf)}
+.chk-sec:first-child{margin-top:0}
+/* FAQ */
+.faq{border:1px solid var(--bdr2);border-radius:10px;margin-bottom:9px;overflow:hidden}
+.faq-q{padding:12px 15px;font-size:13px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--card2);transition:.15s}
+.faq-q:hover{background:rgba(255,255,255,.05)}
+.faq-q .chev{transition:.2s;color:var(--muted)}
+.faq.open .faq-q .chev{transform:rotate(180deg)}
+.faq-a{display:none;padding:13px 15px;font-size:13px;color:var(--muted);border-top:1px solid var(--bdr);background:var(--card)}
+.faq.open .faq-a{display:block}
+.faq-a strong{color:var(--tx)}
+.faq-a code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.07);padding:1px 6px;border-radius:4px;color:var(--saf2)}
+/* Calc fields */
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:700;margin-bottom:5px}
+.field input,.field select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--bdr2);border-radius:7px;padding:9px 13px;color:var(--tx);font-family:var(--mono);font-size:14px;font-weight:600;outline:none;transition:.2s}
+.field input:focus{border-color:var(--saf)}
+.field select{font-family:var(--sans)}
+.field select option{background:var(--surf)}
+@media print{
+  body{background:#fff;color:#000}
+  .sidebar,.topbar{display:none}
+  .shell{display:block}
+  .page{display:none!important;padding:10mm}
+  .page.active{display:block!important}
+}
+@media(max-width:768px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .page{padding:14px}
+  .kpis,.grid2,.grid3,.cf-split{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-logo">
+    <h1>GST Accounting Guide — Final</h1>
+    <p>Vadakkumbad Service Co-op Bank · DITS PacScore</p>
+  </div>
+  <div class="sb-search-box">
+    <input type="text" id="sb-search" placeholder="🔍 Search menu (e.g. Set-off, RCM)..." onkeyup="filterMenu(this.value)">
+  </div>
+  <div style="padding:8px 12px 0">
+    <a href="Software/index.html" target="_blank" class="nb" style="background:rgba(74,222,128,0.12);color:var(--green);font-weight:700;border:1px solid rgba(74,222,128,0.25);text-decoration:none">
+      <span class="ic">💻</span>Open Software Suite <span class="nbadge" style="background:var(--green);color:#000;margin-left:auto">TOOL ↗</span>
+    </a>
+  </div>
+  <div class="nb-sec">
+    <p>Start Here</p>
+    <button class="nb active" onclick="nav('home',this)"><span class="ic">🏠</span>Overview &amp; Golden Rules</button>
+    <button class="nb" onclick="nav('basics',this)"><span class="ic">🧩</span>GST in Plain Words <span class="nbadge">NEW</span></button>
+    <button class="nb" onclick="nav('heads',this)"><span class="ic">📂</span>Account Heads</button>
+    <p>Daily Posting</p>
+    <button class="nb" onclick="nav('purchase',this)"><span class="ic">🛒</span>Purchase Bills</button>
+    <button class="nb" onclick="nav('sales',this)"><span class="ic">💰</span>Sales / Output</button>
+    <button class="nb" onclick="nav('rcm',this)"><span class="ic">🏠</span>Rent + RCM</button>
+    <p>Month End</p>
+    <button class="nb" onclick="nav('fetch',this)"><span class="ic">🔍</span>Getting the Numbers <span class="nbadge">KEY</span></button>
+    <button class="nb" onclick="nav('setoff',this)"><span class="ic">⚖️</span>Set-off Entries</button>
+    <button class="nb" onclick="nav('setoffcalc',this)"><span class="ic">⚡</span>Set-Off Generator <span class="nbadge">NEW</span></button>
+    <button class="nb" onclick="nav('examples',this)"><span class="ic">📋</span>Worked Examples</button>
+    <p>Reference</p>
+    <button class="nb" onclick="nav('checklist',this)"><span class="ic">✅</span>Monthly Checklist</button>
+    <button class="nb" onclick="nav('mistakes',this)"><span class="ic">⚠️</span>Mistakes &amp; Shortcuts <span class="nbadge">NEW</span></button>
+    <button class="nb" onclick="nav('portal',this)"><span class="ic">🌐</span>Portal for Beginners <span class="nbadge">NEW</span></button>
+    <p>Growing Independence</p>
+    <button class="nb" onclick="nav('audit',this)"><span class="ic">🕵️</span>Audit Your CA <span class="nbadge">NEW</span></button>
+    <button class="nb" onclick="nav('selffile',this)"><span class="ic">🎓</span>Path to Self-Filing <span class="nbadge">NEW</span></button>
+    <button class="nb" onclick="nav('future',this)"><span class="ic">🚀</span>FY 2027-28 Transition</button>
+    <button class="nb" onclick="nav('faq',this)" style="margin-bottom:20px"><span class="ic">❓</span>FAQ &amp; Audit Answers</button>
+  </div>
+</aside>
+<div class="main">
+<div class="topbar">
+  <div><h2 id="pg-title">Overview &amp; Golden Rules</h2><div class="sub">Finalized GST Guide · 3 GSTINs · Combined heads until 31-Mar-2027</div></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <a href="Software/index.html" target="_blank" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.35);color:var(--green);padding:6px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px">💻 Open Software Suite ↗</a>
+    <button onclick="toggleCalcModal()" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:var(--saf2);padding:6px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700">🧮 GST Calc</button>
+    <button onclick="window.print()" style="background:rgba(255,255,255,.06);border:1px solid var(--bdr2);color:var(--muted);padding:6px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600">🖨️ Print Page</button>
+  </div>
+</div>
+
+<!-- ═══ HOME ═══ -->
+<div class="page active" id="pg-home">
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-l">Bank ITC Rule</div><div class="kpi-v" style="color:var(--purple)">50%</div><div class="kpi-s">Applied at entry time — never a reversal later</div></div>
+    <div class="kpi"><div class="kpi-l">Neethi / Depot ITC</div><div class="kpi-v" style="color:var(--green)">100%</div><div class="kpi-s">Full claim, no restriction</div></div>
+    <div class="kpi"><div class="kpi-l">Month-End Entries</div><div class="kpi-v" style="color:var(--saf)">2 max</div><div class="kpi-s">Per entity · Entry 2 only if cash was paid</div></div>
+    <div class="kpi"><div class="kpi-l">Deadline</div><div class="kpi-v" style="color:var(--bank)">25th</div><div class="kpi-s">Pass set-off entries after CA files 3B</div></div>
+  </div>
+
+  <div class="gap"><div class="sh">The 6 Golden Rules — Everything Else Follows From These</div>
+  <div class="grid2">
+    <div class="card2"><div style="font-size:22px;margin-bottom:6px">1️⃣</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">Bank splits GST at entry time</div><div style="font-size:12px;color:var(--muted)">Every Bank purchase: half the GST goes into the purchase/expense head (permanently absorbed), half into SA GST I/P (0200). No month-end reversal exists.</div></div>
+    <div class="card2"><div style="font-size:22px;margin-bottom:6px">2️⃣</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">Neethi &amp; Depot book full GST</div><div style="font-size:12px;color:var(--muted)">100% of invoice GST goes to their SA GST I/P heads. Depot bills must be entered in PacScore same day AND given to CA.</div></div>
+    <div class="card2"><div style="font-size:22px;margin-bottom:6px">3️⃣</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">RCM is always cash, closed mid-month</div><div style="font-size:12px;color:var(--muted)">RCM can never be paid by ITC. Pay challan before 20th, route it immediately (Dr SL O/P / Cr 4445). By month-end, RCM is already fully closed.</div></div>
+    <div class="card2"><div style="font-size:22px;margin-bottom:6px">4️⃣</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">Two set-off entries close the month</div><div style="font-size:12px;color:var(--muted)">Entry 1: Dr SL O/P / Cr SA I/P = ITC used <b class="cn1">①</b>. Entry 2 (only if regular cash paid): Dr SL O/P / Cr 4445 = cash <b class="cn2">②</b>. No third RCM entry — ever.</div></div>
+    <div class="card2"><div style="font-size:22px;margin-bottom:6px">5️⃣</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">Numbers come from GSTR-3B, not ledgers</div><div style="font-size:12px;color:var(--muted)">Read <b class="cn1">①</b> and <b class="cn2">②</b> from the filed GSTR-3B PDF — Table 6.1 Section (A): ITC column = ①, cash column = ②. Skip the website summary screen; electronic ledgers are for verification only.</div></div>
+    <div class="card2"><div style="font-size:22px;margin-bottom:6px">6️⃣</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">After set-off, heads read clean</div><div style="font-size:12px;color:var(--muted)">SL O/P = ₹0 for the month. SA I/P = carry-forward ITC (normal for Depot). 4445 = ₹0. Books mirror the portal exactly.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">Monthly Cycle</div>
+  <div class="card"><div class="tl">
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-when" style="color:var(--green)">1st – 8th · You</div><div class="tl-title">Post all bills &amp; send data to CA</div><div class="tl-body">Purchase bills (same day for Depot), sales, rent. Send sales register + purchase bills + exempt income totals to CA.</div></div>
+    <div class="tl-item"><div class="tl-dot y"></div><div class="tl-when" style="color:var(--saf)">By 11th · CA</div><div class="tl-title">GSTR-1 filed (your sales report)</div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-when" style="color:var(--bank)">14th · Auto</div><div class="tl-title">GSTR-2B generated (your ITC statement)</div></div>
+    <div class="tl-item"><div class="tl-dot r"></div><div class="tl-when" style="color:var(--red)">By 18th · You</div><div class="tl-title">Pay RCM challan + route it in PacScore</div><div class="tl-body">Bank ₹3,114 · Neethi ₹900 · Depot ₹694. Then immediately: Dr SL O/P / Cr 4445, and Dr 4445 / Cr Bank.</div></div>
+    <div class="tl-item"><div class="tl-dot r"></div><div class="tl-when" style="color:var(--red)">By 20th · CA</div><div class="tl-title">GSTR-3B filed — CA sends you the return</div><div class="tl-body">If regular cash was needed, pay that challan too (Dr 4445 / Cr Bank).</div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-when" style="color:var(--green)">By 25th · You ⭐</div><div class="tl-title">Read <b class="cn1">①</b> and <b class="cn2">②</b> from the return → pass set-off entries</div><div class="tl-body">See "Getting the Numbers" section. Entry 1 always (if <b class="cn1">①</b> &gt; 0). Entry 2 only if <b class="cn2">②</b> &gt; 0.</div></div>
+  </div></div></div>
+
+  <div class="gap"><div class="sh">Fixed Monthly RCM Reference</div>
+  <table class="dt"><tr><th>Entity</th><th>GSTIN</th><th>Monthly Rent</th><th>RCM GST @18%</th><th>= CGST + SGST</th><th>Bank's Eligible ITC</th></tr>
+  <tr><td style="color:var(--bank);font-weight:700">Bank</td><td class="mono">32AABAV5891L1Z1</td><td class="mono">₹17,300</td><td class="mono" style="color:var(--red);font-weight:700">₹3,114</td><td class="mono">₹1,557 + ₹1,557</td><td class="mono">₹1,557 (50%)</td></tr>
+  <tr><td style="color:var(--neethi);font-weight:700">Neethi</td><td class="mono">32AABAV5891L2Z0</td><td class="mono">₹5,000</td><td class="mono" style="color:var(--red);font-weight:700">₹900</td><td class="mono">₹450 + ₹450</td><td class="mono">₹900 (100%)</td></tr>
+  <tr><td style="color:var(--depot);font-weight:700">Depot</td><td class="mono">32AABAV5891L3ZZ</td><td class="mono">₹3,850</td><td class="mono" style="color:var(--red);font-weight:700">₹694</td><td class="mono">₹347 + ₹347</td><td class="mono">₹694 (100%)</td></tr></table>
+  <div class="alert a-info" style="margin-top:10px"><span class="ai">💡</span><div>Memorise these three RCM figures — they are each month’s Entry 0 routing amount and your sanity-check against the PDF’s Section (B). When a challan differs (June was ₹3,157), always use the actual receipt amount.</div></div>
+  </div>
+</div>
+
+<!-- ═══ BASICS (GST in Plain Words) ═══ -->
+<div class="page" id="pg-basics">
+  <div class="alert a-ok gap"><span class="ai">😌</span><div><strong>First, breathe: you never file any GST return. Ever.</strong> The CA files everything. Your whole job is four things: 1) enter bills in PacScore, 2) pay 1–2 challans a month, 3) pass 2 journal entries, 4) check 3 balances. Everything on this page just explains the paperwork flying around you so it stops being scary.</div></div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-l">Returns YOU file</div><div class="kpi-v" style="color:var(--green)">0</div><div class="kpi-s">The CA files all of them</div></div>
+    <div class="kpi"><div class="kpi-l">Documents you read</div><div class="kpi-v" style="color:var(--saf)">1</div><div class="kpi-s">GSTR-3B — once a month</div></div>
+    <div class="kpi"><div class="kpi-l">Numbers to memorise</div><div class="kpi-v" style="color:var(--bank)">3</div><div class="kpi-s">₹3,114 · ₹900 · ₹694 (RCM)</div></div>
+    <div class="kpi"><div class="kpi-l">Time needed</div><div class="kpi-v" style="color:var(--purple)">~1 hr</div><div class="kpi-s">per month, all 3 GSTINs</div></div>
+  </div>
+
+  <div class="gap"><div class="sh">The Three Players</div>
+  <div class="grid3">
+    <div class="card2"><div style="font-size:20px;margin-bottom:5px">👤</div><div class="fb-t who-you" style="font-size:13px">YOU — the bookkeeper</div><div class="fb-d" style="font-size:11.5px">You live in PacScore. Enter bills and sales, pay the challans, pass the month-end entries, run the health check. You never touch a government form.</div></div>
+    <div class="card2"><div style="font-size:20px;margin-bottom:5px">🧑‍💼</div><div class="fb-t who-ca" style="font-size:13px">YOUR CA — the filer</div><div class="fb-d" style="font-size:11.5px">Takes the data you send by the 8th and turns it into filed returns (GSTR-1 by the 11th, GSTR-3B by the 20th). Tells you if a cash challan is needed.</div></div>
+    <div class="card2"><div style="font-size:20px;margin-bottom:5px">🏛️</div><div class="fb-t who-portal" style="font-size:13px">GST PORTAL — the referee</div><div class="fb-d" style="font-size:11.5px">The government website (gst.gov.in). Whatever is filed there is the truth — when your books and the portal disagree, the portal wins. Always.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">The Paperwork, Translated to Plain Words</div>
+  <div class="hcard"><div class="hcode">GSTR-1</div><div class="hname">"Here's what we sold this month" — your sales report</div><div class="hdesc"><b>Who makes it:</b> the CA, from the sales register YOU send. <b>Your job:</b> send accurate sales + exempt-income totals by the 8th. You never open this return yourself.</div></div>
+  <div class="hcard"><div class="hcode">GSTR-2B</div><div class="hname">"Here's what suppliers say they sold YOU" — your purchase statement</div><div class="hdesc">Auto-generated by the portal on the 14th from every supplier's GSTR-1. It is the official list of ITC you're allowed to claim. <b>Your job:</b> nothing monthly — open it only when ITC looks short (a missing bill here means the supplier didn't upload it).</div></div>
+  <div class="hcard"><div class="hcode">GSTR-3B ⭐</div><div class="hname">"The monthly bill &amp; how it was paid" — THE one you read</div><div class="hdesc">Filed by the CA by the 20th. Shows total output tax, how much was paid using ITC (that's your <b><b class="cn1">①</b></b>) and how much in cash (gives your <b><b class="cn2">②</b></b>). <b>Your job:</b> open it once a month, read two numbers, pass two entries. This is the only return you ever need to understand.</div></div>
+  <div class="hcard"><div class="hcode">CASH LEDGER</div><div class="hname">Electronic Cash Ledger — your wallet AT the government</div><div class="hdesc">Challan money lands here first, then gets used to pay tax. <b>Your job:</b> nothing — cross-check only if a payment seems lost.</div></div>
+  <div class="hcard"><div class="hcode">CREDIT LEDGER</div><div class="hname">Electronic Credit Ledger — your ITC passbook</div><div class="hdesc">Every month: a credit (ITC earned) and a debit (ITC used). Its closing balance is what your SA GST I/P head must match in the health check. Also the 10-minute year-end verifier: sum all its debit rows = your year's total set-off.</div></div>
+  <div class="hcard"><div class="hcode">CHALLAN</div><div class="hname">A deposit slip for the government wallet</div><div class="hdesc">The only thing you ever "do" on the portal: create it, pay via net-banking, save the PDF. Its receipt number is the CPIN — put it in your narration.</div></div>
+  <div class="alert a-info" style="margin-top:10px"><span class="ai">🏦</span><div><b>One analogy that holds it all together:</b> you hold an account AT the government. The Cash Ledger is that account, a challan is the deposit slip, the Credit Ledger is your rewards-points balance, GSTR-3B is the monthly account statement, and the CA is the branch manager who does the paperwork for you.</div></div>
+  </div>
+
+  <div class="gap"><div class="sh">Map 1 · One Month of GST — who does what, when</div>
+  <div class="card">
+    <div class="flow">
+      <div class="fbox"><div class="fb-who who-you">You · 1st–8th</div><div class="fb-t">Post bills &amp; sales daily</div><div class="fb-d">Depot bills same day. Send register + exempt totals to CA by the 8th.</div></div>
+      <div class="farr">→</div>
+      <div class="fbox"><div class="fb-who who-ca">CA · by 11th</div><div class="fb-t">Files GSTR-1</div><div class="fb-d">Your sales report goes to the govt.</div></div>
+      <div class="farr">→</div>
+      <div class="fbox"><div class="fb-who who-portal">Portal · 14th</div><div class="fb-t">GSTR-2B appears</div><div class="fb-d">Auto-list of your allowed ITC.</div></div>
+      <div class="farr">→</div>
+      <div class="fbox"><div class="fb-who who-you">You · by 18th</div><div class="fb-t">Pay RCM challan + route it</div><div class="fb-d">₹3,114 / ₹900 / ₹694. Two entries same day.</div></div>
+      <div class="farr">→</div>
+      <div class="fbox"><div class="fb-who who-ca">CA · by 20th</div><div class="fb-t">Files GSTR-3B</div><div class="fb-d">Sends you the return (and any cash challan to pay).</div></div>
+      <div class="farr">→</div>
+      <div class="fbox"><div class="fb-who who-you">You · by 25th ⭐</div><div class="fb-t">Read <b class="cn1">①</b> and <b class="cn2">②</b> → 2 entries</div><div class="fb-d">Then health check: SL=0 · 4445=0 · SA=Credit Ledger.</div></div>
+    </div>
+  </div></div>
+
+  <div class="gap"><div class="sh">Map 2 · Where the Money Actually Flows</div>
+  <div class="card">
+    <div class="grid2">
+      <div class="card2" style="border-color:rgba(248,113,113,.3)"><div class="fb-who" style="color:var(--red)">MONEY IN — SALES</div><div class="fb-t">Customer pays you price + GST</div><div class="fb-d">The GST part is not your income — you're holding it for the government. It piles up in <b>SL GST Output Tax</b> (liability: "we owe govt").</div></div>
+      <div class="card2" style="border-color:rgba(74,222,128,.3)"><div class="fb-who" style="color:var(--green)">MONEY OUT — PURCHASES</div><div class="fb-t">You pay supplier price + GST</div><div class="fb-d">That GST is refundable credit (ITC). It piles up in <b>SA GST Input Tax</b> (asset: "govt owes us"). Bank keeps only half (Rule 38); Neethi/Depot keep all.</div></div>
+    </div>
+    <div class="marr">↘ &nbsp;&nbsp; ↙</div>
+    <div class="card2" style="max-width:470px;margin:0 auto;text-align:center;border-color:rgba(245,158,11,.35)"><div class="fb-who" style="color:var(--saf)">MONTH END — SET-OFF (ENTRY <b class="cn1">①</b>)</div><div class="fb-t">The two piles cancel each other</div><div class="fb-d">No real money moves. Dr SL O/P / Cr SA I/P for the <b class="cn1">①</b> amount shown on the GSTR-3B.</div></div>
+    <div class="marr">↙ &nbsp;&nbsp; ↘</div>
+    <div class="grid2">
+      <div class="card2"><div class="fb-who" style="color:var(--red)">IF OUTPUT WAS BIGGER</div><div class="fb-t">Pay the difference by challan — Entry <b class="cn2">②</b></div><div class="fb-d">Real money leaves the bank: Dr SL O/P / Cr 4445 (plus Dr 4445 / Cr Bank on payment day).</div></div>
+      <div class="card2"><div class="fb-who" style="color:var(--green)">IF ITC WAS BIGGER</div><div class="fb-t">Leftover carries forward — do nothing</div><div class="fb-d">Stays as a Dr balance in SA I/P, matching the portal Credit Ledger. Completely normal for the Depot.</div></div>
+    </div>
+    <div class="alert a-warn" style="margin-top:12px"><span class="ai">🏠</span><div><b>RCM takes a separate shortcut road:</b> rent GST never joins this cancelling game — it must be paid in cash mid-month (challan by the 18th). Its ITC then joins the SA pile like any other credit.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">Jargon Decoder — every scary word, one line each</div>
+  <table class="dt"><tr><th>Word</th><th>Plain meaning</th><th>What YOU do about it</th></tr>
+  <tr><td style="font-weight:700">ITC</td><td>GST you already paid on purchases; govt lets you subtract it from what you owe</td><td>It's the balance of SA GST I/P — never claim more than the portal shows</td></tr>
+  <tr><td style="font-weight:700">Output tax</td><td>GST you collected on sales — the govt's money sitting in your hands</td><td>Credit the full rate to SL O/P (both halves!)</td></tr>
+  <tr><td style="font-weight:700">Set-off</td><td>Cancelling output against ITC, once a month</td><td>Entry <b class="cn1">①</b> — Dr SL O/P / Cr SA I/P</td></tr>
+  <tr><td style="font-weight:700">RCM</td><td>Landlord is unregistered, so YOU pay the GST on rent in his place</td><td>The 4-step loop; always cash; done by the 18th</td></tr>
+  <tr><td style="font-weight:700">CGST + SGST</td><td>The same tax split into central and state halves — always equal for you</td><td>Your combined heads hold both; "CA quotes CGST → ×2"</td></tr>
+  <tr><td style="font-weight:700">IGST</td><td>The interstate version — appears on out-of-state bills (software, some insurance)</td><td>⚠️ That month don't ×2 — copy the return's exact figures</td></tr>
+  <tr><td style="font-weight:700">Carry-forward</td><td>Unused ITC that rolls into next month</td><td>Nothing — it's normal (the Depot lives this way)</td></tr>
+  <tr><td style="font-weight:700">Rule 38</td><td>Banks may claim only 50% of ITC; the other half is lost forever</td><td>Bank splits at entry: half to expense, half to 0200</td></tr>
+  <tr><td style="font-weight:700">Tax period</td><td>The month a return is ABOUT — not when it's filed</td><td>March's return is filed in April; that lag is normal</td></tr>
+  <tr><td style="font-weight:700">ARN</td><td>Acknowledgement number proving a return was actually filed</td><td>Seeing it = "Filed" = final = safe to read numbers from</td></tr>
+  <tr><td style="font-weight:700">CPIN</td><td>A challan's reference number</td><td>Copy it into the routing entry's narration</td></tr>
+  <tr><td style="font-weight:700">Exempt income</td><td>Loan/FD interest — no GST applies at all</td><td>No GST line in the entry; just report the monthly total to CA</td></tr>
+  </table></div>
+</div>
+
+<!-- ═══ HEADS ═══ -->
+<div class="page" id="pg-heads">
+  <div class="alert a-info gap"><span class="ai">📂</span><div><strong>One combined head per function, per entity + Bank Account head.</strong> Your heads hold CGST + SGST together (always equal for intra-state Kerala transactions). All amounts in this guide are combined figures — when CA quotes CGST only, multiply by 2.</div></div>
+  <div class="gap"><div class="sh">Bank · 32AABAV5891L1Z1</div>
+  <div class="hcard"><div class="hcode">Code 0200</div><div class="hname">SA — GST INPUT TAX (Bank)</div><div class="hdesc">Asset. Dr on purchases (eligible 50% only) and RCM booking (eligible 50%). Cr at month-end set-off. Balance = unused ITC pool.</div></div>
+  <div class="hcard"><div class="hcode">Code 7800</div><div class="hname">SL GST OUTPUT TAX — 18% (Bank)</div><div class="hdesc">Liability. Cr on taxable income (full 18%) and RCM booking (full amount). Dr on RCM challan routing and month-end set-off. Reaches ₹0 monthly.</div></div>
+  <div class="hcard"><div class="hcode">Code 711</div><div class="hname">BANK ACCOUNT (Bank Main Treasury / Operating A/c)</div><div class="hdesc">Asset / Bank Head. Cr on rent payments to landlord, RCM cash challans paid to Govt, or regular cash challans paid to Govt. Dr on cash/cheque deposits.</div></div></div>
+  <div class="gap"><div class="sh">Neethi Medical Store · 32AABAV5891L2Z0</div>
+  <div class="hcard"><div class="hcode">Code 702</div><div class="hname">SA GST INPUT TAX — NEETHI STORE</div><div class="hdesc">Asset. Dr on purchases and RCM (100%). Cr at set-off.</div></div>
+  <div class="hcard"><div class="hcode">Code 703</div><div class="hname">SL GST OUTPUT TAX — NEETHI STORE</div><div class="hdesc">Liability. Cr on sales + RCM. Dr on routing + set-off. Reaches ₹0 monthly.</div></div></div>
+  <div class="gap"><div class="sh">Fertilizer Depot · 32AABAV5891L3ZZ</div>
+  <div class="hcard"><div class="hcode">Code 732</div><div class="hname">SA GST INPUT TAX - MANURE</div><div class="hdesc">Asset. Dr on purchases and RCM (100%). Usually holds a growing Dr balance (ITC &gt; output) — normal carry-forward.</div></div>
+  <div class="hcard"><div class="hcode">Code 733</div><div class="hname">SL GST OUTPUT TAX - MANURE</div><div class="hdesc">Liability. Cr on fertilizer sales + RCM. Reaches ₹0 monthly after set-off.</div></div></div>
+  <div class="gap"><div class="sh">Shared — All 3 Entities</div>
+  <div class="hcard"><div class="hcode">Code 4445</div><div class="hname">GST PAID TO GOVT.</div><div class="hdesc">Clearing account (Adjusting Heads — Due By). Dr when challan paid / Cr when routed to SL O/P. Nets to ₹0 after monthly entries. Distinguish entities by narration. Replaced by per-GSTIN clearing heads from FY 2027-28.</div></div></div>
+</div>
+
+
+<!-- ═══ PURCHASE ═══ -->
+<div class="page" id="pg-purchase">
+  <div class="tabs"><button class="tab active" onclick="stab('pb','bank',this)">🏦 Bank (50%)</button><button class="tab" onclick="stab('pb','neethi',this)">💊 Neethi (100%)</button><button class="tab" onclick="stab('pb','depot',this)">🌿 Depot (100%)</button></div>
+
+  <div class="tc active" id="pb-bank">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Purchase Bill — Bank</h4><p>Example: BSNL ₹5,000 + 18% GST (₹450 + ₹450) = ₹5,900 invoice</p></div><span class="etag2 je-bank">🏦 Rule 38 · 50% at entry</span></div>
+      <div class="jv-body">
+        <table class="jt"><thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Why</th></tr></thead><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Purchase / Expense A/c</td><td class="code-td">—</td><td class="amt">5,450</td><td class="empty-amt">—</td><td class="note-td">Taxable ₹5,000 + ineligible half ₹450 absorbed into cost</td></tr>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SA GST Input Tax (Bank)</td><td class="code-td"><span>0200</span></td><td class="amt">450</td><td class="empty-amt">—</td><td class="note-td">Eligible half only (invoice GST ÷ 2)</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Creditor / Bank A/c</td><td class="code-td">—</td><td class="empty-amt">—</td><td class="amt">5,900</td><td class="note-td">Full invoice value</td></tr>
+          <tr class="total-row"><td colspan="2">TOTAL</td><td class="amt">5,900</td><td class="amt">5,900 ✓</td><td class="note-td" style="color:var(--green)">Balanced</td></tr>
+        </tbody></table>
+        <div class="jv-narr"><strong>Rule of thumb:</strong> whatever the total GST on the invoice, divide by 2. One half joins the purchase amount, the other half goes to 0200. Done — no later reversal.</div>
+        <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>TO GST PURCHASE BILL BSNL 2026-APRIL</code></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc" id="pb-neethi">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Purchase Bill — Neethi</h4><p>Example: Medicines ₹50,000 + 12% GST (₹3,000 + ₹3,000) = ₹56,000</p></div><span class="etag2 je-neethi">💊 100% ITC</span></div>
+      <div class="jv-body">
+        <table class="jt"><thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Why</th></tr></thead><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Purchase / Medicine Stock</td><td class="code-td">—</td><td class="amt">50,000</td><td class="empty-amt">—</td><td class="note-td">Taxable value only</td></tr>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SA GST INPUT TAX - NEETHI STORE</td><td class="code-td"><span>702</span></td><td class="amt">6,000</td><td class="empty-amt">—</td><td class="note-td">Full invoice GST</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Supplier A/c</td><td class="code-td">—</td><td class="empty-amt">—</td><td class="amt">56,000</td><td class="note-td">Full invoice value</td></tr>
+          <tr class="total-row"><td colspan="2">TOTAL</td><td class="amt">56,000</td><td class="amt">56,000 ✓</td><td class="note-td" style="color:var(--green)">Balanced</td></tr>
+        </tbody></table>
+        <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>TO GST MEDICINES PURCHASE 2026-APRIL</code></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc" id="pb-depot">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Purchase Bill — Depot</h4><p>Example: Fertilizer ₹1,00,000 + 5% GST (₹2,500 + ₹2,500) = ₹1,05,000</p></div><span class="etag2 je-depot">🌿 100% ITC</span></div>
+      <div class="jv-body">
+        <table class="jt"><thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Why</th></tr></thead><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Purchase / Fertilizer Stock</td><td class="code-td">—</td><td class="amt">1,00,000</td><td class="empty-amt">—</td><td class="note-td">Taxable value</td></tr>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SA GST INPUT TAX - MANURE</td><td class="code-td"><span>732</span></td><td class="amt">5,000</td><td class="empty-amt">—</td><td class="note-td">Full invoice GST</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Supplier A/c</td><td class="code-td">—</td><td class="empty-amt">—</td><td class="amt">1,05,000</td><td class="note-td">Full invoice value</td></tr>
+          <tr class="total-row"><td colspan="2">TOTAL</td><td class="amt">1,05,000</td><td class="amt">1,05,000 ✓</td><td class="note-td" style="color:var(--green)">Balanced</td></tr>
+        </tbody></table>
+        <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>TO GST FERTILIZER PURCHASE 2026-APRIL</code></div>
+      </div>
+    </div>
+    <div class="alert a-err"><span class="ai">🚨</span><div><strong>Depot two-destination rule:</strong> every purchase bill goes BOTH into PacScore (same day) AND to CA. FY 25-26 books missed ₹10,260 of ITC because bills only went to CA. Also watch for Rule 36(4) warnings on the return — claiming ITC above what GSTR-2B shows means a bill reached CA before the supplier filed it.</div></div>
+  </div>
+</div>
+
+<!-- ═══ SALES ═══ -->
+<div class="page" id="pg-sales">
+  <div class="tabs"><button class="tab active" onclick="stab('sl','bank',this)">🏦 Bank</button><button class="tab" onclick="stab('sl','neethi',this)">💊 Neethi</button><button class="tab" onclick="stab('sl','depot',this)">🌿 Depot</button></div>
+
+  <div class="tc active" id="sl-bank">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Taxable Service Income — Bank</h4><p>Example: Locker rent ₹1,000 + 18% GST = ₹1,180 collected</p></div><span class="etag2 je-bank">🏦 18% output</span></div>
+      <div class="jv-body">
+        <table class="jt"><thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Why</th></tr></thead><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Cash / Member A/c</td><td class="code-td">—</td><td class="amt">1,180</td><td class="empty-amt">—</td><td class="note-td">Total collected</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Locker Rent Income</td><td class="code-td">—</td><td class="empty-amt">—</td><td class="amt">1,000</td><td class="note-td">Taxable value</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SL GST Output Tax (Bank)</td><td class="code-td"><span>7800</span></td><td class="empty-amt">—</td><td class="amt">180</td><td class="note-td">Full 18% — CGST ₹90 + SGST ₹90 combined</td></tr>
+          <tr class="total-row"><td colspan="2">TOTAL</td><td class="amt">1,180</td><td class="amt">1,180 ✓</td><td class="note-td" style="color:var(--green)">Balanced</td></tr>
+        </tbody></table>
+        <div class="jv-narr"><strong>Critical habit:</strong> credit 7800 with the FULL 18% (taxable × 0.18), never just 9%. FY 26-27 HO books were missing the SGST half entirely. Also: all four branches' output must consolidate into 7800.</div>
+        <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>TO GST SERVICE INCOME LOCKER RENT 2026-APRIL</code></div>
+      </div>
+    </div>
+    <div class="alert a-info"><span class="ai">💡</span><div><strong>Exempt income (loan interest, savings/FD interest):</strong> book income directly — no GST line, no 7800 entry. Just report the monthly exempt total to CA for GSTR-1 Table 8.</div></div>
+  </div>
+
+  <div class="tc" id="sl-neethi">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Medicine Sale — Neethi</h4><p>Example: Sale ₹500 + 12% GST = ₹560</p></div><span class="etag2 je-neethi">💊 Rate varies by drug</span></div>
+      <div class="jv-body">
+        <table class="jt"><thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Why</th></tr></thead><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Cash / Customer</td><td class="code-td">—</td><td class="amt">560</td><td class="empty-amt">—</td><td class="note-td">Total collected</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Pharmacy Sales</td><td class="code-td">—</td><td class="empty-amt">—</td><td class="amt">500</td><td class="note-td">Taxable value</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SL GST OUTPUT TAX — NEETHI STORE</td><td class="code-td"><span>703</span></td><td class="empty-amt">—</td><td class="amt">60</td><td class="note-td">CGST ₹30 + SGST ₹30</td></tr>
+          <tr class="total-row"><td colspan="2">TOTAL</td><td class="amt">560</td><td class="amt">560 ✓</td><td class="note-td" style="color:var(--green)">Balanced</td></tr>
+        </tbody></table>
+        <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>TO GST PHARMACY SALES 2026-APRIL</code></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc" id="sl-depot">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Fertilizer Sale — Depot</h4><p>Example: Sale ₹6,123.81 taxable + 5% GST (₹153.10 + ₹153.10) — from your real May 2026 register</p></div><span class="etag2 je-depot">🌿 5% fertilizer rate</span></div>
+      <div class="jv-body">
+        <table class="jt"><thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Why</th></tr></thead><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Cash / Farmer A/c</td><td class="code-td">—</td><td class="amt">6,430.00</td><td class="empty-amt">—</td><td class="note-td">Taxable + GST collected</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Fertilizer Sales</td><td class="code-td">—</td><td class="empty-amt">—</td><td class="amt">6,123.81</td><td class="note-td">Taxable value</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SL GST OUTPUT TAX - MANURE</td><td class="code-td"><span>733</span></td><td class="empty-amt">—</td><td class="amt">306.19</td><td class="note-td">CGST ₹153.10 + SGST ₹153.10</td></tr>
+          <tr class="total-row"><td colspan="2">TOTAL</td><td class="amt">6,430.00</td><td class="amt">6,430.00 ✓</td><td class="note-td" style="color:var(--green)">Balanced</td></tr>
+        </tbody></table>
+        <div class="jv-narr"><strong>Note:</strong> non-taxable sales (₹4,640 in May) are booked separately with no GST line. Only the taxable portion generates output tax.</div>
+        <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>TO GST FERTILIZER SALES 2026-MAY</code></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RCM ═══ -->
+<div class="page" id="pg-rcm">
+  <div class="alert a-warn gap"><span class="ai">⚡</span><div><strong>RCM is a 4-step, self-closing loop that finishes before month-end.</strong> Pay landlord → book RCM → pay challan (cash only, before 20th) → route challan. After Step 4, RCM has zero presence in the month-end set-off. This is why there is no "RCM set-off entry."</div></div>
+
+  <div class="tabs"><button class="tab active" onclick="stab('rc','bank',this)">🏦 Bank (50%)</button><button class="tab" onclick="stab('rc','neethi',this)">💊 Neethi (100%)</button><button class="tab" onclick="stab('rc','depot',this)">🌿 Depot (100%)</button></div>
+
+  <div class="tc active" id="rc-bank">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Step 1 — Pay Landlord</h4><p>Rent only. No GST to landlord (unregistered).</p></div><span class="etag2 je-bank">🏦 Bank</span></div>
+      <div class="jv-body"><table class="jt"><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Rent Expense A/c</td><td class="code-td">—</td><td class="amt">17,300</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Bank A/c</td><td class="code-td"><span>711</span></td><td class="empty-amt">—</td><td class="amt">17,300</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>Step 2 — Book RCM (50/50 split)</h4><p>₹17,300 × 18% = ₹3,114. Eligible half → 0200. Ineligible half → rent cost.</p></div><span class="etag2 je-bank">🏦 Rule 38</span></div>
+      <div class="jv-body"><table class="jt"><thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Why</th></tr></thead><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Rent Expense (ineligible ½)</td><td class="code-td">—</td><td class="amt">1,557</td><td class="empty-amt">—</td><td class="note-td">Permanently absorbed into rent cost</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SA GST Input Tax (Bank)</td><td class="code-td"><span>0200</span></td><td class="amt">1,557</td><td class="empty-amt">—</td><td class="note-td">Eligible 50% ITC</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SL GST Output Tax (Bank)</td><td class="code-td"><span>7800</span></td><td class="empty-amt">—</td><td class="amt">3,114</td><td class="note-td">Full RCM liability to govt</td></tr>
+        <tr class="total-row"><td colspan="2">TOTAL</td><td class="amt">3,114</td><td class="amt">3,114 ✓</td><td class="note-td" style="color:var(--green)">Balanced</td></tr>
+      </tbody></table>
+      <div class="jv-narr"><strong>Verified from your April 2026 filing:</strong> CA's Rule 38 reversal (₹18,629.96) was exactly 50% of gross ITC including RCM ITC — confirming the 50% cap applies to RCM too.</div></div>
+    </div>
+    <div class="alert a-info"><span class="ai">➡️</span><div><strong>Steps 3 &amp; 4 (Pay Challan + Route It) have moved to the ⚖️ Set-off Entries page</strong> — they're part of the monthly closing routine, so all three monthly entries now live together there as Entry 0 · Entry 1 · Entry 2. Pay the challan by the 18th, then follow that page.</div></div>
+  </div>
+
+  <div class="tc" id="rc-neethi">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>All 4 Steps — Neethi</h4><p>Rent ₹5,000 × 18% = ₹900 RCM. 100% ITC.</p></div><span class="etag2 je-neethi">💊 Neethi</span></div>
+      <div class="jv-body">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px">STEP 1 — PAY LANDLORD</div>
+        <table class="jt"><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Rent Expense</td><td class="code-td">—</td><td class="amt">5,000</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Bank A/c</td><td class="code-td"><span>711</span></td><td class="empty-amt">—</td><td class="amt">5,000</td></tr>
+        </tbody></table>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin:12px 0 6px">STEP 2 — BOOK RCM (100%)</div>
+        <table class="jt"><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SA GST Input Tax (Neethi)</td><td class="code-td"><span>702</span></td><td class="amt">900</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SL GST Output Tax (Neethi)</td><td class="code-td"><span>703</span></td><td class="empty-amt">—</td><td class="amt">900</td></tr>
+        </tbody></table>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin:12px 0 6px">STEPS 3 &amp; 4 — PAY ₹900 CHALLAN + ROUTE</div>
+        <table class="jt"><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Neethi)</td><td class="code-td"><span>703</span></td><td class="amt">900</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">900</td></tr>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="amt">900</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Bank A/c</td><td class="code-td"><span>711</span></td><td class="empty-amt">—</td><td class="amt">900</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc" id="rc-depot">
+    <div class="jv-card">
+      <div class="jv-head"><div><h4>All 4 Steps — Depot</h4><p>Rent ₹3,850 × 18% = ₹694 RCM. 100% ITC.</p></div><span class="etag2 je-depot">🌿 Depot</span></div>
+      <div class="jv-body">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px">STEP 1 — PAY LANDLORD</div>
+        <table class="jt"><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>Rent Expense</td><td class="code-td">—</td><td class="amt">3,850</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Bank A/c</td><td class="code-td"><span>711</span></td><td class="empty-amt">—</td><td class="amt">3,850</td></tr>
+        </tbody></table>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin:12px 0 6px">STEP 2 — BOOK RCM (100%)</div>
+        <table class="jt"><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SA GST Input Tax (Depot)</td><td class="code-td"><span>732</span></td><td class="amt">694</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SL GST Output Tax (Depot)</td><td class="code-td"><span>733</span></td><td class="empty-amt">—</td><td class="amt">694</td></tr>
+        </tbody></table>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin:12px 0 6px">STEPS 3 &amp; 4 — PAY ₹694 CHALLAN + ROUTE</div>
+        <table class="jt"><tbody>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Depot)</td><td class="code-td"><span>733</span></td><td class="amt">694</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">694</td></tr>
+          <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="amt">694</td><td class="empty-amt">—</td></tr>
+          <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Bank A/c</td><td class="code-td"><span>711</span></td><td class="empty-amt">—</td><td class="amt">694</td></tr>
+        </tbody></table>
+        <div class="jv-narr"><strong>Some months are ₹693 or ₹696:</strong> the exact figure comes from the challan — always use the actual challan amount, not the formula, in Steps 3–4.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ FETCH NUMBERS ═══ -->
+<div class="page" id="pg-fetch">
+  <div class="alert a-ok gap"><span class="ai">🔑</span><div><strong>This page answers the biggest question: where do <b class="cn1">①</b> and <b class="cn2">②</b> come from?</strong> Answer: from the <b>downloaded GSTR-3B PDF, Table 6.1, Section (A) only</b> — never the Electronic ledgers (verification only) and, as a beginner, never the website summary screen (it lumps RCM into its cash figure and causes confusion — short note at the bottom explains it for later).</div></div>
+
+  <div class="gap"><div class="sh">Format 1 — Downloaded GSTR-3B PDF (Table 6.1) — exact layout</div>
+  <div class="card">
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Column-for-column replica of the real PDF, using your <b>Bank June 2026</b> filed return. Section (A) = regular tax, Section (B) = RCM. The three ITC sub-columns are why you must ADD all of them, never "×2 the CGST":</p>
+    <div class="pdfrep" style="overflow-x:auto">
+      <div class="pdf-title">6.1 Payment of tax</div>
+      <table style="min-width:760px">
+        <tr><th rowspan="2" style="text-align:left">Description</th><th rowspan="2">Tax<br>payable</th><th rowspan="2">Adjustment of<br>negative liability</th><th rowspan="2">Net Tax<br>Payable</th><th colspan="4" class="th-itc-h">Tax paid through ITC ①</th><th rowspan="2" class="th-cash-h">Tax paid<br>in cash ②</th><th rowspan="2">Interest<br>paid in cash</th><th rowspan="2">Late fee<br>paid in cash</th></tr>
+        <tr><th class="th-itc-sub">Integrated<br>tax</th><th class="th-itc-sub">Central<br>tax</th><th class="th-itc-sub">State/UT<br>tax</th><th class="th-itc-sub">Cess</th></tr>
+        <tr><td class="rowlabel" colspan="11" style="font-weight:700">(A) Other than reverse charge</td></tr>
+        <tr class="hl-a"><td class="rowlabel">Integrated tax</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>—</td><td>0.00</td><td>0.00</td><td>—</td></tr>
+        <tr class="hl-a"><td class="rowlabel">Central tax</td><td>18668.00</td><td>0.00</td><td>18668.00</td><td class="cell-itc"><b>1842.00</b></td><td class="cell-itc"><b>4826.00</b></td><td>—</td><td>—</td><td class="cell-cash"><b>12000.00</b></td><td>0.00</td><td>0.00</td></tr>
+        <tr class="hl-a"><td class="rowlabel">State/UT tax</td><td>18668.00</td><td>0.00</td><td>18668.00</td><td>0.00</td><td>—</td><td class="cell-itc"><b>4826.00</b></td><td>—</td><td class="cell-cash"><b>13842.00</b></td><td>0.00</td><td>0.00</td></tr>
+        <tr class="hl-a"><td class="rowlabel">Cess</td><td>0.00</td><td>0.00</td><td>0.00</td><td>—</td><td>—</td><td>—</td><td>0.00</td><td>0.00</td><td>0.00</td><td>—</td></tr>
+        <tr><td class="rowlabel" colspan="11" style="font-weight:700">(B) Reverse charge and supplies made u/s 9(5)</td></tr>
+        <tr class="hl-b"><td class="rowlabel">Integrated tax</td><td>43.00</td><td>0.00</td><td>43.00</td><td>—</td><td>—</td><td>—</td><td>—</td><td>43.00</td><td>—</td><td>—</td></tr>
+        <tr class="hl-b"><td class="rowlabel">Central tax</td><td>1557.00</td><td>0.00</td><td>1557.00</td><td>—</td><td>—</td><td>—</td><td>—</td><td>1557.00</td><td>—</td><td>—</td></tr>
+        <tr class="hl-b"><td class="rowlabel">State/UT tax</td><td>1557.00</td><td>0.00</td><td>1557.00</td><td>—</td><td>—</td><td>—</td><td>—</td><td>1557.00</td><td>—</td><td>—</td></tr>
+        <tr class="hl-b"><td class="rowlabel">Cess</td><td>0.00</td><td>0.00</td><td>0.00</td><td>—</td><td>—</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>—</td></tr>
+      </table>
+    </div>
+    <div class="map-arrow"><span class="num n1">①</span><div><strong style="color:#93C5FD">① Darker Blue Cells = Tax paid through ITC (Entry 1).</strong> Every number in Section (A)'s "Tax paid through ITC" block added together. Here: 1,842 + 4,826 + 4,826 = ₹11,494. Goes into Entry 1.</div></div>
+    <div class="map-arrow"><span class="num n2">②</span><div><strong style="color:#FCD34D">② Golden/Orange Cells = Tax paid in cash (Entry 2).</strong> Section (A) "Tax paid in cash" added together. Here: 12,000 + 13,842 = ₹25,842. Goes into Entry 2.</div></div>
+    <div class="map-arrow"><span class="num" style="background:rgba(255,255,255,.08);color:var(--dim)">✕</span><div><strong style="color:var(--tx)">Section (B): never enters ① or ②.</strong> That's RCM — but DO note its cash total (43 + 1,557 + 1,557 = ₹3,157) — that is your Entry 0 routing amount, and this month it wasn't the memorised 3,114.</div></div>
+  </div>
+  </div>
+
+  <div class="gap"><div class="sh">The Portal Website Screen — Skip It (For Now)</div>
+  <div class="card">
+    <div class="alert a-warn" style="margin-bottom:0"><span class="ai">🖥️</span><div><strong>The website’s summary screen shows different cash numbers than the PDF — for the same return.</strong> Its “Paid through Cash” adds regular cash AND RCM cash into one figure (April: 0 + 3,114 shows as ₹3,114). Nothing is wrong — it just lumps what the PDF keeps separate. <b>Beginner rule: always download the PDF and read only Section (A).</b> If someday you must read the screen: “Paid through Credit” = <b class="cn1">①</b> as-is, and “Paid through Cash” − the actual RCM challan amount = <b class="cn2">②</b>.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">Where the Electronic Ledgers Fit</div>
+  <div class="grid2">
+    <div class="card2"><div style="font-weight:700;font-size:13px;margin-bottom:5px">📗 Electronic Credit Ledger</div><div style="font-size:12px;color:var(--muted)">Optional cross-check after posting: the debit dated on the 3B filing date should equal <b class="cn1">①</b>. Also the only place to see your live carry-forward ITC balance. Date-range download gets the full year in one file.</div></div>
+    <div class="card2"><div style="font-weight:700;font-size:13px;margin-bottom:5px">📘 Electronic Cash Ledger</div><div style="font-size:12px;color:var(--muted)">Optional cross-check: challan deposits (Dr side of 4445) and the debit on filing date (RCM + <b class="cn2">②</b>). Never read set-off amounts from here — entries mix months when balances roll.</div></div>
+  </div></div>
+</div>
+
+<!-- ═══ SET-OFF ═══ -->
+<div class="page" id="pg-setoff">
+  <div class="alert a-ok gap"><span class="ai">⚖️</span><div><strong>The complete monthly close = 3 entries per entity, all on this page.</strong> Entry 0 (RCM routing) on challan day ~18th · Entry 1 (set-off) and Entry 2 (cash routing) by the 25th. There is no Bank-specific reversal (50% handled at entry time) and no separate RCM set-off. If <b class="cn1">①</b> = 0, skip Entry 1. If <b class="cn2">②</b> = 0, skip Entry 2.</div></div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Entry 0 — RCM challan routing (two legs, same day you pay)</h4><p>Portal → Payments → Create Challan → pay by 18th → pass both legs. Bank ₹3,114 · Neethi ₹900 · Depot ₹694 (always use the ACTUAL challan amount — June 2026 was ₹3,157).</p></div><span class="etag2 je-all">All entities · by 18th</span></div>
+    <div class="jv-body">
+      <table class="jt"><thead><tr><th>Account Head</th><th>Bank</th><th>Neethi</th><th>Depot</th><th class="amt-h">Amount</th></tr></thead><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax — routing leg</td><td class="code-td"><span>7800</span></td><td class="code-td"><span>703</span></td><td class="code-td"><span>733</span></td><td class="amt">challan amt</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="code-td"><span>4445</span></td><td class="code-td"><span>4445</span></td><td class="amt">challan amt</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>GST Paid to Govt — payment leg</td><td class="code-td"><span>4445</span></td><td class="code-td"><span>4445</span></td><td class="code-td"><span>4445</span></td><td class="amt">challan amt</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>Bank A/c</td><td class="code-td"><span>711</span></td><td class="code-td"><span>711</span></td><td class="code-td"><span>711</span></td><td class="amt">challan amt</td></tr>
+      </tbody></table>
+      <div class="jv-narr"><strong>Why two legs:</strong> the payment leg records money leaving the bank (CPIN in narration); the routing leg ties that money to the RCM liability sitting in SL O/P. After both, the RCM slice of SL O/P = ₹0 and 4445's movement for this challan nets to ₹0. Whatever remains in SL O/P is pure sales output — that's what Entry 1 and 2 clear.</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>BANK-GST-RCM-CASH-PAID-2026-APRIL CPIN [CPIN_NO]</code></div>
+    </div>
+  </div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Entry 1 — Set-off: ITC absorbs output</h4><p>Pass when <b class="cn1">①</b> &gt; 0. Same entry for all entities — swap the codes.</p></div><span class="etag2 je-all">All entities · by 25th</span></div>
+    <div class="jv-body">
+      <table class="jt"><thead><tr><th>Account Head</th><th>Bank</th><th>Neethi</th><th>Depot</th><th class="amt-h">Amount</th></tr></thead><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax</td><td class="code-td"><span>7800</span></td><td class="code-td"><span>703</span></td><td class="code-td"><span>733</span></td><td class="amt"><b class="cn1">①</b></td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SA GST Input Tax</td><td class="code-td"><span>0200</span></td><td class="code-td"><span>702</span></td><td class="code-td"><span>732</span></td><td class="amt"><b class="cn1">①</b></td></tr>
+      </tbody></table>
+      <div class="jv-narr"><strong>Narration format:</strong> "Being set-off of ITC utilised against output tax for [month] per GSTR-3B Table 6.1. CGST ₹[x] + SGST ₹[x] = ₹[<b class="cn1">①</b>]."</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>BANK-GST SET OFF 2026-APRIL ADJ.</code></div>
+    </div>
+  </div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Entry 2 — Cash routing: challan clears remaining output</h4><p>Pass ONLY when <b class="cn2">②</b> &gt; 0 (output exceeded ITC that month).</p></div><span class="etag2 je-all">All entities · conditional</span></div>
+    <div class="jv-body">
+      <table class="jt"><thead><tr><th>Account Head</th><th>Bank</th><th>Neethi</th><th>Depot</th><th class="amt-h">Amount</th></tr></thead><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax</td><td class="code-td"><span>7800</span></td><td class="code-td"><span>703</span></td><td class="code-td"><span>733</span></td><td class="amt"><b class="cn2">②</b></td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="code-td"><span>4445</span></td><td class="code-td"><span>4445</span></td><td class="amt"><b class="cn2">②</b></td></tr>
+      </tbody></table>
+      <div class="jv-narr"><strong>The matching bank-side entry</strong> (Dr 4445 / Cr Bank Head 711 ₹<b class="cn2">②</b>) is already passed on the day you paid the regular challan — don't duplicate it here. After Entry 2, the 4445 slice for this challan nets to ₹0.</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>BANK-GST-CASH-PAID-2026-MAY CPIN [CPIN_NO]</code></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh">State of the Heads After Set-off — Your Monthly Health Check</div>
+    <table class="dt"><tr><th>Head</th><th>Expected Balance</th><th>If It's Not…</th></tr>
+    <tr><td>SL GST Output Tax (each entity: 7800 / 703 / 733)</td><td class="ok">₹0 for the month</td><td class="note-td" style="font-size:12px;color:var(--muted)">Leftover = a missed RCM routing (Step 4) or a sales entry CA didn't file — trace the exact gap amount</td></tr>
+    <tr><td>SA GST Input Tax (each entity: 0200 / 702 / 732)</td><td class="inf">Dr balance = carry-forward ITC</td><td class="note-td" style="font-size:12px;color:var(--muted)">Should match portal Credit Ledger closing balance; mismatch = missing purchase entries in books</td></tr>
+    <tr><td>GST Paid to Govt (4445)</td><td class="ok">₹0</td><td class="note-td" style="font-size:12px;color:var(--muted)">Dr residue = a challan paid but never routed; find which month and pass its routing entry</td></tr></table>
+  </div>
+</div>
+
+<!-- ═══ INTERACTIVE SET-OFF GENERATOR ═══ -->
+<div class="page" id="pg-setoffcalc">
+  <div class="alert a-ok gap"><span class="ai">⚡</span><div><strong>Interactive Monthly Set-Off Voucher Generator.</strong> Input three figures from the downloaded GSTR-3B PDF, Table 6.1 — ① Section (A) ITC total, ② Section (A) cash total, and Section (B)’s RCM challan amount. The tool generates exact, balanced PacScore journal vouchers with required short narrations!</div></div>
+
+  <div class="card gap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div class="sh" style="margin-bottom:0">1 · Select Business Unit &amp; Enter Portal Return Figures</div>
+      <span class="badge b-blue" style="font-size:11px">💡 Inline Math Enabled (e.g. 186+11010+11196)</span>
+    </div>
+
+    <!-- Quick Presets -->
+    <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px;background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:8px;border:1px solid var(--bdr)">
+      <span style="font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">⚡ Quick Presets:</span>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(96,165,250,0.12);color:var(--bank);border:1px solid rgba(96,165,250,0.25)" onclick="loadGuidePreset('bank-apr26')">Bank Apr 26</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(96,165,250,0.12);color:var(--bank);border:1px solid rgba(96,165,250,0.25)" onclick="loadGuidePreset('bank-may26')">Bank May 26</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(96,165,250,0.12);color:var(--bank);border:1px solid rgba(96,165,250,0.25)" onclick="loadGuidePreset('bank-jun26')">Bank Jun 26</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(96,165,250,0.12);color:var(--bank);border:1px solid rgba(96,165,250,0.25)" onclick="loadGuidePreset('bank-jul26')">Bank Jul 26</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(52,211,153,0.12);color:var(--neethi);border:1px solid rgba(52,211,153,0.25)" onclick="loadGuidePreset('neethi-apr26')">Neethi Apr 26</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(52,211,153,0.12);color:var(--neethi);border:1px solid rgba(52,211,153,0.25)" onclick="loadGuidePreset('neethi-jul26')">Neethi Jul 26</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(251,146,60,0.12);color:var(--depot);border:1px solid rgba(251,146,60,0.25)" onclick="loadGuidePreset('depot-jul26')">Depot Jul 26</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(248,113,113,0.12);color:var(--red);border:1px solid rgba(248,113,113,0.25)" onclick="loadGuidePreset('rev-neethi25')">Neethi Reversal (₹23.6k)</button>
+      <button type="button" class="tab" style="font-size:11px;padding:3px 8px;background:rgba(248,113,113,0.12);color:var(--red);border:1px solid rgba(248,113,113,0.25)" onclick="loadGuidePreset('rev-bank25')">Bank Reversal (₹2.3k)</button>
+    </div>
+
+    <div class="grid3" style="margin-bottom:12px">
+      <div class="field">
+        <label>Business Entity / GSTIN</label>
+        <select id="soc-entity" onchange="onEntityChange()">
+          <option value="bank">Bank HO / Branches (32AABAV5891L1Z1)</option>
+          <option value="neethi">Neethi Medical Store (32AABAV5891L2Z0)</option>
+          <option value="depot">Fertilizer/Manure Depot (32AABAV5891L3ZZ)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Tax Period (Month &amp; Year)</label>
+        <input type="text" id="soc-month" value="2026-APRIL" oninput="runSetoffGenerator()">
+      </div>
+      <div class="field">
+        <label>① PDF Section (A) — “Tax paid through ITC” total (₹)</label>
+        <input type="text" id="soc-itc" class="calc-input" value="22392" oninput="runSetoffGenerator()" placeholder="e.g. 186+11010+11196">
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="field">
+        <label>② PDF Section (A) — “Tax paid in cash” total (₹)</label>
+        <input type="text" id="soc-totcash" class="calc-input" value="0" oninput="runSetoffGenerator()" placeholder="e.g. 12000+13842">
+      </div>
+      <div class="field">
+        <label>PDF Section (B) — RCM cash / actual challan (₹)</label>
+        <input type="text" id="soc-rcmcash" class="calc-input" value="3114" oninput="runSetoffGenerator()" placeholder="e.g. 1557+1557">
+      </div>
+      <div class="field">
+        <label>RCM Challan CPIN</label>
+        <input type="text" id="soc-rcmcpin" value="2065126670" oninput="runSetoffGenerator()">
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:4px">
+      <div class="field">
+        <label>Regular Cash Challan CPIN (Entry 2)</label>
+        <input type="text" id="soc-regcpin" value="" oninput="runSetoffGenerator()" placeholder="Optional if cash paid">
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:12px;gap:8px">
+        <button onclick="copyAllSetoffText()" style="background:var(--saf);color:#000;border:none;padding:10px 18px;border-radius:8px;font-weight:800;cursor:pointer;font-size:12.5px;flex:1">📋 Copy All Vouchers for PacScore</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary KPIs -->
+  <div class="kpis gap">
+    <div class="kpi"><div class="kpi-l">Entry 1 (ITC Set-Off ①)</div><div class="kpi-v" id="kpi-soc-1" style="color:var(--green)">₹22,392.00</div><div class="kpi-s">Paid through Credit</div></div>
+    <div class="kpi"><div class="kpi-l">Entry 0 (RCM Cash)</div><div class="kpi-v" id="kpi-soc-rcm" style="color:var(--saf)">₹3,114.00</div><div class="kpi-s">Paid by Challan mid-month</div></div>
+    <div class="kpi"><div class="kpi-l">Entry 2 (Regular Cash ②)</div><div class="kpi-v" id="kpi-soc-2" style="color:var(--bank)">₹0.00</div><div class="kpi-s">PDF Section (A) cash</div></div>
+    <div class="kpi"><div class="kpi-l">Status</div><div class="kpi-v" style="color:var(--purple);font-size:16px;margin-top:6px" id="kpi-soc-status">Ready to Post</div><div class="kpi-s">Balanced Journal Vouchers</div></div>
+  </div>
+
+  <div class="sh" style="margin-bottom:14px">2 · Generated Journal Vouchers (PacScore Format)</div>
+
+  <div id="soc-vouchers-container">
+    <!-- Dynamic Vouchers injected here -->
+  </div>
+</div>
+
+<!-- ═══ WORKED EXAMPLES ═══ -->
+<div class="page" id="pg-examples">
+  <div class="alert a-info gap"><span class="ai">📋</span><div><strong>Four real filed months from your own GSTINs</strong> — a Bank month with IGST and zero cash, a Bank month with big cash, a Neethi month where the only cash is Section (B) RCM, and a Depot no-sales month.</div></div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Case 1 — Bank April 2026 · IGST Month, Zero Regular Cash</h4><p>PDF Table 6.1 Section (A): ITC = 186 IGST + 11,010 CGST + 11,196 SGST · cash = 0 · Section (B) RCM = 1,557+1,557 cash</p></div><span class="etag2 je-bank">🏦 PDF format</span></div>
+    <div class="jv-body">
+      <table class="dt"><tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+      <tr><td><b class="cn1">①</b> ITC used</td><td class="mono">186 + 11,010 + 11,196 = 22,392</td><td class="ok">Entry 1: pass ₹22,392</td></tr>
+      <tr><td><b class="cn2">②</b> Regular cash</td><td class="mono">Section (A) cash = 0 + 0 = 0</td><td class="warn">Entry 2: skip</td></tr>
+      <tr><td>RCM routing</td><td class="mono">Section (B): 1,557 + 1,557 = 3,114 cash</td><td class="ok">Route when challan paid</td></tr></table>
+      <table class="jt" style="margin-top:10px"><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank)</td><td class="code-td"><span>7800</span></td><td class="amt">22,392.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SA GST Input Tax (Bank)</td><td class="code-td"><span>0200</span></td><td class="empty-amt">—</td><td class="amt">22,392.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank) — RCM routing</td><td class="code-td"><span>7800</span></td><td class="amt">3,114.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">3,114.00</td></tr>
+      </tbody></table>
+      <div class="jv-narr">Two things to notice: <strong>IGST month</strong> — CGST (11,010) ≠ SGST (11,196), so the ×2 shortcut is banned; add all three columns. And the 4445 side: the payment entry (Dr 4445 / Cr Bank Head 711 ₹3,114) was already passed on challan day (16-May) — the routing credit above is what closes 4445 back to ₹0 for this challan.</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narration</div><code>BANK-GST SET OFF 2026-APRIL ADJ.</code></div>
+    </div>
+  </div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Case 2 — Bank June 2026 · Big Cash Month, All 3 Entries</h4><p>PDF Table 6.1 Section (A): ITC = 1,842 + 4,826 + 4,826 · cash = 12,000 + 13,842 · Section (B) RCM = 43 IGST + 1,557 + 1,557</p></div><span class="etag2 je-bank">🏦 PDF format</span></div>
+    <div class="jv-body">
+      <table class="dt"><tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+      <tr><td><b class="cn1">①</b> ITC used</td><td class="mono">1,842 + 4,826 + 4,826 = 11,494</td><td class="ok">Entry 1: pass ₹11,494</td></tr>
+      <tr><td><b class="cn2">②</b> Regular cash</td><td class="mono">12,000 + 13,842 = 25,842</td><td class="ok">Entry 2: pass ₹25,842</td></tr>
+      <tr><td>RCM routing</td><td class="mono">43 + 1,557 + 1,557 = 3,157 (not 3,114!)</td><td class="ok">Route actual challan amount</td></tr></table>
+      <table class="jt" style="margin-top:10px"><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank) — set-off</td><td class="code-td"><span>7800</span></td><td class="amt">11,494.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SA GST Input Tax (Bank)</td><td class="code-td"><span>0200</span></td><td class="empty-amt">—</td><td class="amt">11,494.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank) — cash routing</td><td class="code-td"><span>7800</span></td><td class="amt">25,842.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">25,842.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank) — RCM routing</td><td class="code-td"><span>7800</span></td><td class="amt">3,157.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">3,157.00</td></tr>
+      </tbody></table>
+      <div class="jv-narr">June's ITC pool was small (May consumed the carry-forward), so ₹25,842 had to go in cash. Also note the RCM was ₹3,157, not the usual 3,114 — a one-off ₹43 IGST reverse-charge item rode along. <strong>Always route the actual challan amount, not the memorised one.</strong></div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narrations</div><code>Entry 1: BANK-GST SET OFF 2026-JUNE ADJ.<br>Entry 2: BANK-GST-CASH-PAID-2026-JUNE CPIN 1002987654<br>Entry 0: BANK-GST-RCM-CASH-PAID-2026-JUNE CPIN 1002987655</code></div>
+    </div>
+  </div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Case 3 — Neethi July 2025 · Big ITC, Cash Only in Section (B)</h4><p>PDF Table 6.1: Section (A) ITC = 44,069 + 44,069 · Section (A) cash = 0 + 0 · Section (B) RCM = 450 + 450</p></div><span class="etag2 je-neethi">💊 PDF format</span></div>
+    <div class="jv-body">
+      <table class="dt"><tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+      <tr><td><b class="cn1">①</b> ITC used</td><td class="mono">Section (A): 44,069 + 44,069 = 88,138</td><td class="ok">Entry 1: pass ₹88,138</td></tr>
+      <tr><td><b class="cn2">②</b> Regular cash</td><td class="mono">Section (A): 0 + 0 = 0</td><td class="warn">Entry 2: skip</td></tr>
+      <tr><td>Section (B)</td><td class="mono">450 + 450 = 900 RCM</td><td class="err">Not ① or ② — Entry 0, routed mid-month</td></tr></table>
+      <table class="jt" style="margin-top:10px"><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST OUTPUT TAX — NEETHI STORE</td><td class="code-td"><span>703</span></td><td class="amt">88,138.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SA GST INPUT TAX — NEETHI STORE</td><td class="code-td"><span>702</span></td><td class="empty-amt">—</td><td class="amt">88,138.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST OUTPUT TAX — NEETHI STORE — RCM routing</td><td class="code-td"><span>703</span></td><td class="amt">900.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">900.00</td></tr>
+      </tbody></table>
+      <div class="jv-narr">The pharmacy's classic pattern: big medicine purchases → big ITC → output almost fully absorbed by credit. Section (A) cash is zero, so Entry 2 is skipped; the only cash this month is Section (B)’s ₹900 RCM rent, which Entry 0 already routed mid-month.</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narrations</div><code>Entry 1: NEETHI-GST SET OFF 2025-JULY ADJ.<br>Entry 0: NEETHI-GST-RCM-CASH-PAID-2025-JULY CPIN 1002111222</code></div>
+    </div>
+  </div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Case 4 — Depot April 2026 · No Sales Month</h4><p>PDF Table 6.1: Section (A) all zeros · Section (B) RCM = 347 + 347</p></div><span class="etag2 je-depot">🌿 PDF format</span></div>
+    <div class="jv-body">
+      <table class="dt"><tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+      <tr><td><b class="cn1">①</b> ITC used</td><td class="mono">Section (A) ITC = 0</td><td class="warn">Entry 1: skip</td></tr>
+      <tr><td><b class="cn2">②</b> Regular cash</td><td class="mono">Section (A) cash = 0</td><td class="warn">Entry 2: skip</td></tr>
+      <tr><td>Month-end work</td><td>Nothing — only the mid-month RCM 4-step loop applied</td><td class="ok">Done ✓</td></tr></table>
+      <div class="jv-narr">No sales → no output → nothing for ITC to absorb. April's ITC (₹347+₹347 RCM) simply carries forward, visible in the Credit Ledger. The quietest possible month.</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narration (RCM routing)</div><code>MANURE-GST-RCM-CASH-PAID-2026-APRIL CPIN 1002333444</code></div>
+    </div>
+  </div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Case 5 — Bank July 2026 · Record Regular Cash Month (All 3 Entries)</h4><p>PDF Table 6.1 Section (A): ITC = 274 + 2,931 + 2,931 · cash = 19,695 + 19,969 · Section (B) RCM = 1,557 + 1,557</p></div><span class="etag2 je-bank">🏦 PDF format</span></div>
+    <div class="jv-body">
+      <table class="dt"><tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+      <tr><td><b class="cn1">①</b> ITC used</td><td class="mono">274 IGST + 2,931 CGST + 2,931 SGST = 6,136</td><td class="ok">Entry 1: pass ₹6,136</td></tr>
+      <tr><td><b class="cn2">②</b> Regular cash</td><td class="mono">19,695 CGST + 19,969 SGST = 39,664</td><td class="ok">Entry 2: pass ₹39,664</td></tr>
+      <tr><td>RCM routing</td><td class="mono">1,557 + 1,557 = 3,114 cash</td><td class="ok">Route actual challan amount</td></tr></table>
+      <table class="jt" style="margin-top:10px"><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank) — set-off</td><td class="code-td"><span>7800</span></td><td class="amt">6,136.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SA GST Input Tax (Bank)</td><td class="code-td"><span>0200</span></td><td class="empty-amt">—</td><td class="amt">6,136.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank) — cash routing</td><td class="code-td"><span>7800</span></td><td class="amt">39,664.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">39,664.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST Output Tax (Bank) — RCM routing</td><td class="code-td"><span>7800</span></td><td class="amt">3,114.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">3,114.00</td></tr>
+      </tbody></table>
+      <div class="jv-narr">July was the Bank's highest cash payment month (₹39,664 regular + ₹3,114 RCM = ₹42,778 paid via CPIN 2072232735 on 18-Aug-2026). The routing entry on 22-Aug clears both heads to ₹0 in full harmony with GL books.</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narrations</div><code>Entry 1: BANK-GST SET OFF 2026-JULY ADJ.<br>Entry 2: BANK-GST-CASH-PAID-2026-JULY CPIN 2072232735<br>Entry 0: BANK-GST-RCM-CASH-PAID-2026-JULY CPIN 2072232735</code></div>
+    </div>
+  </div>
+
+  <div class="jv-card">
+    <div class="jv-head"><div><h4>Case 6 — Neethi July 2026 · First Regular Cash Payment Month</h4><p>PDF Table 6.1: Section (A) ITC = 18,086 + 18,086 · Section (A) cash = 1,179 + 1,179 · Section (B) RCM = 450 + 450</p></div><span class="etag2 je-neethi">💊 PDF format</span></div>
+    <div class="jv-body">
+      <table class="dt"><tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+      <tr><td><b class="cn1">①</b> ITC used</td><td class="mono">Section (A): 18,086 + 18,086 = 36,172</td><td class="ok">Entry 1: pass ₹36,172</td></tr>
+      <tr><td><b class="cn2">②</b> Regular cash</td><td class="mono">Section (A): 1,179 + 1,179 = 2,358</td><td class="ok">Entry 2: pass ₹2,358</td></tr>
+      <tr><td>RCM routing</td><td class="mono">450 + 450 = 900 RCM cash</td><td class="ok">Entry 0: route ₹900</td></tr></table>
+      <table class="jt" style="margin-top:10px"><tbody>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST OUTPUT TAX — NEETHI STORE</td><td class="code-td"><span>703</span></td><td class="amt">36,172.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>SA GST INPUT TAX — NEETHI STORE</td><td class="code-td"><span>702</span></td><td class="empty-amt">—</td><td class="amt">36,172.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST OUTPUT TAX — NEETHI STORE — cash routing</td><td class="code-td"><span>703</span></td><td class="amt">2,358.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">2,358.00</td></tr>
+        <tr class="dr-row"><td class="ac-name"><span class="dr-badge">DR</span>SL GST OUTPUT TAX — NEETHI STORE — RCM routing</td><td class="code-td"><span>703</span></td><td class="amt">900.00</td><td class="empty-amt">—</td></tr>
+        <tr class="cr-row"><td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt</td><td class="code-td"><span>4445</span></td><td class="empty-amt">—</td><td class="amt">900.00</td></tr>
+      </tbody></table>
+      <div class="jv-narr">For the first time in FY 2026-27, Neethi Pharmacy had to pay regular tax in cash (₹2,358) because July medicine sales output exceeded available purchase ITC. Both Entry 1 and Entry 2 must be passed!</div>
+      <div class="sn-box"><div class="sn-label">Required PacScore Short Narrations</div><code>Entry 1: NEETHI-GST SET OFF 2026-JULY ADJ.<br>Entry 2: NEETHI-GST-CASH-PAID-2026-JULY CPIN 2072232736<br>Entry 0: NEETHI-GST-RCM-CASH-PAID-2026-JULY CPIN 2072232736</code></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ CHECKLIST ═══ -->
+<div class="page" id="pg-checklist">
+  <div class="alert a-info gap"><span class="ai">✅</span><div><strong>Tick as you go each month — resets on reload, or use Print Page for a paper copy.</strong> Items apply per entity unless marked.</div></div>
+  <div class="card">
+    <div class="chk-sec">1st – 8th · Posting &amp; Data to CA</div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">All purchase bills entered in PacScore</div><div class="chk-d">Bank: half GST in purchase head, half in 0200 · Neethi/Depot: full GST to SA I/P · Depot bills same day + copy to CA</div></div></div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">All sales/output posted with full combined GST</div><div class="chk-d">Bank: 18% (not 9%!) to 7800, all branches consolidated · exempt interest income has no GST line</div></div></div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">Sales register + purchase bills + exempt totals sent to CA</div><div class="chk-d">By the 8th so CA can file GSTR-1 by the 11th</div></div></div>
+    <div class="chk-sec">By 18th · RCM Loop (per entity)</div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">Rent paid to landlord + RCM booked</div><div class="chk-d">Bank: ₹1,557 rent-exp + ₹1,557 → 0200 / ₹3,114 → 7800 · Neethi: ₹900 both sides · Depot: ₹694 both sides</div></div></div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">RCM challan paid on portal (cash, never ITC)</div><div class="chk-d">Save PDF receipt — CPIN goes in the narration</div></div></div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">Challan routed same day: Dr SL O/P / Cr 4445 + Dr 4445 / Cr Bank</div><div class="chk-d">This is what makes month-end need no RCM entry</div></div></div>
+    <div class="chk-sec">By 20th · CA Files</div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">GSTR-3B received from CA (PDF or portal access)</div><div class="chk-d">Also note any regular cash challan CA asked for — pay it and book Dr 4445 / Cr Bank</div></div></div>
+    <div class="chk-sec">By 25th · Set-off (per entity)</div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t"><b class="cn1">①</b> and <b class="cn2">②</b> read from the return</div><div class="chk-d">Downloaded PDF, Table 6.1 Section (A): “Tax paid through ITC” total = ① · “Tax paid in cash” total = ②. Ignore Section (B) and the website screen.</div></div></div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">Entry 1 passed (if <b class="cn1">①</b> &gt; 0): Dr SL O/P / Cr SA I/P = <b class="cn1">①</b></div><div class="chk-d">Narration cites GSTR-3B Table 6.1 and the month</div></div></div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">Entry 2 passed (if <b class="cn2">②</b> &gt; 0): Dr SL O/P / Cr 4445 = <b class="cn2">②</b></div><div class="chk-d">Bank-side entry was already done at challan time — don't duplicate</div></div></div>
+    <div class="chk-sec">Health Check</div>
+    <div class="chk" onclick="tog(this)"><input type="checkbox"><div><div class="chk-t">SL O/P = ₹0 · 4445 = ₹0 · SA I/P matches portal Credit Ledger</div><div class="chk-d">Any residue → trace it now while the month is fresh, not at year-end</div></div></div>
+  </div>
+</div>
+
+<!-- ═══ AUDIT YOUR CA ═══ -->
+<div class="page" id="pg-audit">
+  <div class="alert a-info gap"><span class="ai">🕵️</span><div><strong>Checking your CA's work is not an accusation — it is standard practice, and it protects both of you.</strong> The CA prepares 40+ returns a month across clients; a wrong keystroke on one figure is human, not malicious. Your job is to catch it within the month, while it's a 2-minute fix, not at year-end when it's a forensic project (exactly what happened in FY 2025-26).</div></div>
+
+  <div class="gap"><div class="sh">The 5-Minute Monthly Audit — Do This Every Month, Not Just at Year-End</div>
+  <div class="hcard"><div class="hcode">CHECK 1</div><div class="hname">Taxable value: your register vs the filed return</div><div class="hdesc">Run your PacScore "GST Headwise Receipts Summary" for the month and compare its total taxable value + GST to GSTR-1 Table 3.1(a)/3.1.1. These should match exactly, or you should know precisely why not (a genuine late entry, a credit note). April 2026 matched to the paisa — that's the proof this check works. June 2026 didn't (₹9,100 short) — that's the proof this check catches real problems.</div></div>
+  <div class="hcard"><div class="hcode">CHECK 2</div><div class="hname">ITC claimed vs GSTR-2B — never more than 2B shows</div><div class="hdesc">GSTR-3B Table 4A "All other ITC" must not exceed what GSTR-2B lists as available for that month. If it's higher, that's a Rule 36(4) variance (a supplier filed late, or wrong invoices were claimed) — the portal already flags this; don't just note it, ask which invoice and confirm it gets trued up later.</div></div>
+  <div class="hcard"><div class="hcode">CHECK 3</div><div class="hname">Bank only — Rule 38 reversal = exactly 50% of gross ITC</div><div class="hdesc">Table 4B(1) reversal ÷ Table 4A total should be almost exactly 0.50 (including RCM ITC — confirmed from your own April 2026 filing, ₹18,629.96 reversal on the month's gross ITC). If reversal is missing, zero, or not close to half, that reversal did not happen — see the real example below, from your own CA's file.</div></div>
+  <div class="hcard"><div class="hcode">CHECK 4</div><div class="hname">RCM value matches your known fixed rent</div><div class="hdesc">Table 3.1(d) inward RCM taxable value × 18% should equal Bank ₹3,114 / Neethi ₹900 / Depot ₹694 (or whatever the current rent implies). A drifting figure with no rent change is worth a question — this is exactly how the Kunnoth Theru ₹8,800-vs-₹6,900 rent conflict surfaced.</div></div>
+  <div class="hcard"><div class="hcode">CHECK 5</div><div class="hname">Table 6.1 arithmetic closes</div><div class="hdesc">Net Tax Payable = your Check 1 output. ITC-paid (①) + Cash-paid (②) should sum to Net Tax Payable for the (A) row, exactly. If the CA's Section (A) doesn't add up on the return itself, that's a red flag before you even compare to your books.</div></div>
+  </div>
+
+  <div class="gap"><div class="sh">🚩 A Real Miss, Found Inside Your Own CA's Working File</div>
+  <div class="card">
+    <p style="font-size:12.5px;margin-bottom:10px"><code style="background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;color:var(--saf2)">FY_2025-26\4_CA_Files_and_Reports\GST -25-26.xlsx</code> is the CA's own year-end reconciliation workbook. Its Bank sheet has a row that shouldn't need to exist:</p>
+    <table class="jt"><tbody>
+      <tr class="dr-row"><td class="ac-name">Oct-2025 row</td><td class="empty-amt">SGST Reversed</td><td class="amt" style="color:var(--red)">blank</td><td class="note-td">Rule 38's 50% reversal was never entered for October</td></tr>
+      <tr class="cr-row"><td class="ac-name">"March - 50% reversal of Oct-25"</td><td class="empty-amt">SGST + CGST Reversed</td><td class="amt">₹4,790 + ₹4,790</td><td class="note-td">The missed reversal, caught up FIVE MONTHS later in March</td></tr>
+    </tbody></table>
+    <div class="jv-narr" style="margin-top:10px"><strong>What this proves:</strong> your CA's own workpaper title admits the October reversal was skipped and only fixed at year-end catch-up — the exact same pattern of "errors survive until someone does a forensic sweep" that produced the FY 2025-26 mess in your own books. It also proves Check 3 works: a missing/zero reversal in a month is visible the moment you look, rather than five months later.</div>
+    <div class="alert a-ok" style="margin-top:10px;margin-bottom:0"><span class="ai">💡</span><div>This isn't a reason to distrust your CA — it's the reason **verification exists on both sides of this relationship**. Their own file shows they eventually catch their own gaps too. Checking monthly just moves the catch from month 5 to day 1.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">Build Your Own Shadow Reconciliation Sheet</div>
+  <div class="card2"><div class="fb-t">📊 Keep a running table, per GSTIN, per month</div><div class="fb-d">Columns: Taxable Sales · Output CGST/SGST · RCM Sales · Input CGST/SGST · RCM Input · Reversal (Bank) · Net Tax Payable · ① ITC Used · ② Cash Paid. Fill it in from each filed return the day you get it — this is literally what the CA's own <code>GST -25-26.xlsx</code> is, and keeping your own independent copy means you're never dependent on their file being right, or even existing, when you need to check something.</div></div>
+  </div>
+
+  <div class="gap"><div class="sh">🚩 Red Flags — Ask Immediately, Don't Wait for Year-End</div>
+  <div class="grid2">
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚩</span><div>ITC claimed exceeds GSTR-2B for that month (Rule 36(4) warning)</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚩</span><div>Bank's reversal ≠ ~50% of that month's gross ITC</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚩</span><div>Taxable value on the return doesn't match your sales register, with no explanation</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚩</span><div>RCM taxable value drifts from known rent with no rent change communicated</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚩</span><div>A prior month's "Net Tax Payable" changes retroactively without being told why</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚩</span><div>A reversal or figure is silently "caught up" months later with no explanation of which month it belonged to</div></div>
+  </div></div>
+</div>
+
+<!-- ═══ PATH TO SELF-FILING ═══ -->
+<div class="page" id="pg-selffile">
+  <div class="alert a-purple gap"><span class="ai">🎓</span><div><strong>You do not need to become a GST Practitioner to file your own GSTINs.</strong> That certification is only required to file on behalf of <em>other</em> taxpayers. Any registered person (or their authorised signatory) can already log in and file their own returns — the only real barriers are knowledge (which this guide now covers) and authentication (DSC/EVC, below).</div></div>
+
+  <div class="gap"><div class="sh">What Your CA Actually Does For You, Today</div>
+  <table class="dt"><tr><th>Task</th><th>How hard, really?</th><th>Who could do it once confident</th></tr>
+  <tr><td>GSTR-1 (sales report) preparation &amp; filing</td><td class="ok">Mechanical — it's your sales register, GST auto-computed</td><td>You — this is the easiest to take over first</td></tr>
+  <tr><td>GSTR-3B for Neethi / Depot (100% ITC, no Rule 38)</td><td class="ok">Straightforward once you can read 2B and Table 6.1</td><td>You — no special tax judgment needed</td></tr>
+  <tr><td>GSTR-3B for Bank (Rule 38 reversal calculation)</td><td class="warn">Needs the 50%-of-gross-ITC rule applied correctly every month</td><td>You, after a few months shadowing Check 3</td></tr>
+  <tr><td>Rule 36(4) / notice handling, rate classification disputes</td><td class="err">Needs ongoing knowledge of changing law</td><td>Keep the CA for this, even after self-filing</td></tr>
+  <tr><td>GSTR-9 annual return</td><td class="err">Complex, high-stakes, filed once a year</td><td>Keep the CA — the cost of an annual filing is small next to the risk</td></tr>
+  </table></div>
+
+  <div class="gap"><div class="sh">What You'd Need Before Filing Solo</div>
+  <div class="grid2">
+    <div class="card2"><div class="fb-t">🔐 Authentication — DSC or EVC</div><div class="fb-d">Filing requires either a Digital Signature Certificate (common for banks/companies) or Aadhaar-linked EVC (OTP-based, simpler for individuals). Ask your CA which one your authorised signatory already holds — a co-operative bank often already has a DSC for other regulatory filings.</div></div>
+    <div class="card2"><div class="fb-t">🧠 The knowledge checklist</div><div class="fb-d">Comfortably read GSTR-2B · classify RCM correctly · apply Rule 38 for Bank · reconcile GSTR-1 vs 3B vs books monthly (Checks 1–5, left) · know where ① and ② come from without help. If you can pass this project's Monthly Checklist unaided for 2–3 months running, you're most of the way there.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">A Realistic 4-Phase Takeover Plan</div>
+  <div class="card"><div class="tl">
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-when" style="color:var(--green)">Phase 1 · Now</div><div class="tl-title">Shadow-audit — you already started this</div><div class="tl-body">Run Checks 1–5 every month on the CA's filed returns. Zero risk, builds real confidence, catches problems early either way.</div></div>
+    <div class="tl-item"><div class="tl-dot y"></div><div class="tl-when" style="color:var(--saf)">Phase 2</div><div class="tl-title">Take over GSTR-1 filing</div><div class="tl-body">It's just your sales register uploaded — no tax judgment involved. CA continues GSTR-3B for all three GSTINs.</div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-when" style="color:var(--bank)">Phase 3</div><div class="tl-title">Take over GSTR-3B for Neethi and Depot</div><div class="tl-body">Both are 100% ITC, no Rule 38 complexity — the simplest 3B filings to self-manage. CA continues only the Bank's 3B.</div></div>
+    <div class="tl-item"><div class="tl-dot r"></div><div class="tl-when" style="color:var(--red)">Phase 4</div><div class="tl-title">Take over Bank's GSTR-3B</div><div class="tl-body">Once Check 3 (Rule 38 reversal) feels automatic. Retain the CA permanently for GSTR-9, notices, and advisory on anything new (rate changes, new RCM categories) — that ongoing judgment is worth paying for even after you're self-sufficient on the routine filing.</div></div>
+  </div></div></div>
+</div>
+
+<!-- ═══ FUTURE ═══ -->
+<div class="page" id="pg-future">
+  <div class="alert a-warn gap"><span class="ai">📅</span><div><strong>Current combined-head system runs unchanged until 31-Mar-2027.</strong> From 1-Apr-2027: CGST/SGST split heads + per-GSTIN clearing heads. RCM heads deliberately NOT separated. Coordinate with DITS before March 2027 — software must auto-split (₹10 taxable → auto 9% + 9% to two heads).</div></div>
+  <div class="gap"><div class="sh">Head Mapping — What Changes</div>
+  <div class="cf-split">
+    <div class="cf-col cur"><div class="cf-head cur">📅 Until 31-Mar-2027</div><div class="cf-body">
+      <div class="hcard"><div class="hcode">0200 / 702 / 732</div><div class="hname">SA GST Input Tax (combined)</div><div class="hdesc">One head holds CGST+SGST together per entity</div></div>
+      <div class="hcard"><div class="hcode">7800 / 703 / 733</div><div class="hname">SL GST Output Tax (combined)</div><div class="hdesc">One head per entity, RCM included</div></div>
+      <div class="hcard"><div class="hcode">4445</div><div class="hname">GST Paid to Govt (shared)</div><div class="hdesc">All 3 GSTINs use it — narration distinguishes</div></div>
+    </div></div>
+    <div class="cf-col fut"><div class="cf-head fut">🚀 From 1-Apr-2027</div><div class="cf-body">
+      <div class="hcard"><div class="hcode">e.g. 0199 + 0200</div><div class="hname">Input CGST + Input SGST (per entity)</div><div class="hdesc">Bank purchase: 9% in purchase head, 4.5% + 4.5% into the two input heads (= 18% ✓)</div></div>
+      <div class="hcard"><div class="hcode">e.g. 7800 + 7801</div><div class="hname">Output CGST + Output SGST (per entity)</div><div class="hdesc">Software auto-splits 9% + 9% when taxable amount entered</div></div>
+      <div class="hcard new"><div class="hcode">3 new heads</div><div class="hname">GST Clearing — per GSTIN</div><div class="hdesc">Bank / Neethi / Depot each get their own; each independently reconciles to ₹0</div></div>
+      <div class="hcard"><div class="hcode">unchanged</div><div class="hname">RCM stays merged</div><div class="hdesc">No separate RCM heads — small fixed amounts, narration is enough. Revisit only if audit demands.</div></div>
+    </div></div>
+  </div></div>
+  <div class="card"><div class="sh">Transition To-Do (Before March 2027)</div>
+  <table class="dt"><tr><th>#</th><th>Task</th><th>Who</th></tr>
+  <tr><td>1</td><td>Confirm software supports CGST/SGST auto-split on taxable entry; get new head codes assigned</td><td>DITS support</td></tr>
+  <tr><td>2</td><td>Create 3 per-GSTIN clearing heads under Adjusting Heads — Due By</td><td>You + DITS</td></tr>
+  <tr><td>3</td><td>Brief the manual-entry employee: Bank purchases = 9% with purchase head, 4.5% + 4.5% to the two input heads</td><td>You</td></tr>
+  <tr><td>4</td><td>Run March 2027 set-off, verify all heads at expected balances, then cut over on 1-Apr-2027 opening balances</td><td>You + CA</td></tr></table>
+  </div>
+</div>
+
+<!-- ═══ FAQ ═══ -->
+<!-- ═══ MISTAKES & SHORTCUTS ═══ -->
+<div class="page" id="pg-mistakes">
+  <div class="alert a-err gap"><span class="ai">🩹</span><div><strong>These are not textbook examples.</strong> Every mistake below actually happened in these books during FY 2025-26 / 2026-27, and each one cost real money or a painful audit to untangle. Learn them once — they cover ~95% of everything that can go wrong.</div></div>
+
+  <div class="gap"><div class="sh">Nine Real Mistakes From Your Own Books</div>
+  <table class="dt"><tr><th style="width:30px">#</th><th>What happened</th><th>The damage</th><th>The rule that prevents it</th></tr>
+  <tr><td>1</td><td>Set-off entries never posted, all of FY 2025-26</td><td>SA/SL heads grew unchecked all year; needed a forensic year-end cleanup</td><td class="ok">Pass the 2 entries by the 25th, every month, no exceptions</td></tr>
+  <tr><td>2</td><td>Year-end figures posted from a helper spreadsheet with hand-typed numbers</td><td>Neethy set-off over-posted ₹23,673.74; Bank ₹2,385.02</td><td class="ok">Post only numbers you can point to on the filed GSTR-3B</td></tr>
+  <tr><td>3</td><td>IGST forgotten — the spreadsheet had no IGST column</td><td>₹7,196 of Bank ITC miscounted</td><td class="ok">Any month with IGST: use the return's exact figures, never "×2 the CGST"</td></tr>
+  <tr><td>4</td><td>Analysts (human and AI) twice assumed combined heads were CGST-only — the "double-halving" and "SGST missing" false alarms</td><td>A phantom ₹11-lakh missing-purchase scare; wrong correction vouchers nearly posted</td><td class="ok">Your heads are COMBINED — always compare books vs CGST×2 before believing any "gap"</td></tr>
+  <tr><td>5</td><td>June 2026: CA filed ₹9,100 less sales than the books' receipts register</td><td>₹1,638 output GST under-declared, needs true-up in July's GSTR-1</td><td class="ok">Compare the GST Headwise Receipts Summary vs filed GSTR-1 every month — April proved they can match to the paisa</td></tr>
+  <tr><td>6</td><td>Depot bills given to CA but never entered in PacScore</td><td>₹10,260+ of ITC visible on portal, invisible in books</td><td class="ok">Depot two-destination rule: same-day PacScore entry AND CA copy</td></tr>
+  <tr><td>7</td><td>RCM rent double-booked or skipped ("MAY, JUNE" then "JUNE, JULY")</td><td>June 2025 booked twice; April &amp; March never booked</td><td class="ok">One RCM entry per month; narration carries exactly one month's name</td></tr>
+  <tr><td>8</td><td>Challans paid but never routed through SL O/P</td><td>"GST Paid to Govt" grew to ₹4.98 lakh, disconnected from everything</td><td class="ok">Route the same day you pay: Dr SL O/P / Cr 4445</td></tr>
+  <tr><td>9</td><td>Same invoice entered twice under two vendors (Biofield INV-407; Krishna Traders slips 212/238)</td><td>Inflated book ITC, portal mismatch flagged in audit</td><td class="ok">Search the invoice number in PacScore before entering any bill</td></tr>
+  </table></div>
+
+  <div class="gap"><div class="sh">The Never-Do List</div>
+  <div class="grid2">
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚫</span><div><strong>Never post a set-off from a spreadsheet, chat message, or AI answer.</strong> Filed GSTR-3B (or the Credit Ledger) only. This single rule would have prevented the entire FY 2025-26 mess.</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚫</span><div><strong>Never pay RCM using ITC.</strong> The law says cash only. If a challan feels skippable because "we have credit" — it isn't.</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚫</span><div><strong>Never press File / Submit on the portal.</strong> That is the CA's job. Your only portal "action" is creating and paying challans.</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚫</span><div><strong>Never skip the 3-balance health check.</strong> It's 5 minutes. Skipping it is how one bad month silently becomes a bad year.</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚫</span><div><strong>Never keep two "final" versions of anything.</strong> New document replaces old, or old goes to _ARCHIVE. Competing finals caused the wrong number to get posted.</div></div>
+    <div class="alert a-err" style="margin-bottom:0"><span class="ai">🚫</span><div><strong>Never enter a bill without checking it isn't already in.</strong> Invoice number search first — duplicates are audit findings waiting to happen.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">Shortcuts &amp; Memory Aids</div>
+  <div class="grid2">
+    <div class="card2"><div class="fb-t">🔢 The 3 magic numbers: 3,114 · 900 · 694</div><div class="fb-d">Monthly RCM cash for Bank · Neethi · Depot. Subtract from the portal's "Paid through Cash" to get <b class="cn2">②</b>. If the result looks odd, that month's challan differed — check the receipt.</div></div>
+    <div class="card2"><div class="fb-t">✖️2 The doubling rule (and its one trap)</div><div class="fb-d">CA quotes CGST only → post double (combined heads). <b>Trap:</b> any month with IGST on a bill — don't double, copy the return's exact figures.</div></div>
+    <div class="card2"><div class="fb-t">📅 The monthly rhythm: 8 · 11 · 14 · 18 · 20 · 25</div><div class="fb-d">You send → CA files 1 → portal makes 2B → you pay RCM → CA files 3B → you set off. Alternates you-CA-portal-you-CA-you.</div></div>
+    <div class="card2"><div class="fb-t">🕐 The 10-minute year audit</div><div class="fb-d">Credit Ledger PDF → add every Debit row's Total column → must equal the year's total Entry <b class="cn1">①</b>s. This one check caught every error in FY 2025-26 — including two made by AIs.</div></div>
+    <div class="card2"><div class="fb-t">🧾 Standard Short Narration Master Templates (PacScore)</div>
+      <div class="fb-d" style="font-size:11.5px;margin-bottom:8px">Every voucher posted in PacScore requires a standard short narration format:</div>
+      <table class="dt" style="font-size:11.5px">
+        <tr><th>Transaction Type</th><th>Required Standard Short Narration Pattern</th></tr>
+        <tr><td><strong>Set-off (Entry 1)</strong></td><td class="mono" style="color:var(--saf2)">BANK-GST SET OFF 2026-APRIL ADJ.</td></tr>
+        <tr><td><strong>RCM Challan Routing (Entry 0)</strong></td><td class="mono" style="color:var(--saf2)">TO RCM CHALLAN ROUTING 2026-APRIL ADJ. CPIN 1002345678</td></tr>
+        <tr><td><strong>Regular Cash Routing (Entry 2)</strong></td><td class="mono" style="color:var(--saf2)">TO GST REGULAR CASH ROUTING 2026-MAY ADJ. CPIN 1002987654</td></tr>
+        <tr><td><strong>RCM Rent Accrual (Step 2)</strong></td><td class="mono" style="color:var(--saf2)">TO RCM RENT ACCRUAL 2026-APRIL ADJ.</td></tr>
+        <tr><td><strong>Year-End Reversal Voucher</strong></td><td class="mono" style="color:var(--saf2)">TO REVERSAL OF EXCESS FY 2025-26 SET-OFF ADJ.</td></tr>
+      </table>
+    </div>
+    <div class="card2"><div class="fb-t">🧭 Feeling lost?</div><div class="fb-d">Open <b>0_START_HERE.md</b> in the GST-SET-OFF folder — it maps every file and lists exactly what's pending right now.</div></div>
+  </div></div>
+
+  <div class="gap"><div class="sh">60-Second Triage — when a balance won't reach ₹0</div>
+  <div class="card">
+    <div class="flow">
+      <div class="fbox"><div class="fb-who" style="color:var(--red)">SYMPTOM</div><div class="fb-t">SL O/P has a leftover</div><div class="fb-d">Is it exactly 3,114 / 900 / 694 (or a multiple)? → a missed RCM routing. Find the month, pass it.</div></div>
+      <div class="fbox"><div class="fb-who" style="color:var(--red)">SYMPTOM</div><div class="fb-t">Leftover ≈ half of expected</div><div class="fb-d">Before assuming an entry is wrong, check whether YOUR comparison halved a combined figure — the two biggest false alarms in this project were analyst errors, not book errors.</div></div>
+      <div class="fbox"><div class="fb-who" style="color:var(--red)">SYMPTOM</div><div class="fb-t">4445 has a Dr balance</div><div class="fb-d">A challan was paid but never routed. Match the amount to a challan receipt, pass its routing entry.</div></div>
+      <div class="fbox"><div class="fb-who" style="color:var(--red)">SYMPTOM</div><div class="fb-t">SA I/P ≠ Credit Ledger</div><div class="fb-d">Purchase bills missing from books (the Depot disease). Download GSTR-2B, find which bills, enter them.</div></div>
+    </div>
+    <div class="alert a-info" style="margin-top:12px"><span class="ai">💡</span><div>The leftover <b>amount itself is the clue</b> — GST errors are never random numbers. They're always a challan amount, a half, a known bill, or a known month's figure.</div></div>
+  </div></div>
+</div>
+
+<!-- ═══ PORTAL FOR BEGINNERS ═══ -->
+<div class="page" id="pg-portal">
+  <div class="alert a-ok gap"><span class="ai">🛡️</span><div><strong>You cannot break anything by looking.</strong> Everything on the portal is view-and-download. The only "doing" action you ever perform is creating and paying a challan. Never press File or Submit on any return — that's the CA's job.</div></div>
+
+  <div class="card gap"><div class="sh" style="margin-bottom:8px">Logging In</div>
+    <div class="crumb"><b>gst.gov.in</b> → Login (top-right) → username &amp; password → type the captcha</div>
+    <div class="fb-d" style="font-size:12px">Each GSTIN is a <b>separate login</b> — Bank, Neethi and Depot have three different accounts (ask the CA for credentials if you don't have them, then set your own password).</div>
+    <div class="alert a-warn" style="margin-top:10px;margin-bottom:0"><span class="ai">⚠️</span><div><b>Before downloading anything, check the GSTIN shown at the top of the screen.</b> Wrong-entity downloads are how 13 Bank challans ended up misfiled in Neethi's folder in FY 2025-26.</div></div>
+  </div>
+
+  <div class="gap"><div class="sh">The 6 Things You'll Ever Do — exact click paths</div>
+
+  <div class="card2 gap" style="margin-bottom:12px"><div class="fb-t">1 · 📄 View a filed GSTR-3B <span class="badge b-yellow">every month</span></div>
+    <div class="crumb">Services → Returns → <b>Returns Dashboard</b> → pick Financial Year + Month → GSTR-3B tile → <b>View / Download</b></div>
+    <div class="fb-d" style="font-size:12px">In the PDF, go straight to <b>Table 6.1</b>. Section (A) row: "Tax paid through ITC" = <b class="cn1">①</b>, "Tax paid in cash" = <b class="cn2">②</b>. Ignore Section (B) — that's RCM, already closed mid-month. Status must say <b>Filed</b> with an ARN — a Draft is not final.</div></div>
+
+  <div class="card2 gap" style="margin-bottom:12px"><div class="fb-t">2 · 💸 Create &amp; pay the RCM challan <span class="badge b-red">the one thing you DO</span></div>
+    <div class="crumb">Services → Payments → <b>Create Challan</b> → fill CGST + SGST → E-Payment (net-banking) → pay → <b>download receipt PDF</b></div>
+    <div class="fb-d" style="font-size:12px">Amounts: Bank ₹1,557 + ₹1,557 · Neethi ₹450 + ₹450 · Depot ₹347 + ₹347. Save the receipt into the year folder; the CPIN number goes into your routing-entry narration. Done by the 18th.</div></div>
+
+  <div class="card2 gap" style="margin-bottom:12px"><div class="fb-t">3 · 📗 Electronic Credit Ledger <span class="badge b-green">health check + year audit</span></div>
+    <div class="crumb">Services → Ledgers → <b>Electronic Credit Ledger</b> → set From/To dates → view or download PDF/Excel</div>
+    <div class="fb-d" style="font-size:12px">Closing balance = what your SA GST I/P head should show. Date-range 01/04–31/03 gives the whole year in one file for the 10-minute audit.</div></div>
+
+  <div class="card2 gap" style="margin-bottom:12px"><div class="fb-t">4 · 📘 Electronic Cash Ledger <span class="badge b-blue">only if a payment seems lost</span></div>
+    <div class="crumb">Services → Ledgers → <b>Electronic Cash Ledger</b> → date range → view/download</div>
+    <div class="fb-d" style="font-size:12px">Shows every challan deposit and when it was used. If a challan you paid isn't reflected in a return, this is where you trace it.</div></div>
+
+  <div class="card2 gap" style="margin-bottom:12px"><div class="fb-t">5 · 📥 GSTR-2B <span class="badge b-purple">only when chasing missing ITC</span></div>
+    <div class="crumb">Services → Returns → Returns Dashboard → month → <b>GSTR-2B</b> tile → View / Download Excel</div>
+    <div class="fb-d" style="font-size:12px">Lists every supplier bill the govt knows about, vendor by vendor. Use it to find which Depot bills reached the CA but never got into PacScore — or which supplier never uploaded your invoice.</div></div>
+
+  <div class="card2" style="margin-bottom:12px"><div class="fb-t">6 · 🔔 Check for notices <span class="badge b-yellow">a 30-second monthly glance</span></div>
+    <div class="crumb">Services → User Services → <b>View Notices and Orders</b></div>
+    <div class="fb-d" style="font-size:12px">Usually empty. If anything appears, screenshot it and send to the CA the same day — never ignore, never reply yourself.</div></div>
+  </div>
+
+  <div class="card"><div class="sh" style="margin-bottom:8px">Saving Downloads — one habit</div>
+    <div class="fb-d" style="font-size:12px">Name files so they sort themselves: <span class="mono" style="color:var(--saf2)">GSTR3B_L1Z1_2026-05.pdf</span> · <span class="mono" style="color:var(--saf2)">CreditLedger_L3ZZ_FY2026-27.pdf</span> · <span class="mono" style="color:var(--saf2)">Challan_L2Z0_2026-05_CPIN12345.pdf</span> — and drop them straight into the financial-year folder. Consistent naming is what made this year's audit findable instead of a shoebox hunt.</div>
+  </div>
+</div>
+
+<div class="page" id="pg-faq">
+  <div class="faq"><div class="faq-q" onclick="fq(this)">Do I need a separate set-off entry for RCM?<span class="chev">▼</span></div><div class="faq-a"><strong>No — ever.</strong> RCM is legally cash-only (ITC cannot pay it), so it never waits for month-end set-off. The mid-month routing entry (Dr SL O/P / Cr 4445 at challan time) closes it completely. The RCM ITC it generates just joins your normal SA I/P pool and gets consumed through ordinary Entry 1. If SL O/P shows a leftover after Entry 1 + 2, the likeliest cause is a <em>missed routing entry</em> from some month — find it and pass it.</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">Why doesn't the Bank have a 50% reversal entry at month-end?<span class="chev">▼</span></div><div class="faq-a">Because the 50% split happens <strong>at entry time</strong>: half of every invoice's GST is absorbed into the purchase/expense head, only the eligible half touches 0200. The books never hold ineligible ITC, so there's nothing to reverse. (Other banks book 100% then reverse 50% as a second entry — same final position, just a different audit-trail style. Your CA's GSTR-3B does show the gross-then-reverse presentation in Table 4, but that's the return's format, not your books' problem.)</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">Table 6.1 or Electronic Ledgers — which is the source of truth for <b class="cn1">①</b> and <b class="cn2">②</b>?<span class="chev">▼</span></div><div class="faq-a"><strong>The filed GSTR-3B (Table 6.1 / portal 6.1 summary).</strong> It's a per-month statement designed exactly for this. Ledgers are running annual accounts — fine for verifying afterwards (Credit Ledger debit on filing date = <b class="cn1">①</b>) and for the year-in-one-file download, but reading set-off amounts from them invites month-mixing errors.</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">Portal shows only "Paid through Cash / Credit" — where are Sections A and B?<span class="chev">▼</span></div><div class="faq-a">The online summary collapses them. Recover the split yourself: <code><b class="cn1">①</b> = Paid through Credit</code> (RCM can't be paid by credit, so it's pure regular ITC) and <code><b class="cn2">②</b> = Paid through Cash − known RCM</code> (Bank 3,114 · Neethi 900 · Depot 694). The downloadable PDF still shows A/B explicitly if you prefer it.</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">Auditor asks: why did "GST Paid to Govt" move from Contingencies to Adjusting Heads — Due To or Due By?<span class="chev">▼</span></div><div class="faq-a"><strong>Due By.</strong> Script: "This head records completed challan payments awaiting adjustment against output liability — a clearing account, not an uncertain obligation, so Contingencies was a misfit. It carries a debit balance (cash out, pending matching), which under our pro forma is Adjusting Heads — Due By. With the monthly set-off process now in place the balance stays near ₹0, confirming its transient clearing nature." Have the current 4445 balance ready as the concrete number.</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">The return shows a Rule 36(4) variance warning — what do I do?<span class="chev">▼</span></div><div class="faq-a">It means ITC claimed exceeded what GSTR-2B auto-populated — usually a supplier filed late. Ask CA: <strong>which invoice, and was it trued-up in a later month?</strong> Nothing changes in your journal entries, but keep the CA's answer on file — unexplained upward variance is a standard audit flag. (Your Depot April 2026 return carries this warning.)</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">Some banks say they only use the Electronic Credit Ledger and no GST heads at all — is that wrong?<span class="chev">▼</span></div><div class="faq-a">It's a valid <strong>simpler alternative</strong>: absorb all GST into cost, keep one payable head, let the portal be the ITC record. You chose the detailed method (separate I/P and O/P heads), which gives better in-book visibility — but only works if the set-off entries are actually passed monthly. Doing the detailed setup without set-off (the old situation) is the worst of both worlds.</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">SL O/P still has a balance after both entries — what's wrong?<span class="chev">▼</span></div><div class="faq-a">Trace in this order: (1) a month's <strong>RCM routing missed</strong> — residue will be a multiple of 3,114/900/694; (2) <strong>sales in books CA never filed</strong> — compare book output vs return 3.1; (3) <strong>SGST half missing on output entries</strong> — residue ≈ half of expected (the FY 26-27 HO issue); (4) branch output not consolidated. The residue amount itself usually identifies the cause.</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">How do I pull a whole year of portal data at once?<span class="chev">▼</span></div><div class="faq-a">Three ways: <strong>(1)</strong> Services → Ledgers → Electronic Cash/Credit Ledger → date range 01/04–31/03 → one file per ledger; <strong>(2)</strong> GSTR-9 annual return (CA files by December) — every figure consolidated; <strong>(3)</strong> Returns Dashboard → select FY → all 12 filings listed for click-through.</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">CA quotes me only the CGST figure — what do I post?<span class="chev">▼</span></div><div class="faq-a">Double it. CGST always equals SGST for your intra-state transactions, and your combined heads hold both together. CGST ₹153.10 → post ₹306.19 combined (use the return's exact combined figure when paise differ due to rounding).</div></div>
+  <div class="faq"><div class="faq-q" onclick="fq(this)">A bill has IGST on it — what changes?<span class="chev">▼</span></div><div class="faq-a"><strong>Booking: nothing changes.</strong> The IGST amount joins the same SA GST I/P head (Bank still keeps only half). <strong>Reading the return: everything changes for that month</strong> — IGST makes CGST ≠ SGST in the payment table, so the "double the CGST" shortcut breaks. Copy the return's exact figures instead. This exact omission (an IGST-blind spreadsheet) miscounted ₹7,196 of Bank ITC in FY 2025-26 — IGST shows up on out-of-state bills like software licences and some insurance.</div></div>
+</div>
+
+</div></div>
+
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"><span>✓</span> <span id="toast-msg">Copied to clipboard!</span></div>
+
+<!-- GST Calculator Modal -->
+<div id="calc-modal" class="modal-overlay" onclick="if(event.target===this)toggleCalcModal()">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>🧮 Interactive GST &amp; Rule 38 Calculator</h3>
+      <button class="modal-close" onclick="toggleCalcModal()">✕</button>
+    </div>
+    <div class="field">
+      <label>Business Unit</label>
+      <select id="calc-entity" onchange="computeGST()">
+        <option value="bank">Bank HO / Branches (50% Rule 38)</option>
+        <option value="neethi">Neethi Medical Store (100% ITC)</option>
+        <option value="depot">Fertilizer/Manure Depot (100% ITC)</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:14px;margin-bottom:12px;font-size:12px;background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:7px;border:1px solid var(--bdr)">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600">
+        <input type="radio" name="calc-mode" id="calc-mode-excl" value="excl" checked onchange="computeGST()"> Exclusive of GST (Add GST)
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;color:var(--saf2)">
+        <input type="radio" name="calc-mode" id="calc-mode-incl" value="incl" onchange="computeGST()"> Inclusive of GST (Reverse calc)
+      </label>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label id="lbl-calc-amt">Invoice Amount (₹)</label>
+        <input type="text" id="calc-amt" class="calc-input" value="10000" oninput="computeGST()" placeholder="e.g. 10000 or 5000+2500">
+      </div>
+      <div class="field">
+        <label>GST Rate</label>
+        <select id="calc-rate" onchange="computeGST()">
+          <option value="18">18% (Services/Rent)</option>
+          <option value="12">12% (Medicines)</option>
+          <option value="5">5% (Fertilizer)</option>
+        </select>
+      </div>
+    </div>
+    <div class="card2" style="margin-top:10px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Calculation Breakup</div>
+      <table class="dt" style="font-size:12px">
+        <tr><td>Calculated Taxable Base:</td><td class="mono" id="c-taxable" style="color:var(--tx);font-weight:700">₹10,000.00</td></tr>
+        <tr><td>Total Invoice Value:</td><td class="mono" id="c-tot" style="font-weight:700">₹11,800.00</td></tr>
+        <tr><td>Total Combined GST:</td><td class="mono" id="c-gst" style="color:var(--saf)">₹1,800.00</td></tr>
+        <tr><td>CGST (half) / SGST (half):</td><td class="mono" id="c-halves">₹900.00 each</td></tr>
+        <tr style="background:rgba(74,222,128,0.08)"><td><strong>Eligible ITC Head Balance:</strong></td><td class="mono" id="c-itc" style="color:var(--green);font-weight:800">₹900.00</td></tr>
+        <tr id="c-exp-row" style="background:rgba(248,113,113,0.08)"><td>Ineligible Expense Portion (Bank):</td><td class="mono" id="c-exp" style="color:var(--red);font-weight:800">₹900.00</td></tr>
+      </table>
+    </div>
+    <div class="sn-box" style="margin-top:14px" onclick="copyText(document.getElementById('c-narr').textContent)">
+      <div class="sn-label">Generated Narration Snippet</div>
+      <code id="c-narr">TO GST PURCHASE BILL APR-2026 ADJ.</code>
+    </div>
+  </div>
+</div>
+
+<script>
+const pages={home:'Overview & Golden Rules',basics:'GST in Plain Words',heads:'Account Heads',purchase:'Purchase Bills',sales:'Sales / Output',rcm:'Rent + RCM',fetch:'Getting the Numbers',setoff:'Set-off Entries',setoffcalc:'Set-Off Generator',examples:'Worked Examples',checklist:'Monthly Checklist',mistakes:'Mistakes & Shortcuts',portal:'GST Portal for Beginners',audit:'Audit Your CA',selffile:'Path to Self-Filing',future:'FY 2027-28 Transition',faq:'FAQ & Audit Answers'};
+
+function nav(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('pg-'+id);
+  if(pg)pg.classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('pg-title').textContent=pages[id]||id;
+  document.querySelector('.main').scrollTop=0;window.scrollTo(0,0);
+  if(id==='setoffcalc')runSetoffGenerator();
+}
+
+function stab(pfx,id,btn){
+  const t=document.getElementById(pfx+'-'+id);
+  if(!t)return;
+  t.parentElement.querySelectorAll(':scope > .tc').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  if(btn){btn.closest('.tabs').querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+}
+
+function tog(el){
+  const cb=el.querySelector('input');
+  if(event.target!==cb)cb.checked=!cb.checked;
+  el.classList.toggle('done',cb.checked);
+}
+
+function fq(q){q.parentElement.classList.toggle('open');}
+
+function filterMenu(query){
+  const q=query.toLowerCase().trim();
+  document.querySelectorAll('.nb').forEach(b=>{
+    const txt=b.textContent.toLowerCase();
+    b.style.display=txt.includes(q)?'flex':'none';
+  });
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  if(!t)return;
+  document.getElementById('toast-msg').textContent=msg;
+  t.style.display='flex';
+  setTimeout(()=>{t.style.display='none';},2200);
+}
+
+function copyText(str){
+  if(!str)return;
+  const clean=str.replace(/📋 Copy/g,'').trim();
+  navigator.clipboard.writeText(clean).then(()=>{
+    showToast('Copied: "'+clean+'"');
+  }).catch(()=>{
+    showToast('Copied to clipboard!');
+  });
+}
+
+function copyVoucherCard(btn){
+  const card=btn.closest('.jv-card');
+  if(!card)return;
+  const titleEl=card.querySelector('h4');
+  const title=titleEl?titleEl.textContent.trim():'JOURNAL VOUCHER';
+  const rows=card.querySelectorAll('tbody tr');
+  let voucherText=`[${title}]\n`;
+  rows.forEach(r=>{
+    const cells=r.querySelectorAll('td');
+    if(cells.length>=4 && !r.classList.contains('total-row')){
+      const name=cells[0].textContent.replace(/DR|CR/g,'').trim();
+      const codeEl=cells[1].querySelector('span')||cells[1];
+      const code=codeEl.textContent.trim();
+      const dr=cells[2].textContent.trim();
+      const cr=cells[3].textContent.trim();
+      if(dr!=='—') voucherText+=`Dr. ${name} (${code}) : ₹${dr}\n`;
+      if(cr!=='—') voucherText+=`Cr. ${name} (${code}) : ₹${cr}\n`;
+    }
+  });
+  const narrBox=card.querySelector('.sn-box code');
+  if(narrBox) voucherText+=`Narration: ${narrBox.textContent.trim()}\n`;
+  copyText(voucherText);
+}
+
+// Inline Math Expression Evaluator
+function evaluateMathExpr(expr){
+  if(!expr)return 0;
+  const str=expr.toString().trim();
+  if(!str)return 0;
+  if(!isNaN(str)&&isFinite(str))return parseFloat(str);
+  const sanitized=str.replace(/[^0-9.\+\-\*/\(\)\s]/g,'');
+  if(!sanitized.trim())return 0;
+  try{
+    const result=new Function(`'use strict'; return (${sanitized})`)();
+    return isNaN(result)||!isFinite(result)?0:parseFloat(result);
+  }catch(e){
+    return 0;
+  }
+}
+
+function toggleCalcModal(){
+  const m=document.getElementById('calc-modal');
+  m.classList.toggle('active');
+  if(m.classList.contains('active'))computeGST();
+}
+
+function computeGST(){
+  const entity=document.getElementById('calc-entity').value;
+  const rawAmt=document.getElementById('calc-amt').value;
+  const amt=evaluateMathExpr(rawAmt);
+  const rate=parseFloat(document.getElementById('calc-rate').value)||18;
+  const isInclusive=document.getElementById('calc-mode-incl')&&document.getElementById('calc-mode-incl').checked;
+
+  let taxable=amt;
+  let totalGst=amt*(rate/100);
+
+  if(isInclusive){
+    taxable=amt/(1+(rate/100));
+    totalGst=amt-taxable;
+  }
+
+  const halfGst=totalGst/2;
+  let eligibleItc=totalGst;
+  let expPortion=0;
+
+  if(entity==='bank'){
+    eligibleItc=totalGst/2;
+    expPortion=totalGst/2;
+    document.getElementById('c-exp-row').style.display='table-row';
+  } else {
+    document.getElementById('c-exp-row').style.display='none';
+  }
+
+  const invTotal=isInclusive?amt:amt+totalGst;
+
+  if(document.getElementById('c-taxable')) document.getElementById('c-taxable').textContent='₹'+taxable.toLocaleString('en-IN',{minimumFractionDigits:2});
+  document.getElementById('c-tot').textContent='₹'+invTotal.toLocaleString('en-IN',{minimumFractionDigits:2});
+  document.getElementById('c-gst').textContent='₹'+totalGst.toLocaleString('en-IN',{minimumFractionDigits:2});
+  document.getElementById('c-halves').textContent='₹'+halfGst.toLocaleString('en-IN',{minimumFractionDigits:2})+' each';
+  document.getElementById('c-itc').textContent='₹'+eligibleItc.toLocaleString('en-IN',{minimumFractionDigits:2});
+  document.getElementById('c-exp').textContent='₹'+expPortion.toLocaleString('en-IN',{minimumFractionDigits:2});
+
+  const headCode=entity==='bank'?'0200':(entity==='neethi'?'702':'732');
+  document.getElementById('c-narr').textContent=`TO GST PURCHASE BILL TAXABLE ₹${taxable.toLocaleString('en-IN',{minimumFractionDigits:2})} (ITC Head ${headCode}: ₹${eligibleItc.toLocaleString('en-IN',{minimumFractionDigits:2})})`;
+}
+
+// Auto attach copy events to all .sn-box elements
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.sn-box').forEach(box=>{
+    box.addEventListener('click',function(e){
+      const code=this.querySelector('code');
+      if(code)copyText(code.textContent);
+    });
+  });
+  runSetoffGenerator();
+});
+
+const GUIDE_PRESETS={
+  'bank-apr26': { entity:'bank', month:'2026-APRIL', itc:'186+11010+11196', cash:'0', rcm:'3114', rcmcpin:'2065126670', regcpin:'' },
+  'bank-may26': { entity:'bank', month:'2026-MAY', itc:'541+14224+14038', cash:'1236+1963', rcm:'3114', rcmcpin:'2067109044', regcpin:'2067109044' },
+  'bank-jun26': { entity:'bank', month:'2026-JUNE', itc:'1842+4826+4826', cash:'12000+13842', rcm:'3157', rcmcpin:'2069092457', regcpin:'2069092457' },
+  'bank-jul26': { entity:'bank', month:'2026-JULY', itc:'274+2931+2931', cash:'19695+19969', rcm:'3114', rcmcpin:'2072232735', regcpin:'2072232735' },
+  'neethi-apr26': { entity:'neethi', month:'2026-APRIL', itc:'16776+16776', cash:'0', rcm:'900', rcmcpin:'2065126671', regcpin:'' },
+  'neethi-jul26': { entity:'neethi', month:'2026-JULY', itc:'18086+18086', cash:'1179+1179', rcm:'900', rcmcpin:'2072232736', regcpin:'2072232736' },
+  'depot-jul26': { entity:'depot', month:'2026-JULY', itc:'855+855', cash:'0', rcm:'694', rcmcpin:'2072232737', regcpin:'' },
+  'rev-neethi25': { entity:'neethi', month:'FY 2025-26', isReversal:true, revAmount:23673.74, revNarration:'TO REVERSAL OF EXCESS FY 2025-26 SET-OFF ADJ.' },
+  'rev-bank25': { entity:'bank', month:'FY 2025-26', isReversal:true, revAmount:2385.02, revNarration:'TO REVERSAL OF EXCESS FY 2025-26 SET-OFF ADJ.' }
+};
+
+function loadGuidePreset(key){
+  const p=GUIDE_PRESETS[key];
+  if(!p)return;
+  if(p.isReversal){
+    renderReversalVoucher(p);
+    return;
+  }
+  document.getElementById('soc-entity').value=p.entity;
+  document.getElementById('soc-month').value=p.month;
+  document.getElementById('soc-itc').value=p.itc;
+  document.getElementById('soc-totcash').value=p.cash;
+  document.getElementById('soc-rcmcash').value=p.rcm;
+  document.getElementById('soc-rcmcpin').value=p.rcmcpin||'';
+  document.getElementById('soc-regcpin').value=p.regcpin||'';
+  runSetoffGenerator();
+  showToast('Loaded preset: '+p.month+' ('+p.entity.toUpperCase()+')');
+}
+
+function renderReversalVoucher(p){
+  document.getElementById('soc-entity').value=p.entity;
+  document.getElementById('soc-month').value='FY 2025-26';
+  document.getElementById('soc-itc').value='0';
+  document.getElementById('soc-totcash').value='0';
+  document.getElementById('soc-rcmcash').value='0';
+
+  if(document.getElementById('kpi-soc-1'))document.getElementById('kpi-soc-1').textContent='₹0.00';
+  if(document.getElementById('kpi-soc-rcm'))document.getElementById('kpi-soc-rcm').textContent='₹0.00';
+  if(document.getElementById('kpi-soc-2'))document.getElementById('kpi-soc-2').textContent='₹0.00';
+  if(document.getElementById('kpi-soc-status'))document.getElementById('kpi-soc-status').textContent='Reversal Active';
+
+  let saCode=p.entity==='bank'?'0200':'702';
+  let saName=p.entity==='bank'?'SA GST INPUT TAX (Bank)':'SA GST INPUT TAX — NEETHI STORE';
+  let slCode=p.entity==='bank'?'7800':'703';
+  let slName=p.entity==='bank'?'SL GST OUTPUT TAX — 18% (Bank)':'SL GST OUTPUT TAX — NEETHI STORE';
+  let prefix=p.entity==='bank'?'BANK':'NEETHI';
+  let amt=p.revAmount;
+
+  const container=document.getElementById('soc-vouchers-container');
+  if(!container)return;
+
+  container.innerHTML=`
+    <div class="jv-card" style="border:1.5px solid var(--red);box-shadow:0 4px 14px rgba(248,113,113,0.15)">
+      <div class="jv-head" style="background:rgba(248,113,113,0.06)">
+        <div>
+          <h4 style="color:var(--red)">✅ Prior-Period Reversal Voucher — FY 2025-26 Close-Out</h4>
+          <p>${prefix} · Cleared and Verified for FY 2026-27 Posting</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button type="button" class="btn" style="background:rgba(255,255,255,0.08);border:1px solid var(--bdr2);color:var(--tx);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer" onclick="copyVoucherCard(this)">📋 Copy PacScore Voucher</button>
+          <span class="etag2 b-red">Reversal ₹${amt.toLocaleString('en-IN',{minimumFractionDigits:2})}</span>
+        </div>
+      </div>
+      <div class="jv-body">
+        <table class="jt">
+          <thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr class="dr-row">
+              <td class="ac-name"><span class="dr-badge">DR</span>${saName}</td>
+              <td class="code-td"><span>${saCode}</span></td>
+              <td class="amt">${amt.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+              <td class="empty-amt">—</td>
+              <td class="note-td">Debits SA I/P to restore over-credited set-off</td>
+            </tr>
+            <tr class="cr-row">
+              <td class="ac-name"><span class="cr-badge">CR</span>${slName}</td>
+              <td class="code-td"><span>${slCode}</span></td>
+              <td class="empty-amt">—</td>
+              <td class="amt">${amt.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+              <td class="note-td">Credits SL O/P to reverse excess absorption</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="2">TOTAL</td>
+              <td class="amt">${amt.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+              <td class="amt">${amt.toLocaleString('en-IN',{minimumFractionDigits:2})} ✓</td>
+              <td class="note-td" style="color:var(--green)">Balanced Reversal</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="sn-box" style="margin-top:10px" onclick="copyText('${p.revNarration}')">
+          <div class="sn-label">Required PacScore Short Narration (Click to Copy)</div>
+          <code>${p.revNarration}</code>
+        </div>
+      </div>
+    </div>
+  `;
+  showToast('Loaded Prior-Period Reversal: '+prefix);
+}
+
+function onEntityChange(){
+  const entity=document.getElementById('soc-entity').value;
+  const rcmInput=document.getElementById('soc-rcmcash');
+  if(entity==='bank')rcmInput.value=3114;
+  else if(entity==='neethi')rcmInput.value=900;
+  else if(entity==='depot')rcmInput.value=694;
+  runSetoffGenerator();
+}
+
+function runSetoffGenerator(){
+  const entity=document.getElementById('soc-entity')?document.getElementById('soc-entity').value:'bank';
+  const month=document.getElementById('soc-month')?document.getElementById('soc-month').value.toUpperCase():'2026-APRIL';
+  const itc=evaluateMathExpr(document.getElementById('soc-itc')?document.getElementById('soc-itc').value:0);
+  const totcash=evaluateMathExpr(document.getElementById('soc-totcash')?document.getElementById('soc-totcash').value:0);
+  const rcmcash=evaluateMathExpr(document.getElementById('soc-rcmcash')?document.getElementById('soc-rcmcash').value:0);
+  const rcmcpin=document.getElementById('soc-rcmcpin')?document.getElementById('soc-rcmcpin').value.trim():'';
+  const regcpin=document.getElementById('soc-regcpin')?document.getElementById('soc-regcpin').value.trim():'';
+
+  const regcash=totcash; // (2) read directly from PDF Section (A) Tax paid in cash
+
+  // Update KPIs
+  if(document.getElementById('kpi-soc-1'))document.getElementById('kpi-soc-1').textContent='₹'+itc.toLocaleString('en-IN',{minimumFractionDigits:2});
+  if(document.getElementById('kpi-soc-rcm'))document.getElementById('kpi-soc-rcm').textContent='₹'+rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2});
+  if(document.getElementById('kpi-soc-2'))document.getElementById('kpi-soc-2').textContent='₹'+regcash.toLocaleString('en-IN',{minimumFractionDigits:2});
+  if(document.getElementById('kpi-soc-status'))document.getElementById('kpi-soc-status').textContent='Ready to Post';
+
+  let saCode='0200', saName='SA GST INPUT TAX (Bank)';
+  let slCode='7800', slName='SL GST OUTPUT TAX — 18% (Bank)';
+  let tagClass='je-bank', entityTitle='Bank HO / Branches', prefix='BANK';
+
+  if(entity==='neethi'){
+    saCode='702'; saName='SA GST INPUT TAX — NEETHI STORE';
+    slCode='703'; slName='SL GST OUTPUT TAX — NEETHI STORE';
+    tagClass='je-neethi'; entityTitle='Neethi Medical Store'; prefix='NEETHI';
+  } else if(entity==='depot'){
+    saCode='732'; saName='SA GST INPUT TAX - MANURE';
+    slCode='733'; slName='SL GST OUTPUT TAX - MANURE';
+    tagClass='je-depot'; entityTitle='Fertilizer/Manure Depot'; prefix='MANURE';
+  }
+
+  const container=document.getElementById('soc-vouchers-container');
+  if(!container)return;
+
+  let html='';
+
+  // Entry 0: RCM Routing & Payment
+  if(rcmcash>0){
+    const rcmCpinSuffix=rcmcpin?` CPIN ${rcmcpin}`:'';
+    html+=`
+      <div class="jv-card">
+        <div class="jv-head">
+          <div>
+            <h4>Entry 0 — RCM Rent Challan Routing &amp; Payment (Mid-Month / ~18th)</h4>
+            <p>${entityTitle} · Challan Payment &amp; Liability Routing</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button type="button" class="btn" style="background:rgba(255,255,255,0.08);border:1px solid var(--bdr2);color:var(--tx);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer" onclick="copyVoucherCard(this)">📋 Copy PacScore Voucher</button>
+            <span class="etag2 ${tagClass}">Mid-Month · RCM ₹${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</span>
+          </div>
+        </div>
+        <div class="jv-body">
+          <table class="jt">
+            <thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Leg / Purpose</th></tr></thead>
+            <tbody>
+              <tr class="dr-row">
+                <td class="ac-name"><span class="dr-badge">DR</span>${slName}</td>
+                <td class="code-td"><span>${slCode}</span></td>
+                <td class="amt">${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="empty-amt">—</td>
+                <td class="note-td">Routing leg: clears RCM liability from SL O/P</td>
+              </tr>
+              <tr class="cr-row">
+                <td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt (Clearing)</td>
+                <td class="code-td"><span>4445</span></td>
+                <td class="empty-amt">—</td>
+                <td class="amt">${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="note-td">Routing credit leg</td>
+              </tr>
+              <tr class="dr-row">
+                <td class="ac-name"><span class="dr-badge">DR</span>GST Paid to Govt (Clearing)</td>
+                <td class="code-td"><span>4445</span></td>
+                <td class="amt">${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="empty-amt">—</td>
+                <td class="note-td">Payment leg: challan deposit to Govt</td>
+              </tr>
+              <tr class="cr-row">
+                <td class="ac-name"><span class="cr-badge">CR</span>Bank Account A/c</td>
+                <td class="code-td"><span>711</span></td>
+                <td class="empty-amt">—</td>
+                <td class="amt">${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="note-td">Money paid out from Bank Operating A/c</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="sn-box" style="margin-top:10px" onclick="copyText('${prefix}-GST-RCM-CASH-PAID-${month}${rcmCpinSuffix}')">
+            <div class="sn-label">Routing Leg Narration (Click to Copy)</div>
+            <code>${prefix}-GST-RCM-CASH-PAID-${month}${rcmCpinSuffix}</code>
+          </div>
+          <div class="sn-box" style="margin-top:6px" onclick="copyText('${prefix}-GST-RCM-CHALLAN-${month}${rcmCpinSuffix}')">
+            <div class="sn-label">Payment Leg Narration (Click to Copy)</div>
+            <code>${prefix}-GST-RCM-CHALLAN-${month}${rcmCpinSuffix}</code>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Entry 1: Monthly Set-Off
+  if(itc>0){
+    html+=`
+      <div class="jv-card">
+        <div class="jv-head">
+          <div>
+            <h4>Entry 1 — Monthly GST Set-Off (ITC Absorbs Output Tax)</h4>
+            <p>Pass by 25th after GSTR-3B filing · ① Paid through Credit</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button type="button" class="btn" style="background:rgba(255,255,255,0.08);border:1px solid var(--bdr2);color:var(--tx);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer" onclick="copyVoucherCard(this)">📋 Copy PacScore Voucher</button>
+            <span class="etag2 je-all">By 25th · Set-Off ① ₹${itc.toLocaleString('en-IN',{minimumFractionDigits:2})}</span>
+          </div>
+        </div>
+        <div class="jv-body">
+          <table class="jt">
+            <thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr class="dr-row">
+                <td class="ac-name"><span class="dr-badge">DR</span>${slName}</td>
+                <td class="code-td"><span>${slCode}</span></td>
+                <td class="amt">${itc.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="empty-amt">—</td>
+                <td class="note-td">Debits SL O/P to reduce liability</td>
+              </tr>
+              <tr class="cr-row">
+                <td class="ac-name"><span class="cr-badge">CR</span>${saName}</td>
+                <td class="code-td"><span>${saCode}</span></td>
+                <td class="empty-amt">—</td>
+                <td class="amt">${itc.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="note-td">Credits SA I/P to consume available ITC pool</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="2">TOTAL</td>
+                <td class="amt">${itc.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="amt">${itc.toLocaleString('en-IN',{minimumFractionDigits:2})} ✓</td>
+                <td class="note-td" style="color:var(--green)">Balanced</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="sn-box" style="margin-top:10px" onclick="copyText('${prefix}-GST SET OFF ${month} ADJ.')">
+            <div class="sn-label">Entry 1 Narration (Click to Copy)</div>
+            <code>${prefix}-GST SET OFF ${month} ADJ.</code>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Entry 2: Regular Cash Routing (Only if regcash > 0)
+  if(regcash>0){
+    const regCpinSuffix=regcpin?` CPIN ${regcpin}`:'';
+    html+=`
+      <div class="jv-card">
+        <div class="jv-head">
+          <div>
+            <h4>Entry 2 — Regular Cash Challan Routing</h4>
+            <p>Pass by 25th · Output exceeded ITC · ② = PDF Section (A) “Tax paid in cash”</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button type="button" class="btn" style="background:rgba(255,255,255,0.08);border:1px solid var(--bdr2);color:var(--tx);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer" onclick="copyVoucherCard(this)">📋 Copy PacScore Voucher</button>
+            <span class="etag2 ${tagClass}">By 25th · Cash ② ₹${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</span>
+          </div>
+        </div>
+        <div class="jv-body">
+          <table class="jt">
+            <thead><tr><th>Account Head</th><th>Code</th><th class="amt-h">Debit ₹</th><th class="amt-h">Credit ₹</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr class="dr-row">
+                <td class="ac-name"><span class="dr-badge">DR</span>${slName}</td>
+                <td class="code-td"><span>${slCode}</span></td>
+                <td class="amt">${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="empty-amt">—</td>
+                <td class="note-td">Debits remaining SL O/P output liability</td>
+              </tr>
+              <tr class="cr-row">
+                <td class="ac-name"><span class="cr-badge">CR</span>GST Paid to Govt (Clearing)</td>
+                <td class="code-td"><span>4445</span></td>
+                <td class="empty-amt">—</td>
+                <td class="amt">${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="note-td">Credits 4445 to clear the regular cash deposit</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="2">TOTAL</td>
+                <td class="amt">${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+                <td class="amt">${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})} ✓</td>
+                <td class="note-td" style="color:var(--green)">Balanced</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="jv-narr" style="margin-top:8px"><strong>Bank payment entry:</strong> Dr 4445 / Cr Bank Head 711 ₹${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})} was already passed on the regular challan payment date${regCpinSuffix}.</div>
+          <div class="sn-box" style="margin-top:10px" onclick="copyText('${prefix}-GST-CASH-PAID-${month}${regCpinSuffix}')">
+            <div class="sn-label">Entry 2 Narration (Click to Copy)</div>
+            <code>${prefix}-GST-CASH-PAID-${month}${regCpinSuffix}</code>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  container.innerHTML=html;
+}
+
+function copyAllSetoffText(){
+  const entity=document.getElementById('soc-entity')?document.getElementById('soc-entity').value:'bank';
+  const month=document.getElementById('soc-month')?document.getElementById('soc-month').value.toUpperCase():'2026-APRIL';
+  const itc=evaluateMathExpr(document.getElementById('soc-itc')?document.getElementById('soc-itc').value:0);
+  const totcash=evaluateMathExpr(document.getElementById('soc-totcash')?document.getElementById('soc-totcash').value:0);
+  const rcmcash=evaluateMathExpr(document.getElementById('soc-rcmcash')?document.getElementById('soc-rcmcash').value:0);
+  const rcmcpin=document.getElementById('soc-rcmcpin')?document.getElementById('soc-rcmcpin').value.trim():'';
+  const regcpin=document.getElementById('soc-regcpin')?document.getElementById('soc-regcpin').value.trim():'';
+
+  const regcash=totcash;
+  let saCode='0200', slCode='7800', eName='Bank HO', prefix='BANK';
+  if(entity==='neethi'){saCode='702';slCode='703';eName='Neethi Store';prefix='NEETHI';}
+  else if(entity==='depot'){saCode='732';slCode='733';eName='Manure Depot';prefix='MANURE';}
+
+  let text=`=== DITS PACSCORE GST SET-OFF VOUCHERS: ${eName} (${month}) ===\n\n`;
+  if(rcmcash>0){
+    text+=`ENTRY 0: RCM ROUTING & PAYMENT (Mid-Month)\n`;
+    text+=`1) Dr SL O/P (${slCode}) ₹${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})} / Cr 4445 ₹${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})}\n`;
+    text+=`   Narration: ${prefix}-GST-RCM-CASH-PAID-${month}${rcmcpin?' CPIN '+rcmcpin:''}\n`;
+    text+=`2) Dr 4445 ₹${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})} / Cr Bank Head 711 ₹${rcmcash.toLocaleString('en-IN',{minimumFractionDigits:2})}\n`;
+    text+=`   Narration: ${prefix}-GST-RCM-CHALLAN-${month}${rcmcpin?' CPIN '+rcmcpin:''}\n\n`;
+  }
+
+  if(itc>0){
+    text+=`ENTRY 1: MONTHLY ITC SET-OFF (By 25th)\n`;
+    text+=`Dr SL O/P (${slCode}) ₹${itc.toLocaleString('en-IN',{minimumFractionDigits:2})} / Cr SA I/P (${saCode}) ₹${itc.toLocaleString('en-IN',{minimumFractionDigits:2})}\n`;
+    text+=`Narration: ${prefix}-GST SET OFF ${month} ADJ.\n\n`;
+  }
+
+  if(regcash>0){
+    text+=`ENTRY 2: REGULAR CASH ROUTING (By 25th)\n`;
+    text+=`Dr SL O/P (${slCode}) ₹${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})} / Cr 4445 ₹${regcash.toLocaleString('en-IN',{minimumFractionDigits:2})}\n`;
+    text+=`Narration: ${prefix}-GST-CASH-PAID-${month}${regcpin?' CPIN '+regcpin:''}\n`;
+  }
+
+  copyText(text);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Set-Off Voucher Studio | Vadakkumbad Co-op Bank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- Top Application Bar -->
+  <header class="top-header no-print">
+    <div class="brand-section">
+      <div class="brand-badge">⚡</div>
+      <div class="brand-titles">
+        <h1>GST Set-Off Voucher Studio</h1>
+        <p>Vadakkumbad Service Co-operative Bank Ltd. · DITS PacScore</p>
+      </div>
+    </div>
+
+    <!-- Center 3-Mode Segmented Switcher -->
+    <nav class="mode-switcher" aria-label="Workspace Mode">
+      <button type="button" class="nav-tab active" data-tab="generator" id="nav-tab-operator" title="Fast monthly data entry & PacScore vouchers (Alt+1)">
+        <span>⚡</span> 1. Operator Mode
+      </button>
+      <button type="button" class="nav-tab" data-tab="dashboard" id="nav-tab-executive" title="Executive overview & compliance tracker (Alt+2)">
+        <span>📊</span> 2. Simple Overview
+      </button>
+      <button type="button" class="nav-tab" data-tab="reconcile" id="nav-tab-audit" title="Statutory audit, GSTR-3B matrix & registers (Alt+3)">
+        <span>🔬</span> 3. Technical Audit &amp; Register
+      </button>
+    </nav>
+
+    <!-- Topbar Entity Chips -->
+    <div class="header-chips">
+      <span class="entity-chip chip-bank active" data-entity="bank" title="Click: Switch active entity · Double-click: Copy GSTIN">🏦 HO 32AABAV5891L1Z1</span>
+      <span class="entity-chip chip-neethi" data-entity="neethi" title="Click: Switch active entity · Double-click: Copy GSTIN">💊 Neethy 32AABAV5891L2Z0</span>
+      <span class="entity-chip chip-depot" data-entity="depot" title="Click: Switch active entity · Double-click: Copy GSTIN">🌿 Depot 32AABAV5891L3ZZ</span>
+    </div>
+
+    <!-- Header Tools -->
+    <div class="header-tools">
+      <button type="button" class="btn btn-sm" id="btn-theme-toggle" title="Toggle Light / Dark Theme">🌓 Theme</button>
+      <button type="button" class="btn btn-sm" id="btn-open-calc" title="Open Rule 38 & GST Calculator">🧮 GST Calc</button>
+      <button type="button" class="btn btn-sm" id="btn-print-view" title="Print Current View (Alt+P)">🖨️ Print</button>
+      <button type="button" class="btn btn-sm btn-primary" id="btn-quick-backup" title="Export Backup JSON">⬇️ Backup</button>
+    </div>
+  </header>
+
+  <!-- Real-Time Context / Status Bar -->
+  <div class="context-bar no-print">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div><span class="context-lbl">Active Unit:</span> <span id="context-active-entity" style="font-weight:700;color:var(--tx)">Bank Head Office (L1Z1)</span></div>
+      <div style="color:var(--dim)">|</div>
+      <div><span class="context-lbl">Period:</span> <span id="context-active-period" class="mono" style="font-weight:700;color:var(--tx)">2026-09 (SEPTEMBER 2026)</span></div>
+    </div>
+    <div class="context-shortcuts">
+      <span>Shortcuts:</span>
+      <kbd>Alt+1</kbd> Operator · <kbd>Alt+2</kbd> Overview · <kbd>Alt+3</kbd> Audit · <kbd>Ctrl+S</kbd> Save · <kbd>Alt+P</kbd> Print
+    </div>
+  </div>
+
+  <!-- System Alerts (Cross-tab & Backup Reminders) -->
+  <div id="system-alerts-container" class="no-print" style="padding:10px 22px 0 22px"></div>
+
+  <!-- Main Viewport Area -->
+  <main class="main-viewport">
+
+    <!-- ======================================================================
+         MODE 1: FAST OPERATOR TERMINAL (SIDE-BY-SIDE SPLIT WORKSTATION)
+         ====================================================================== -->
+    <div id="view-generator" class="tab-view active">
+      <!-- Printable Voucher Header (Print Only) -->
+      <div class="print-only print-voucher-header">
+        <div class="pvh-title-row">
+          <h2>VADAKKUMBAD SERVICE CO-OPERATIVE BANK LTD.</h2>
+          <p class="pvh-subtitle">DITS PacScore GST Set-Off Journal Vouchers</p>
+        </div>
+        <div class="pvh-meta-grid">
+          <div><span class="pvh-lbl">Business Unit:</span> <span id="pvh-entity-name" class="pvh-val">Bank HO / Branches</span></div>
+          <div><span class="pvh-lbl">GSTIN:</span> <span id="pvh-gstin" class="pvh-val mono">32AABAV5891L1Z1</span></div>
+          <div><span class="pvh-lbl">Tax Period:</span> <span id="pvh-period" class="pvh-val mono">2026-SEPTEMBER</span></div>
+          <div><span class="pvh-lbl">Bank Entries:</span> <span id="pvh-bank-status" class="pvh-val">POSTED IN PACSCORE</span></div>
+          <div><span class="pvh-lbl">3B Verified:</span> <span id="pvh-verified" class="pvh-val">VERIFIED MATCH</span></div>
+          <div><span class="pvh-lbl">Printed On:</span> <span id="pvh-print-date" class="pvh-val mono"></span></div>
+        </div>
+      </div>
+
+      <!-- SIDE-BY-SIDE SPLIT WORKSTATION -->
+      <div class="operator-split-grid">
+
+        <!-- LEFT PANE: FAST INPUT CARD (420px width) -->
+        <div class="card operator-left no-print" style="margin-bottom:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div class="sh" style="margin-bottom:0">Step 1 · Business Unit &amp; Month</div>
+            <button type="button" class="btn btn-sm btn-primary" id="btn-open-gstr3b" title="Paste GSTR-3B PDF text or JSON">📋 Auto-Fill from 3B</button>
+          </div>
+
+          <div class="grid2" style="margin-bottom:10px">
+            <div class="field" style="margin-bottom:0">
+              <label for="gen-entity">Business Unit</label>
+              <select id="gen-entity">
+                <option value="bank">🏦 Bank HO (L1Z1)</option>
+                <option value="neethi">💊 Neethy Store (L2Z0)</option>
+                <option value="depot">🌿 Manure Depot (L3ZZ)</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:0">
+              <label for="gen-period"><span>Tax Month</span><span class="math-preview" id="gen-period-label">2026-SEPTEMBER</span></label>
+              <input type="month" id="gen-period" value="2026-09">
+            </div>
+          </div>
+
+          <!-- Quick Month Loader Bar -->
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:16px">
+            <select id="gen-load-saved-select" style="flex:1;background:var(--card2);color:var(--tx);border:1px solid var(--bdr2);padding:6px 8px;border-radius:6px;font-size:11.5px;font-weight:600">
+              <option value="">— Jump to Saved Month —</option>
+            </select>
+            <button type="button" class="btn btn-sm" id="btn-gen-prev-month" title="Load previous month">⏪ Prev</button>
+          </div>
+
+          <div class="sh">Step 2 · GSTR-3B Table 6.1 Figures</div>
+
+          <!-- Figure 1: ITC -->
+          <div class="field">
+            <label for="gen-itc">
+              <span style="color:var(--green)">① Paid Through ITC — Sec (A) (₹)</span>
+              <span class="math-preview" id="prev-gen-itc"></span>
+            </label>
+            <div class="input-with-tools">
+              <input type="text" id="gen-itc" placeholder="e.g. 186+11010+11196" value="1090+1611+1611">
+              <button type="button" class="btn-subsplit-toggle" data-target="subsplit-itc" title="Split IGST + CGST + SGST">+ Split</button>
+            </div>
+            <div id="subsplit-itc" class="subsplit-box" style="display:none">
+              <div class="subsplit-head">
+                <span>Table 6.1(A) ITC Sub-Columns</span>
+                <button type="button" class="btn-close-subsplit" data-target="subsplit-itc">✕</button>
+              </div>
+              <div class="subsplit-grid">
+                <div><label>IGST ₹</label><input type="text" id="sub-itc-igst" class="subsplit-input" placeholder="0"></div>
+                <div><label>CGST ₹</label><input type="text" id="sub-itc-cgst" class="subsplit-input" placeholder="0"></div>
+                <div><label>SGST ₹</label><input type="text" id="sub-itc-sgst" class="subsplit-input" placeholder="0"></div>
+              </div>
+              <div class="subsplit-actions">
+                <button type="button" class="btn-subsplit-quick" data-sub="itc" data-mode="cgst-equal-sgst">CGST = SGST (×2)</button>
+                <button type="button" class="btn-subsplit-quick" data-sub="itc" data-mode="clear" style="color:var(--muted);border-color:var(--bdr2)">Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Figure 2: Regular Cash -->
+          <div class="field">
+            <label for="gen-cash">
+              <span style="color:var(--bank)">② Paid in Cash — Sec (A) (₹)</span>
+              <span class="math-preview" id="prev-gen-cash"></span>
+            </label>
+            <div class="input-with-tools">
+              <input type="text" id="gen-cash" placeholder="0 if covered by ITC" value="12340+13430">
+              <button type="button" class="btn-subsplit-toggle" data-target="subsplit-cash" title="Split IGST + CGST + SGST">+ Split</button>
+            </div>
+            <div id="subsplit-cash" class="subsplit-box" style="display:none">
+              <div class="subsplit-head">
+                <span>Table 6.1(A) Cash Sub-Columns</span>
+                <button type="button" class="btn-close-subsplit" data-target="subsplit-cash">✕</button>
+              </div>
+              <div class="subsplit-grid">
+                <div><label>IGST ₹</label><input type="text" id="sub-cash-igst" class="subsplit-input" placeholder="0"></div>
+                <div><label>CGST ₹</label><input type="text" id="sub-cash-cgst" class="subsplit-input" placeholder="0"></div>
+                <div><label>SGST ₹</label><input type="text" id="sub-cash-sgst" class="subsplit-input" placeholder="0"></div>
+              </div>
+              <div class="subsplit-actions">
+                <button type="button" class="btn-subsplit-quick" data-sub="cash" data-mode="cgst-equal-sgst">CGST = SGST (×2)</button>
+                <button type="button" class="btn-subsplit-quick" data-sub="cash" data-mode="clear" style="color:var(--muted);border-color:var(--bdr2)">Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Figure 0: RCM Cash -->
+          <div class="field">
+            <label for="gen-rcm">
+              <span style="color:var(--saf)">⓪ RCM Cash Challan — Sec (B) (₹)</span>
+              <span class="math-preview" id="prev-gen-rcm"></span>
+            </label>
+            <div class="input-with-tools">
+              <input type="text" id="gen-rcm" placeholder="3114 for Bank HO rent" value="1557+1557">
+              <button type="button" class="btn-subsplit-toggle" data-target="subsplit-rcm" title="Split CGST + SGST">+ Split</button>
+            </div>
+            <div id="subsplit-rcm" class="subsplit-box" style="display:none">
+              <div class="subsplit-head">
+                <span>Table 6.1(B) Reverse Charge Sub-Columns</span>
+                <button type="button" class="btn-close-subsplit" data-target="subsplit-rcm">✕</button>
+              </div>
+              <div class="subsplit-grid">
+                <div><label>IGST ₹</label><input type="text" id="sub-rcm-igst" class="subsplit-input" placeholder="0"></div>
+                <div><label>CGST ₹</label><input type="text" id="sub-rcm-cgst" class="subsplit-input" placeholder="0"></div>
+                <div><label>SGST ₹</label><input type="text" id="sub-rcm-sgst" class="subsplit-input" placeholder="0"></div>
+              </div>
+              <div class="subsplit-actions">
+                <button type="button" class="btn-subsplit-quick" data-sub="rcm" data-mode="cgst-equal-sgst">CGST = SGST (×2)</button>
+                <button type="button" class="btn-subsplit-quick" data-sub="rcm" data-mode="clear" style="color:var(--muted);border-color:var(--bdr2)">Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Big Simple PacScore Status Toggle Switch -->
+          <div class="sh" style="margin-top:14px">Step 3 · PacScore Day-Book Status</div>
+          <div class="status-toggle-box">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:13px;color:var(--tx);margin:0">
+                  <input type="checkbox" id="gen-bank-entries-done" checked style="width:18px;height:18px;accent-color:var(--green);cursor:pointer">
+                  <span>Bank Entries Posted in PacScore?</span>
+                </label>
+                <div style="font-size:11px;color:var(--muted);margin-left:28px;margin-top:2px" id="gen-bank-status-sub">
+                  Vouchers recorded in PacScore General Ledger.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+            <button type="button" class="btn btn-primary" id="btn-save-register" style="flex:1">💾 Save Snapshot</button>
+            <button type="button" class="btn btn-sm" id="btn-save-next-month" title="Save this month and advance to next month">Save &amp; Next ⏩</button>
+            <button type="button" class="btn btn-sm" id="btn-reset-form" title="Reset form to defaults">🔄 Reset</button>
+          </div>
+
+          <!-- Progressive Disclosure Accordion: Granular Slips, CPINs, ARN & Presets -->
+          <details class="advanced-drawer" id="gen-advanced-drawer">
+            <summary>
+              <span>⚙️ Slip Numbers, CPINs, ARN &amp; Presets (Optional)</span>
+              <span class="drawer-pill">Click to expand</span>
+            </summary>
+            <div class="drawer-body">
+              <!-- PacScore Slips -->
+              <div style="margin-bottom:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <span style="font-size:11px;font-weight:700;color:var(--tx)">PacScore Day-Book Slip Numbers:</span>
+                  <button type="button" class="btn-link-action" id="btn-same-slip">🔗 Same Slip #</button>
+                </div>
+                <div class="grid3" style="gap:6px">
+                  <div class="field" style="margin-bottom:0">
+                    <label for="gen-e0-slip">E0 RCM Slip</label>
+                    <input type="text" id="gen-e0-slip" placeholder="e.g. 611">
+                  </div>
+                  <div class="field" style="margin-bottom:0">
+                    <label for="gen-e1-slip">E1 ITC Slip</label>
+                    <input type="text" id="gen-e1-slip" placeholder="e.g. 613">
+                  </div>
+                  <div class="field" style="margin-bottom:0">
+                    <label for="gen-e2-slip">E2 Cash Slip</label>
+                    <input type="text" id="gen-e2-slip" placeholder="e.g. 617">
+                  </div>
+                </div>
+              </div>
+
+              <!-- CPINs -->
+              <div class="grid2" style="gap:8px">
+                <div class="field">
+                  <label for="gen-rcm-cpin"><span>RCM CPIN</span><span class="cpin-counter" id="badge-rcm-cpin-len"></span></label>
+                  <input type="text" id="gen-rcm-cpin" placeholder="10-digit CPIN" maxlength="10">
+                </div>
+                <div class="field">
+                  <label for="gen-reg-cpin">
+                    <span>Reg Cash CPIN</span>
+                    <button type="button" class="btn-link-action" id="btn-copy-rcm-cpin">🔗 Copy RCM</button>
+                    <span class="cpin-counter" id="badge-reg-cpin-len"></span>
+                  </label>
+                  <input type="text" id="gen-reg-cpin" placeholder="Optional" maxlength="10">
+                </div>
+              </div>
+
+              <!-- GL Status, Post Date, ARN, File Date -->
+              <div class="grid2" style="gap:8px">
+                <div class="field">
+                  <label for="gen-gl-status">Exact Status</label>
+                  <select id="gen-gl-status">
+                    <option value="draft">Draft (Unposted)</option>
+                    <option value="posted" selected>Posted in GL</option>
+                    <option value="reconciled">Reconciled</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="gen-gl-postdate">GL Post Date</label>
+                  <input type="date" id="gen-gl-postdate" value="2026-10-31">
+                </div>
+              </div>
+
+              <div class="grid2" style="gap:8px">
+                <div class="field">
+                  <label for="gen-arn">GSTR-3B ARN</label>
+                  <input type="text" id="gen-arn" placeholder="AA320926391808L">
+                </div>
+                <div class="field">
+                  <label for="gen-filedate">Return Filed Date</label>
+                  <input type="date" id="gen-filedate">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="gen-notes">Audit / Narration Note</label>
+                <input type="text" id="gen-notes" placeholder="Optional internal note">
+              </div>
+              <input type="hidden" id="gen-output-liability" value="">
+              <input type="checkbox" id="gen-verified" checked style="display:none">
+
+              <!-- Quick Presets -->
+              <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr)">
+                <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Quick Audited Presets (FY 26-27):</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px">
+                  <button type="button" class="btn btn-sm" data-preset="bank-apr26">Bank Apr</button>
+                  <button type="button" class="btn btn-sm" data-preset="bank-may26">Bank May</button>
+                  <button type="button" class="btn btn-sm" data-preset="bank-jun26">Bank Jun</button>
+                  <button type="button" class="btn btn-sm" data-preset="bank-jul26">Bank Jul</button>
+                  <button type="button" class="btn btn-sm" data-preset="bank-aug26">Bank Aug</button>
+                  <button type="button" class="btn btn-sm" data-preset="bank-sep26">Bank Sep</button>
+                  <button type="button" class="btn btn-sm" data-preset="neethi-apr26">Neethi Apr</button>
+                  <button type="button" class="btn btn-sm" data-preset="neethi-jul26">Neethi Jul</button>
+                  <button type="button" class="btn btn-sm" data-preset="neethi-aug26">Neethi Aug</button>
+                  <button type="button" class="btn btn-sm" data-preset="neethi-sep26">Neethi Sep</button>
+                  <button type="button" class="btn btn-sm" data-preset="depot-jul26">Depot Jul</button>
+                  <button type="button" class="btn btn-sm" data-preset="depot-aug26">Depot Aug</button>
+                  <button type="button" class="btn btn-sm" data-preset="depot-sep26">Depot Sep</button>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- RIGHT PANE: STICKY LIVE PACSCORE VOUCHERS -->
+        <div class="operator-right">
+          <!-- Warnings / Compliance Banner Area -->
+          <div id="gen-warnings-container" class="no-print"></div>
+
+          <!-- Compact KPI Strip + Copy All Button -->
+          <div class="operator-kpi-bar no-print">
+            <div class="op-kpi">
+              <span class="op-kpi-lbl">E1 ITC Set-Off ①</span>
+              <span class="op-kpi-val" id="kpi-itc" style="color:var(--green)">₹4,312.00</span>
+            </div>
+            <div class="op-kpi">
+              <span class="op-kpi-lbl">E0 RCM Cash ⓪</span>
+              <span class="op-kpi-val" id="kpi-rcm" style="color:var(--saf)">₹3,114.00</span>
+            </div>
+            <div class="op-kpi">
+              <span class="op-kpi-lbl">E2 Reg Cash ②</span>
+              <span class="op-kpi-val" id="kpi-cash" style="color:var(--bank)">₹25,770.00</span>
+            </div>
+            <div class="op-kpi">
+              <span class="op-kpi-lbl" id="kpi-status">Balanced ✓</span>
+              <span class="op-kpi-val" id="kpi-total-output" style="font-size:12px;color:var(--muted)">Total: ₹33,196.00</span>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-copy-all-vouchers">📋 Copy All Vouchers</button>
+          </div>
+
+          <div class="sh no-print" style="margin-bottom:10px">
+            <span>Live PacScore Journal Vouchers</span>
+            <span style="font-size:10.5px;color:var(--muted);text-transform:none;font-weight:500">💡 Click any Account Code or Amount cell to copy raw figure for PacScore</span>
+          </div>
+
+          <!-- Generated Voucher Cards Container -->
+          <div id="gen-vouchers-container"></div>
+        </div>
+      </div>
+
+      <!-- Formal Printable PacScore Physical Signature Block Footer (Print Only) -->
+      <div class="print-only print-voucher-footer">
+        <div class="pv-signatures">
+          <div class="sig-box"><div class="sig-line"></div><div class="sig-title">Prepared By</div><div class="sig-role">Clerk / IT Section</div></div>
+          <div class="sig-box"><div class="sig-line"></div><div class="sig-title">Verified By</div><div class="sig-role">Accountant / Senior Manager</div></div>
+          <div class="sig-box"><div class="sig-line"></div><div class="sig-title">Approved By</div><div class="sig-role">Secretary / General Manager</div></div>
+        </div>
+        <div class="pv-statutory-note">
+          Statutory Audit Copy · Retain with Physical GSTR-3B Acknowledgement &amp; Bank Challans (Form PMT-06 / CPIN)
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         MODE 2: SIMPLE BEGINNER-FRIENDLY EXECUTIVE OVERVIEW
+         ====================================================================== -->
+    <div id="view-dashboard" class="tab-view">
+      <!-- Upcoming Filing Countdown Banner -->
+      <div class="card" style="border-left:4px solid var(--saf);background:linear-gradient(90deg, rgba(245,158,11,0.08) 0%, var(--card) 100%);margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:18px">📅</span>
+              <strong style="font-size:14px;color:var(--tx)">Next Monthly Filing: October 2026 (2026-10)</strong>
+              <span class="status-chip status-draft">Due 20-Nov-2026</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">
+              Step 1: Pay RCM Rent Challan by <strong style="color:var(--saf)">18-Nov-2026</strong> · Step 2: CA files GSTR-3B by <strong style="color:var(--green)">20-Nov-2026</strong> · Step 3: Post Set-off in PacScore by <strong style="color:var(--bank)">25-Nov-2026</strong>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-dash-start-oct">➕ Start Oct 2026 Entry</button>
+        </div>
+      </div>
+
+      <!-- 3 Clean Jargon-Free Hero Cards (Updated FY 26-27 Figures) -->
+      <div class="grid3" style="margin-bottom:16px">
+        <div class="card" style="border-top:3px solid var(--saf);margin-bottom:0">
+          <div style="font-size:11px;font-weight:800;color:var(--saf);text-transform:uppercase">💳 Total Cash Paid to Govt (FY 26-27)</div>
+          <div style="font-size:26px;font-weight:800;font-family:var(--mono);color:var(--tx);margin:6px 0" id="dash-tot-cash-hero">₹1,51,393.00</div>
+          <div style="font-size:11.5px;color:var(--muted)">Actual bank money paid via Challan 4445 (Regular Cash + RCM Rent) across all 3 units.</div>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--green);margin-bottom:0">
+          <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase">🛡️ Tax Saved Using Purchase Credit (ITC)</div>
+          <div style="font-size:26px;font-weight:800;font-family:var(--mono);color:var(--green);margin:6px 0" id="dash-tot-itc-hero">₹3,07,723.00</div>
+          <div style="font-size:11.5px;color:var(--muted)">Output tax settled using input credits (Entry ①) without spending bank cash.</div>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--purple);margin-bottom:0">
+          <div style="font-size:11px;font-weight:800;color:var(--purple);text-transform:uppercase">🚦 PacScore GL Posting Health</div>
+          <div style="font-size:24px;font-weight:800;color:var(--tx);margin:6px 0" id="dash-gl-health-hero">17 / 18 Posted ✓</div>
+          <div style="font-size:11.5px;color:var(--muted)" id="dash-gl-health-sub">17 returns posted in PacScore GL · 1 pending catch-up slip.</div>
+        </div>
+      </div>
+
+      <!-- Action Items & Cleared Reversals -->
+      <div class="grid2" style="margin-bottom:16px">
+        <div class="card" style="margin-bottom:0">
+          <div class="sh">Pending Action Items</div>
+          <ul id="dash-action-list" style="list-style:none;font-size:12.5px;display:flex;flex-direction:column;gap:8px"></ul>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="sh">Prior-Year (FY 2025-26) Reversal Status</div>
+          <div id="dash-reversal-summary" style="font-size:12.5px;display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+      </div>
+
+      <!-- Clean Traffic-Light Monthly Matrix -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+          <div>
+            <div class="sh" style="margin-bottom:2px">Monthly Compliance Traffic-Light Tracker</div>
+            <div style="font-size:11.5px;color:var(--muted)">🟢 Posted in PacScore · 🟡 Pending GL Adjustment · ⚪ Not Yet Filed — Click any box to view or print its vouchers</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Financial Year:</label>
+            <select id="dash-fy-select" style="background:var(--card2);color:var(--tx);border:1px solid var(--bdr2);padding:6px 12px;border-radius:6px;font-weight:700">
+              <option value="2026-27" selected>FY 2026-27 (Current)</option>
+              <option value="2025-26">FY 2025-26 (Closed)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Hidden KPI IDs preserved for internal sync -->
+        <div style="display:none">
+          <span id="dash-tot-rcm"></span><span id="dash-tot-itc"></span><span id="dash-tot-cash"></span><span id="dash-tot-cleared"></span>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table class="matrix-table" id="dash-matrix-table">
+            <thead>
+              <tr>
+                <th style="width:140px">Month</th>
+                <th>🏦 Bank HO / Branches (L1Z1)</th>
+                <th>💊 Neethy Medical Store (L2Z0)</th>
+                <th>🌿 Fertilizer / Manure Depot (L3ZZ)</th>
+              </tr>
+            </thead>
+            <tbody id="dash-matrix-tbody"></tbody>
+            <tfoot id="dash-matrix-tfoot" style="font-weight:700;background:rgba(0,0,0,0.3)"></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         MODE 3: UNIFIED STATUTORY AUDIT, GSTR-3B, REGISTER & SETTINGS HUB
+         ====================================================================== -->
+    <div id="view-reconcile" class="tab-view">
+      <!-- Formal Printable PacScore Annual Reconciliation Header (Print Only) -->
+      <div class="print-only print-voucher-header">
+        <div class="pvh-title-row">
+          <h2>VADAKKUMBAD SERVICE CO-OPERATIVE BANK LTD.</h2>
+          <p class="pvh-subtitle">Statutory GST Audit, GSTR-3B Table 6.1 Analysis &amp; GL Reconciliation Report</p>
+        </div>
+        <div class="pvh-meta-grid">
+          <div><span class="pvh-lbl">Business Unit:</span> <span id="pvh-rec-entity-name" class="pvh-val">Bank HO / Branches</span></div>
+          <div><span class="pvh-lbl">GSTIN:</span> <span id="pvh-rec-gstin" class="pvh-val mono">32AABAV5891L1Z1</span></div>
+          <div><span class="pvh-lbl">Financial Year:</span> <span id="pvh-rec-fy" class="pvh-val mono">FY 2026-27</span></div>
+          <div><span class="pvh-lbl">Printed On:</span> <span id="pvh-rec-print-date" class="pvh-val mono"></span></div>
+        </div>
+      </div>
+
+      <!-- Unified Sub-Navigation Bar for Mode 3 -->
+      <div class="card no-print" style="padding:12px 16px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button type="button" class="btn btn-sm audit-subtab active" data-audit-target="audit-sec-gl">⚖️ 1. PacScore GL Cross-Match</button>
+            <button type="button" class="btn btn-sm audit-subtab" data-audit-target="audit-sec-3b">📋 2. GSTR-3B Table 6.1 Matrix</button>
+            <button type="button" class="btn btn-sm audit-subtab" data-audit-target="audit-sec-reversals">🔄 3. Annual Reconcile &amp; Reversals</button>
+            <button type="button" class="btn btn-sm audit-subtab" data-audit-target="audit-sec-register">🗂️ 4. Return Register (CSV)</button>
+            <button type="button" class="btn btn-sm audit-subtab" data-audit-target="audit-sec-r38">🏛️ 5. Rule 38 Inspector</button>
+            <button type="button" class="btn btn-sm audit-subtab" data-audit-target="audit-sec-settings">⚙️ 6. Settings &amp; Backup</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center" id="audit-entity-fy-controls">
+            <select id="rec-entity" style="background:var(--card2);color:var(--tx);border:1px solid var(--bdr2);padding:5px 10px;border-radius:6px;font-weight:700;font-size:12px">
+              <option value="bank">🏦 Bank HO (L1Z1)</option>
+              <option value="neethi">💊 Neethy Store (L2Z0)</option>
+              <option value="depot">🌿 Manure Depot (L3ZZ)</option>
+            </select>
+            <select id="rec-fy" style="background:var(--card2);color:var(--tx);border:1px solid var(--bdr2);padding:5px 10px;border-radius:6px;font-weight:700;font-size:12px">
+              <option value="2026-27" selected>FY 2026-27</option>
+              <option value="2025-26">FY 2025-26</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- PacScore GL Accounts Mapping Pill Strip -->
+        <div id="rec-entity-gl-strip" style="display:flex;flex-wrap:wrap;gap:8px;padding:7px 12px;background:rgba(0,0,0,0.22);border-radius:6px;border:1px solid var(--bdr);margin-top:10px;font-size:11.5px">
+          <div><strong style="color:var(--muted)">Input Tax (SA):</strong> <span id="rec-strip-sa" class="mono" style="color:var(--green)">0200 SA GST INPUT TAX</span></div>
+          <div style="color:var(--dim)">•</div>
+          <div><strong style="color:var(--muted)">Output Tax (SL):</strong> <span id="rec-strip-sl" class="mono" style="color:var(--bank)">7800 SL GST OUTPUT TAX -18%</span></div>
+          <div style="color:var(--dim)">•</div>
+          <div><strong style="color:var(--muted)">Clearing / Cash:</strong> <span class="mono" style="color:var(--saf)">4445 GST PAID TO GOVT</span></div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 1: PACSCORE GENERAL LEDGER CROSS-RECONCILIATION (DEFAULT IN AUDIT) -->
+      <div id="audit-sec-gl" class="audit-subview">
+        <div class="card">
+          <div class="sh">PacScore General Ledger XML Line-Item Slip Cross-Reconciliation</div>
+          <div id="audit-gl-anomaly-banner" style="margin-bottom:12px"></div>
+          <div style="overflow-x:auto">
+            <table class="data-table" id="audit-gl-table">
+              <thead>
+                <tr>
+                  <th>Tax Period</th>
+                  <th style="text-align:right">GSTR-3B Total</th>
+                  <th style="text-align:right">GL Posted Total</th>
+                  <th style="text-align:right">Variance</th>
+                  <th>E1 ITC Slip (SA Cr)</th>
+                  <th>E2 Cash Slip (4445 Cr)</th>
+                  <th>E0 RCM Slip (4445 Cr)</th>
+                  <th style="text-align:center">PMT-06 Receipt</th>
+                  <th style="text-align:center">GL Status</th>
+                </tr>
+              </thead>
+              <tbody id="audit-gl-tbody"></tbody>
+              <tfoot id="audit-gl-tfoot" style="font-weight:800;background:rgba(0,0,0,0.3)"></tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 2: GSTR-3B TABLE 6.1 SUB-COLUMN MATRIX -->
+      <div id="audit-sec-3b" class="audit-subview" style="display:none">
+        <div class="card">
+          <div class="sh">GSTR-3B Table 6.1 Tax Payment &amp; Table 3.1(d) RCM Breakdown</div>
+          <div style="overflow-x:auto">
+            <table class="data-table" id="audit-3b-table">
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>Filed ARN &amp; Date</th>
+                  <th style="text-align:right">① ITC Paid (IGST+CGST+SGST)</th>
+                  <th style="text-align:right">② Cash Paid (CGST+SGST)</th>
+                  <th style="text-align:right">⓪ RCM Cash (3.1d)</th>
+                  <th style="text-align:right">Total Settled</th>
+                  <th style="text-align:center">3B Verified</th>
+                  <th style="text-align:center">GL Status</th>
+                </tr>
+              </thead>
+              <tbody id="audit-3b-tbody"></tbody>
+              <tfoot id="audit-3b-tfoot" style="font-weight:800;background:rgba(0,0,0,0.3)"></tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 3: 12-MONTH RECONCILER & REVERSAL GENERATOR -->
+      <div id="audit-sec-reversals" class="audit-subview" style="display:none">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <div class="sh" style="margin-bottom:0">12-Month Interactive Worksheet &amp; Credit Ledger Tie-Out</div>
+            <div style="display:flex;gap:8px">
+              <button type="button" class="btn btn-sm" id="btn-rec-sync-saved">🔄 Pull Saved History</button>
+              <button type="button" class="btn btn-sm" id="btn-rec-paste-excel">📋 Paste Excel Column</button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;margin-bottom:16px">
+            <table class="data-table" id="rec-grid-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th style="text-align:right">Entry 0: RCM Cash (₹)</th>
+                  <th style="text-align:right">Entry 1: ITC Set-Off ① (₹)</th>
+                  <th style="text-align:right">Entry 2: Regular Cash ② (₹)</th>
+                  <th style="text-align:right">Total Output Cleared</th>
+                  <th>Challan CPIN</th>
+                  <th style="text-align:center">Edit</th>
+                </tr>
+              </thead>
+              <tbody id="rec-grid-tbody"></tbody>
+              <tfoot id="rec-grid-tfoot" style="font-weight:800;background:rgba(0,0,0,0.3)"></tfoot>
+            </table>
+          </div>
+
+          <div class="grid4" id="rec-quarterly-cards" style="margin-bottom:18px"></div>
+
+          <!-- 10-Minute Audit Verifier Box -->
+          <div class="card2" style="border:1.5px solid var(--saf)">
+            <div class="sh" style="color:var(--saf)">10-Minute Electronic Credit Ledger Tie-Out &amp; Reversal Generator</div>
+            <div class="grid3" style="margin-bottom:12px">
+              <div class="field">
+                <label for="rec-gl-override"><span>GL Posted SA Set-Off Total (₹)</span><span class="math-preview" id="prev-rec-gl"></span></label>
+                <input type="text" id="rec-gl-override" placeholder="Defaults to sum of ① above">
+              </div>
+              <div class="field">
+                <label for="rec-portal-input"><span>Portal Credit Ledger Debit Sum (₹)</span><span class="math-preview" id="prev-rec-portal"></span></label>
+                <input type="text" id="rec-portal-input" placeholder="Enter Portal Credit Ledger sum">
+              </div>
+              <div class="field" style="display:flex;flex-direction:column;justify-content:flex-end">
+                <button type="button" class="btn btn-primary" id="btn-compute-reversal">⚡ Check Variance &amp; Build Reversal</button>
+              </div>
+            </div>
+            <div id="rec-reversal-result-area"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="sh">Cleared &amp; Audited Prior-Period Reversal Vouchers</div>
+          <div id="rec-cleared-reversals-list"></div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 4: FULL FILTERABLE RETURN REGISTER -->
+      <div id="audit-sec-register" class="audit-subview" style="display:none">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div class="sh" style="margin-bottom:0">Complete Return Register &amp; CSV Export (<span id="badge-register-count">18</span> returns)</div>
+            <div style="display:flex;gap:8px">
+              <button type="button" class="btn btn-sm btn-green" id="btn-export-register-csv">⬇️ Export CSV for Auditor</button>
+              <button type="button" class="btn btn-sm" onclick="window.print()">🖨️ Print Register</button>
+            </div>
+          </div>
+
+          <div class="grid4" style="margin-bottom:14px">
+            <div class="field" style="margin-bottom:0">
+              <label>Entity Filter</label>
+              <select id="reg-filter-entity">
+                <option value="all">All Entities (3 GSTINs)</option>
+                <option value="bank">Bank HO / Branches</option>
+                <option value="neethi">Neethy Medical Store</option>
+                <option value="depot">Fertilizer / Manure Depot</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:0">
+              <label>Financial Year</label>
+              <select id="reg-filter-fy">
+                <option value="all">All Years</option>
+                <option value="2026-27" selected>FY 2026-27</option>
+                <option value="2025-26">FY 2025-26</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:0">
+              <label>Status</label>
+              <select id="reg-filter-status">
+                <option value="all">All Statuses</option>
+                <option value="posted">Posted in GL</option>
+                <option value="reconciled">Reconciled</option>
+                <option value="draft">Draft (Unposted)</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:0">
+              <label>Search (CPIN / Slip / ARN)</label>
+              <input type="text" id="reg-search" placeholder="Type to filter...">
+            </div>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table class="data-table" id="reg-table">
+              <thead>
+                <tr>
+                  <th>Entity</th>
+                  <th>Period</th>
+                  <th style="text-align:right">RCM Cash (E0)</th>
+                  <th style="text-align:right">ITC Set-Off (E1 ①)</th>
+                  <th style="text-align:right">Reg Cash (E2 ②)</th>
+                  <th style="text-align:right">Total Cleared</th>
+                  <th>Slips (E0/E1/E2)</th>
+                  <th>Status</th>
+                  <th>Verified</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="reg-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 5: RULE 38 50% BANKING DISCARD INSPECTOR -->
+      <div id="audit-sec-r38" class="audit-subview" style="display:none">
+        <div class="card">
+          <div class="sh">Rule 38 (Section 17(4) CGST Act) Banking ITC 50% Discard Inspector</div>
+          <div class="grid2">
+            <div class="card2">
+              <div style="font-weight:800;color:var(--bank);font-size:13px;margin-bottom:6px">Why Bank HO SA 0200 Contains 100% Eligible Credit</div>
+              <p style="font-size:12px;color:var(--tx);line-height:1.6;margin-bottom:8px">
+                Under Section 17(4) of the CGST Act, 2017, banking companies &amp; co-operative banks are mandated to claim only 50% of eligible input tax credit every month.
+              </p>
+              <p style="font-size:12px;color:var(--muted);line-height:1.6">
+                <strong>Vadakkumbad SCB SOP:</strong> At purchase entry, invoices are expensed 50% directly into expenditure ledgers, and only the remaining 50% eligible tax is debited into <code>SA 0200</code>.
+                Therefore, <code>SA 0200</code> in PacScore represents <strong>100% net claimable credit</strong>, requiring <em>zero post-return reversal</em> at set-off time.
+              </p>
+            </div>
+            <div class="card2">
+              <div style="font-weight:800;color:var(--saf);font-size:13px;margin-bottom:6px">Interactive Rule 38 Purchase Split Simulator</div>
+              <div class="field" style="margin-bottom:8px">
+                <label>Taxable Purchase Value (₹)</label>
+                <input type="text" id="r38-test-amt" value="10000" placeholder="e.g. 10000">
+              </div>
+              <div id="r38-test-output" style="font-size:12px;font-family:var(--mono);background:rgba(0,0,0,0.3);padding:12px;border-radius:6px;border:1px solid var(--bdr)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 6: SETTINGS, NARRATION POLICIES & JSON BACKUP -->
+      <div id="audit-sec-settings" class="audit-subview" style="display:none">
+        <div class="grid2">
+          <div class="card">
+            <div class="sh">Narration Style &amp; Voucher Policies</div>
+            <div class="field">
+              <label for="set-narr-profile">Narration Profile</label>
+              <select id="set-narr-profile">
+                <option value="sop" selected>SOP Profile (info.md: "TO GST SET OFF 2026-APRIL ADJ.")</option>
+                <option value="legacy">Legacy Profile ("BANK-GST SET OFF 2026-APRIL ADJ.")</option>
+                <option value="custom">Custom Templates</option>
+              </select>
+            </div>
+
+            <div id="custom-narr-templates-box" style="display:none;margin-bottom:12px">
+              <div class="field"><label>Entry 0 Routing Template</label><input type="text" id="set-template-e0route"></div>
+              <div class="field"><label>Entry 0 Payment Leg Template</label><input type="text" id="set-template-e0pay"></div>
+              <div class="field"><label>Entry 1 ITC Set-Off Template</label><input type="text" id="set-template-e1"></div>
+              <div class="field"><label>Entry 2 Regular Cash Template</label><input type="text" id="set-template-e2"></div>
+            </div>
+
+            <div class="field">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" id="set-e0-bankleg" style="width:16px;height:16px;accent-color:var(--saf)">
+                <span>Entry 0 includes bank payment leg (Dr 4445 / Cr 711) — 4-line voucher</span>
+              </label>
+            </div>
+            <div class="field">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" id="set-e2-bankleg" style="width:16px;height:16px;accent-color:var(--saf)">
+                <span>Entry 2 includes bank payment leg (Dr 4445 / Cr 711)</span>
+              </label>
+            </div>
+            <div class="grid2">
+              <div class="field">
+                <label for="set-narr-maxlen">Narration Max Length</label>
+                <input type="number" id="set-narr-maxlen" value="60" min="20" max="250">
+              </div>
+              <div class="field">
+                <label for="set-copy-format">Clipboard Copy Format</label>
+                <select id="set-copy-format">
+                  <option value="tsv" selected>TSV (Excel / Sheets)</option>
+                  <option value="text">Text Block (PacScore)</option>
+                  <option value="json">JSON</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-save-settings">💾 Save Policies</button>
+          </div>
+
+          <div class="card">
+            <div class="sh">Database Backup, Restore &amp; Reset</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+              <button type="button" class="btn btn-green" id="btn-export-backup-json">⬇️ Export Full JSON Backup</button>
+              <button type="button" class="btn" id="btn-trigger-import">⬆️ Import JSON Backup (with Diff Preview)</button>
+              <input type="file" id="file-import-input" accept=".json" style="display:none">
+              <button type="button" class="btn" id="btn-restore-audited-seed" style="color:var(--saf2)">🔄 Reset to Audited September 2026 Defaults</button>
+            </div>
+            <div class="card2" style="border:1px solid var(--red);background:rgba(248,113,113,0.05)">
+              <div style="font-size:11px;font-weight:800;color:var(--red);text-transform:uppercase;margin-bottom:4px">Danger Zone</div>
+              <button type="button" class="btn btn-danger btn-sm" id="btn-wipe-data">⚠️ Wipe All Local Storage</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div class="sh" style="margin-bottom:0">Compliance Audit Trail Log</div>
+            <button type="button" class="btn btn-sm" id="btn-export-audit-csv">⬇️ Export Audit CSV</button>
+          </div>
+          <div style="max-height:240px;overflow-y:auto">
+            <table class="data-table" id="audit-table">
+              <thead><tr><th>Timestamp (ISO)</th><th>Action</th><th>Details</th></tr></thead>
+              <tbody id="audit-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formal Printable PacScore Physical Signature Block Footer (Print Only) -->
+      <div class="print-only print-voucher-footer">
+        <div class="pv-signatures">
+          <div class="sig-box"><div class="sig-line"></div><div class="sig-title">Prepared By</div><div class="sig-role">Clerk / IT Section</div></div>
+          <div class="sig-box"><div class="sig-line"></div><div class="sig-title">Verified By</div><div class="sig-role">Accountant / Senior Manager</div></div>
+          <div class="sig-box"><div class="sig-line"></div><div class="sig-title">Approved By</div><div class="sig-role">Secretary / General Manager</div></div>
+        </div>
+        <div class="pv-statutory-note">
+          Statutory Audit Copy · Annual Reconciliation Statement · Vadakkumbad Service Co-operative Bank Ltd.
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ======================================================================
+     MODAL 1: RULE 38 & GST CALCULATOR
+     ====================================================================== -->
+<div id="modal-calc" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>🧮 Interactive GST &amp; Rule 38 Calculator</h3>
+      <button type="button" class="modal-close" id="btn-close-calc">✕</button>
+    </div>
+    <div class="field">
+      <label for="calc-entity">Business Unit</label>
+      <select id="calc-entity">
+        <option value="bank">Bank HO / Branches (50% Upfront Discard — Rule 38)</option>
+        <option value="neethi">Neethy Medical Store (100% Eligible ITC)</option>
+        <option value="depot">Fertilizer / Manure Depot (100% Eligible ITC)</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:14px;margin-bottom:12px;font-size:12px;background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:7px;border:1px solid var(--bdr)">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600">
+        <input type="radio" name="calc-mode" id="calc-mode-excl" value="excl" checked> Exclusive of GST (Add GST)
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;color:var(--saf2)">
+        <input type="radio" name="calc-mode" id="calc-mode-incl" value="incl"> Inclusive of GST (Reverse calc)
+      </label>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="calc-amt">Invoice Amount (₹)</label>
+        <input type="text" id="calc-amt" value="10000" placeholder="e.g. 10000 or 5000+2500">
+      </div>
+      <div class="field">
+        <label for="calc-rate">GST Rate</label>
+        <select id="calc-rate">
+          <option value="18">18% (Services / Rent)</option>
+          <option value="12">12% (Medicines / Goods)</option>
+          <option value="5">5% (Fertilizer / Inputs)</option>
+        </select>
+      </div>
+    </div>
+    <div class="card2" style="margin-top:10px">
+      <table class="data-table" style="font-size:12px">
+        <tr><td>Calculated Taxable Base:</td><td class="mono" id="c-taxable" style="font-weight:700">₹10,000.00</td></tr>
+        <tr><td>Total Invoice Value:</td><td class="mono" id="c-tot" style="font-weight:700">₹11,800.00</td></tr>
+        <tr><td>Total Combined GST:</td><td class="mono" id="c-gst" style="color:var(--saf)">₹1,800.00</td></tr>
+        <tr><td>CGST (half) / SGST (half):</td><td class="mono" id="c-halves">₹900.00 each</td></tr>
+        <tr style="background:rgba(74,222,128,0.08)"><td><strong>Eligible ITC Head Balance:</strong></td><td class="mono" id="c-itc" style="color:var(--green);font-weight:800">₹900.00</td></tr>
+        <tr id="c-exp-row" style="background:rgba(248,113,113,0.08)"><td>Ineligible Expense Absorption (Bank HO):</td><td class="mono" id="c-exp" style="color:var(--red);font-weight:800">₹900.00</td></tr>
+      </table>
+    </div>
+    <div class="narration-box" style="margin-top:12px" id="calc-narr-box" data-action="copy-narration">
+      <div class="narr-label"><span>Generated Narration Snippet</span><span class="char-badge">Click to Copy</span></div>
+      <code id="c-narr">TO GST PURCHASE BILL TAXABLE ₹10,000.00 (ITC Head 0200: ₹900.00)</code>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     MODAL 2: EDIT / RENAME SAVED RETURN
+     ====================================================================== -->
+<div id="modal-edit" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>✏️ Edit Return Snapshot</h3>
+      <button type="button" class="modal-close" id="btn-close-edit">✕</button>
+    </div>
+    <input type="hidden" id="edit-id">
+    <div class="grid2">
+      <div class="field"><label>Entity</label><input type="text" id="edit-entity" readonly style="opacity:0.7"></div>
+      <div class="field"><label>Tax Period</label><input type="text" id="edit-period"></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label>① ITC Total</label><input type="text" id="edit-itc"></div>
+      <div class="field"><label>② Cash Total</label><input type="text" id="edit-cash"></div>
+      <div class="field"><label>RCM Cash</label><input type="text" id="edit-rcm"></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label>E0 RCM Slip #</label><input type="text" id="edit-e0slip"></div>
+      <div class="field"><label>E1 ITC Slip #</label><input type="text" id="edit-e1slip"></div>
+      <div class="field"><label>E2 Cash Slip #</label><input type="text" id="edit-e2slip"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>RCM Challan CPIN</label><input type="text" id="edit-rcmcpin"></div>
+      <div class="field"><label>Regular CPIN</label><input type="text" id="edit-regcpin"></div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>GL Status</label>
+        <select id="edit-glstatus">
+          <option value="draft">Draft (Unposted)</option>
+          <option value="posted">Posted in GL</option>
+          <option value="reconciled">Reconciled</option>
+        </select>
+      </div>
+      <div class="field"><label>GL Posted Date</label><input type="date" id="edit-glpostdate"></div>
+    </div>
+    <div class="field"><label>Audit Notes</label><input type="text" id="edit-notes"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button type="button" class="btn" id="btn-cancel-edit">Cancel</button>
+      <button type="button" class="btn btn-primary" id="btn-save-edit">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     MODAL 3: IMPORT DIFF PREVIEW MODAL
+     ====================================================================== -->
+<div id="modal-import-preview" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>⬆️ Backup Import Preview</h3>
+      <button type="button" class="modal-close" id="btn-close-import-preview">✕</button>
+    </div>
+    <div id="import-preview-content" style="font-size:13px;line-height:1.6;margin-bottom:16px"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button type="button" class="btn" id="btn-cancel-import">Cancel</button>
+      <button type="button" class="btn btn-primary" id="btn-confirm-import-merge">Merge (Newer records win)</button>
+      <button type="button" class="btn btn-danger" id="btn-confirm-import-replace">Replace All Records</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     MODAL 4: UNIFIED GSTR-3B TEXT & JSON AUTO-POPULATE MODAL
+     ====================================================================== -->
+<div id="modal-gstr3b" class="modal-overlay">
+  <div class="modal-box" style="max-width:660px">
+    <div class="modal-head">
+      <h3>📋 Auto-Fill from GSTR-3B PDF Text or Portal JSON</h3>
+      <button type="button" class="modal-close" id="btn-close-gstr3b">✕</button>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">
+      Open your filed GSTR-3B PDF, select &amp; copy the text around <strong>Table 6.1 (Payment of tax)</strong>, and paste it below.
+    </div>
+    <div class="field">
+      <label for="gstr3b-paste-input">
+        <span>Paste GSTR-3B Text or JSON</span>
+        <button type="button" class="btn-link-action" id="btn-sample-gstr3b">Load Sample GSTR-3B Text</button>
+      </label>
+      <textarea id="gstr3b-paste-input" rows="6" placeholder="Paste GSTR-3B Table 6.1 lines or JSON here..." style="font-family:var(--mono);font-size:12px;width:100%;padding:10px;background:var(--card2);border:1px solid var(--bdr2);border-radius:6px;color:var(--tx);resize:vertical"></textarea>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <button type="button" class="btn btn-sm btn-primary" id="btn-parse-gstr3b">⚡ Extract Figures</button>
+      <span id="gstr3b-parse-status" style="font-size:12px;font-weight:700"></span>
+    </div>
+    <div id="gstr3b-preview-card" class="card2" style="display:none;margin-bottom:14px">
+      <table class="data-table" style="font-size:12px">
+        <tr><td>Detected Unit &amp; Period:</td><td class="mono"><span id="gstr3b-res-entity" style="font-weight:700">—</span> · <span id="gstr3b-res-period">—</span></td></tr>
+        <tr><td>① Paid Through ITC:</td><td class="mono" id="gstr3b-res-itc" style="color:var(--green);font-weight:700">—</td></tr>
+        <tr><td>② Paid in Cash:</td><td class="mono" id="gstr3b-res-cash" style="color:var(--bank);font-weight:700">—</td></tr>
+        <tr><td>⓪ Sec (B) RCM Cash:</td><td class="mono" id="gstr3b-res-rcm" style="color:var(--saf);font-weight:700">—</td></tr>
+      </table>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button type="button" class="btn" id="btn-cancel-gstr3b">Cancel</button>
+      <button type="button" class="btn btn-green" id="btn-apply-gstr3b" disabled>✓ Fill Operator Form</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification Element -->
+<div id="toast" class="toast">
+  <span>✓</span>
+  <span id="toast-text">Copied to clipboard</span>
+</div>
+
+<script src="core.js"></script>
+<script src="store.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
